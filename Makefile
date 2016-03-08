@@ -1,7 +1,7 @@
 TAG_NAME=blog
 
 .PHONY: site
-site:   lint clean
+site:   lint
 	docker build --tag=${TAG_NAME} .
 	docker run \
     --volume "${PWD}:/opt/www.paulfurley.com" \
@@ -10,7 +10,7 @@ site:   lint clean
 
 .PHONY: install
 install: site
-	sudo mv --backup=numbered --no-target-directory --force _site /var/www/html
+	sudo mv --backup=numbered --no-target-directory --force _site /var/www/www.paulfurley.com
 	mkdir _site
 
 .PHONY: clean
