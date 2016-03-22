@@ -11,7 +11,7 @@ discipline.*
 
 ## Running Other People's Code is Essentail
 
-As part of my work as a developer, I spent a lot of time testing out random
+As part of my work as a developer, I spend a lot of time testing out random
 code from the Internet. Whether that be some fancy OCR code or a new Django
 library, it's brilliant to be able to quickly spin up other people's code in
 unfamiliar languages and have a play.
