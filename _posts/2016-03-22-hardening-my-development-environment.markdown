@@ -9,7 +9,7 @@ attackers, without restricting my ability to do "risky" activities like
 run other people's code. In short, it involves VMs, containers and a bit of
 discipline.*
 
-## Running Other People's Code is Essentail
+## Running Other People's Code is Essential
 
 As part of my work as a developer, I spend a lot of time testing out random
 code from the Internet. Whether that be some fancy OCR code or a new Django
