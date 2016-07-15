@@ -1,0 +1,73 @@
+==================================================================
+https://keybase.io/paulfurley
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.paulfurley.com
+  * I am paulfurley (https://keybase.io/paulfurley) on keybase.
+  * I have a public key with fingerprint A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "010178d23ec24fb456783cd80e9c1d71d7019a7d4629bea94d997709837177883c8d0a",
+            "fingerprint": "a999b7498d1a8dc473e53c92309f635dad1b5517",
+            "host": "keybase.io",
+            "key_id": "309f635dad1b5517",
+            "kid": "010178d23ec24fb456783cd80e9c1d71d7019a7d4629bea94d997709837177883c8d0a",
+            "uid": "2ff0ddf008979d3a3c21d2b17e6a1419",
+            "username": "paulfurley"
+        },
+        "service": {
+            "hostname": "www.paulfurley.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1468585077,
+    "expire_in": 157680000,
+    "prev": "ef8e9a89de832b63eae42ee7299757f69b84134341b09274f2791e6b5ea86842",
+    "seqno": 6,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+
+owGtUn1MlVUcvpcE7W58LFGMUcoLOGr3ct/v856bgtpuYUqKEG0Vu70f5977wvW+
+l/sBAqONJRJNWDA35DMUku7MsOFMzUQCuWqm0QSVyAVKg8IilU0DtPcyW//0Z2dn
+Ozu/8zzPeX7Pfh+FP6XRaXUDR8TJSf9R7bdTgubND66WlGKCIhVjplIsHy0eyCEh
+j9eSL0uYCcMJnACcRFJIJGmrQDMs4ChR4nAERUIC6sYJyAOJZkkoIB7SEoQA4JCj
+AAEAp2I5CecxPWaVnTbkdrllp1eV5SGEAqAhJxE8J4k0oBBDiZCkcGhlKUbiJUJg
+GAKoRLviCTJUcwLvQSmyotbUi2XR3n/g/2ffvkU50mrFJcmK4xwEUKJ4SiQJiRQI
+gFieoAkYBHqQ28nvRCraxfscVp/boeZZpsfUeqEsomC0wV6eYIqKilL+xaWIyk5V
+w+VWvIqoONR3u9fr8piCfG+xa5GABMsTKYsgOyU1T5VRiNweWXFiJkJFil45qE3Q
+LMdwDA6AHkO7XLIbWeQgggEsh6sr+A8qxEzvYsjKIchzUEIcRQoshXhEkwgBUg2D
+AVYWChxNUDRFEwIOSUBbSQAJxAoM4jmWo0ks2F2BU8FMrOqTt6k2PbLNyXt9boSV
+6apC4pZotDpNWGhIcNI0uqej/hm/nNLIR8Y7sKKpecZv3rHR9TA5ZHntXLk+JNne
+l7Ct68/CPCY+au+NXVt3RJvPZRrKIi42Lnu5wBBzObe6Ki8toX7P7gmgX8j9Y67N
+37YqrSmnZenF2cehHVFnVxWtjEPXcY3W2JgxXFL9a036kq+j293Gl/p3B8ISS37Y
+skdKRY3iVstbJzvjjLeSyqsSX933XFjE/nuPGjrTFjbMdkwPvPPGWO96/0j3M3Ci
+6sy062Zlnv+BYO8a2//FoZUr7P2J89tjQzcVV17mNCNUmhbvunn2pKPq1PmCuuZR
+/ZmayGdvO2ITyz3p2phPfzn9zfebIjdf+3BN9RXb82JZ7duHGjp++u6oYW1/rinu
+Piz+/bekyistU8mtLStmUis2d4cmpq4djSdr2j/ucWn2ydlRvRHDBp/hlb2DpYGG
+urs92dr1vdhUfE1UgjIUbfj5s7tKVnMgow+PL9Ut2/Yw9pPWDU1zx8N1F+DcX1kb
+t3juB+qyshfM1X09r9nG7Q+0QmZg+fb3rqb7wq6nzrLjh7/K7H9xOmzd6xPtvY8H
+hyu6Z5K08wdy/OfKzId7i/yR1xyzt/QvtIXvrR01dNVP5t+bPH7HvPRC55pK86XP
+lfnA6ROt9Zix/9jq82kNqwedzJfrfpzIMsbcoJzMQelAuPHEyKnGIWWAOZhxZIge
+HI+Mez/5ku0YFj9Wfzt0RPgb
+=WnpC
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/paulfurley
+
+==================================================================
+
