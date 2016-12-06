@@ -7,6 +7,8 @@ category: security
 *This post documents how I moved from Dropbox to self-hosting a "private cloud"
 using Nextcloud on a Raspberry Pi in my home.*
 
+![Nextcloud home screen](/img/raspberry-pi-nextcloud-screenshot.png){: .img-responsive }
+
 ## Objective: Kick Dropbox
 
 Today I achieved step one of my master plan to take back ownership of my data. In this blog post I'll describe how I switched from using Dropbox to my own "cloud", physically located inside my home.
@@ -341,6 +343,8 @@ There are still a few things missing:
 - configure fail2ban to understand Nextcloud logs
 - Automatically backup configuration
 - Automatically backup *everything* to another, offsite server
+
+![Raspberry Pi in my loft](/img/raspberry-pi-nextcloud-loft.jpg){: .img-responsive }
 
 [nginx]: http://nginxorg
 [nextcloud-php-env-docs]: https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html#php-fpm-configuration-notes
