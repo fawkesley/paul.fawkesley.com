@@ -35,7 +35,7 @@ The software and hardware setup looks like this:
 
 I downloaded [Raspbian Lite][raspbian-lite] 2016-11-25 and transferred it onto an SD card with the `dd` command.
 
-I connected the Pi to my router, powered it up and found the IP address in the router. I logged in with SSH and 
+I connected the Pi to my router, powered it up and found the IP address in the router. I logged in with SSH and
 started configuring it.
 
 ```
@@ -158,7 +158,11 @@ sudo mkdir -p /etc/letsencrypt/fake-webroot
 sudo certbot --dry-run certonly --webroot -w /etc/letsencrypt/fake-webroot -d cloud.paulfurley.com
 ```
 
-... that worked, so I ran it again without `--dry-run` and got a new certificate in `/etc/letsencrypt/live/cloud.paulfurley.com/*.pem`
+... that worked, so I ran it again without `--dry-run` and got a new certificate located at:
+
+```
+/etc/letsencrypt/live/cloud.paulfurley.com/*.pem
+```
 
 Then I disabled the Nginx configuration (we'll handle renewals later):
 
@@ -258,9 +262,13 @@ gpg --import nextcloud.asc
 gpg --verify nextcloud-10.0.1.zip.asc nextcloud-10.0.1.zip
 ```
 
-I saw `gpg: Good signature from "Nextcloud Security <security@nextcloud.com>"`
+I saw:
 
-*(And also a warning that the key is not certified with a trusted signature. That means I haven't independently verified that the signing key I downloaded, `nextcloud.asc`, is actually Nextcloud's key - it could have been replaced with a bad one. As a half-measure I Googled the key fingerprint `2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A` and saw it listed on many sites, giving it at least some credibility.)*
+```
+gpg: Good signature from "Nextcloud Security <security@nextcloud.com>"
+```
+
+*(And also a warning that the key is not certified with a trusted signature. That means I haven't independently verified that the signing key I downloaded, `nextcloud.asc`, is actually Nextcloud's key - it could have been replaced with a bad one. As a half-measure I Googled the key fingerprint [2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A][google-fingerprint] and saw it listed on many sites, giving it at least some credibility.)*
 
 ## Install NextCloud into Nginx webroot
 
@@ -294,6 +302,7 @@ I added `cloud.paulfurley.com` to the `trusted_domains` setting in `/var/www/nex
 ```
 
 And fixed `overwrite.cli.url`:
+
 ```
   'overwrite.cli.url' => 'https://cloud.paulfurley.com/nextcloud',
 ```
@@ -327,7 +336,11 @@ I downloaded the iPhone Nextcloud app and logged in using the URL `https://cloud
 
 ## Install Scanner Pro iPhone App
 
-I configured a new "cloud" service of the type WebDAV in Scanner Pro. I used the URL `https://cloud.paulfurley.com/nextcloud/remote.php/dav/paul/` and the username and password of my new user.
+I configured a new "cloud" service of the type WebDAV in Scanner Pro. I used the following URL with the username and password of my new user:
+
+```
+https://cloud.paulfurley.com/nextcloud/remote.php/dav/paul/
+```
 
 
 ## Still to document:
@@ -357,3 +370,4 @@ There are still a few things missing:
 [nginx-nextcloud]: https://github.com/paulfurley/nextcloud-config-files/blob/master/etc/nginx/sites-available/nextcloud
 [nextcloud]: https://nextcloud.com
 [andrews-and-arnold]: http://aaisp.net
+[google-fingerprint]: https://www.google.co.uk/?gfe_rd=cr&ei=0TpHWPHcHqeg8wewparoBg&gws_rd=ssl#q=2880+6A87+8AE4+23A2+8372++792E+D758+99B9+A724+937A
