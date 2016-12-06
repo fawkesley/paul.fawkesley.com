@@ -15,14 +15,13 @@ Today I achieved step one of my master plan to take back ownership of my data. I
 
 Right now, I've taken back my *files*, for example photos, scanned documents, money stuff and business stuff.
 
-Next (and I think I'm basically there) I want to take back:
+Next I want to take back:
 
 - calendar - I've got over ten years of calendar stored in Google and it freaks me out
 - contacts - Again, Google knows everything.
+- email - Much harder, but the holy grail. Worth it? Not sure.
 
-This blog post is both to document how I did it and make it easier for the next person. 
-
-This is a bit of an experiment. If it goes well and I don't hate running Linux servers too much, step two will be moving to **self-hosted email**. I expect that to be much more challenging and awkward, but I think it's important/f.
+This blog post is both to document how I did it and make it easier for the next person.
 
 The software and hardware setup looks like this:
 
