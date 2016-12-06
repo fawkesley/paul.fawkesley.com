@@ -7,20 +7,21 @@ category: security
 *This post documents how I moved from Dropbox to self-hosting a "private cloud"
 using Nextcloud on a Raspberry Pi in my home.*
 
+![Nextcloud home screen](/img/raspberry-pi-nextcloud-screenshot.png){: .img-responsive }
+
 ## Objective: Kick Dropbox
 
 Today I achieved step one of my master plan to take back ownership of my data. In this blog post I'll describe how I switched from using Dropbox to my own "cloud", physically located inside my home.
 
 Right now, I've taken back my *files*, for example photos, scanned documents, money stuff and business stuff.
 
-Next (and I think I'm basically there) I want to take back:
+Next I want to take back:
 
 - calendar - I've got over ten years of calendar stored in Google and it freaks me out
 - contacts - Again, Google knows everything.
+- email - Much harder, but the holy grail. Worth it? Not sure.
 
-This blog post is both to document how I did it and make it easier for the next person. 
-
-This is a bit of an experiment. If it goes well and I don't hate running Linux servers too much, step two will be moving to **self-hosted email**. I expect that to be much more challenging and awkward, but I think it's important/f.
+This blog post is both to document how I did it and make it easier for the next person.
 
 The software and hardware setup looks like this:
 
@@ -92,17 +93,15 @@ With the power of ZeroTier One, I can now do `ssh pi-loft-2` from anywhere in th
 
 ## Configure Encrypted External Hard Drive
 
-TODO: write this part. TL;DR I use cryptsetup to mount an encrypted drive at `/media/externalhd`.
+I use [cryptsetup][cryptsetup] to mount an encrypted drive at `/media/externalhd`.
 
 ```
 sudo apt-get install cryptsetup
 ```
 
-- initial setup
-- mount on boot
+Note: I aready had an external hard drive formateed as an encrypted LUKS volume. I'm going to skip over how to create the disk because it's destructive, and can't remember the exact commands. If you want an encrypted disk, have a read about the `cryptsetup luksFormat` command, then come back here.
 
-I use a [mount script][mount-script] to help me remember how to do this.
-
+I use a [mount script][mount-script] to help me remember how to do this. There are two options: you can either store the key as a file on the Raspberry Pi (insecure, but protects against casual theft of the hard drive), or you'll have to enter it each time the Pi boots.
 
 ## Configure cloud.paulfurley.com in DNS
 
@@ -342,10 +341,13 @@ There are still a few things missing:
 - Automatically backup configuration
 - Automatically backup *everything* to another, offsite server
 
+![Raspberry Pi in my loft](/img/raspberry-pi-nextcloud-loft.jpg){: .img-responsive }
+
 [nginx]: http://nginxorg
 [nextcloud-php-env-docs]: https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html#php-fpm-configuration-notes
 [raspbian-lite]: https://www.raspberrypi.org/downloads/raspbian/
 [first-five-minutes]: https://plusbryan.com/my-first-5-minutes-on-a-server-or-essential-security-for-linux-servers
+[cryptsetup]: https://linux.die.net/man/8/cryptsetup
 [mount-script]: https://github.com/paulfurley/nextcloud-config-files/blob/master/root/mount.sh
 [zerotier-one]: https://zerotier.com
 [nginx-1.6.2]: http://nginx.org/en/CHANGES-1.6
