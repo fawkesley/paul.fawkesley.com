@@ -358,7 +358,7 @@ There are still a few things missing:
 
 ![Raspberry Pi in my loft](/img/raspberry-pi-nextcloud-loft.jpg){: .img-responsive }
 
-[nginx]: http://nginxorg
+[nginx]: http://nginx.org
 [nextcloud-php-env-docs]: https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html#php-fpm-configuration-notes
 [raspbian-lite]: https://www.raspberrypi.org/downloads/raspbian/
 [first-five-minutes]: https://plusbryan.com/my-first-5-minutes-on-a-server-or-essential-security-for-linux-servers
