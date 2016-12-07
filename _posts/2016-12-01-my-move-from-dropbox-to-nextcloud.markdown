@@ -345,16 +345,18 @@ https://cloud.paulfurley.com/nextcloud/remote.php/dav/paul/
 ```
 
 
-## Still to document:
+## Future Improvements
 
-There are still a few things missing:
+That was a good minimum viable config, but I've still got some things that need
+improving:
 
-- Log monitoring & intrusion detection
-- Test SSL with ssllabs.com
-- configure Let's Encrypt certificate renewal
-- configure fail2ban to understand Nextcloud logs
-- Automatically backup configuration
-- Automatically backup *everything* to another, offsite server
+- Try and move authentication to Nginx (before hitting Nextcloud's PHP) if possible and investigate TLS client certificates.
+- Configure automatic certificate renewal with Let's Encrypt.
+- Improve SSL score (currently B due to weak Diffie Hillman parameters, see [SSL Labs analysis][ssl-labs-results])
+- Set up log monitoring & intrusion detection. Configure fail2ban to understand Nextcloud authentication failures.
+- Move postgresql database from the SD card to the external hard drive.
+- Automatically backup configuration.
+- Automatically backup *everything* (incrementally) to another, offsite server.
 
 ![Raspberry Pi in my loft](/img/raspberry-pi-nextcloud-loft.jpg){: .img-responsive }
 
@@ -376,4 +378,5 @@ There are still a few things missing:
 [andrews-and-arnold]: http://aaisp.net
 [google-fingerprint]: https://www.google.co.uk/?gfe_rd=cr&ei=0TpHWPHcHqeg8wewparoBg&gws_rd=ssl#q=2880+6A87+8AE4+23A2+8372++792E+D758+99B9+A724+937A
 [page-updates]: https://github.com/paulfurley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown
+[ssl-labs-results]: https://www.ssllabs.com/ssltest/analyze.html?d=cloud.paulfurley.com
 [paul-twitter]: https://twitter.com/paul_furley
