@@ -9,6 +9,8 @@ using Nextcloud on a Raspberry Pi in my home.*
 
 ![Nextcloud home screen](/img/raspberry-pi-nextcloud-screenshot.png){: .img-responsive }
 
+[See all updates and edits.][page-updates]
+
 ## Objective: Kick Dropbox
 
 Today I achieved step one of my master plan to take back ownership of my data. In this blog post I'll describe how I switched from using Dropbox to my own "cloud", physically located inside my home.
@@ -371,3 +373,4 @@ There are still a few things missing:
 [nextcloud]: https://nextcloud.com
 [andrews-and-arnold]: http://aaisp.net
 [google-fingerprint]: https://www.google.co.uk/?gfe_rd=cr&ei=0TpHWPHcHqeg8wewparoBg&gws_rd=ssl#q=2880+6A87+8AE4+23A2+8372++792E+D758+99B9+A724+937A
+[page-updates]: https://github.com/paulfurley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown
