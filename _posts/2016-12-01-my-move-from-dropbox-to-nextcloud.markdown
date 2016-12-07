@@ -358,6 +358,8 @@ There are still a few things missing:
 
 ![Raspberry Pi in my loft](/img/raspberry-pi-nextcloud-loft.jpg){: .img-responsive }
 
+[Thoughts?][paul-twitter]
+
 [nginx]: http://nginx.org
 [nextcloud-php-env-docs]: https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html#php-fpm-configuration-notes
 [raspbian-lite]: https://www.raspberrypi.org/downloads/raspbian/
@@ -374,3 +376,4 @@ There are still a few things missing:
 [andrews-and-arnold]: http://aaisp.net
 [google-fingerprint]: https://www.google.co.uk/?gfe_rd=cr&ei=0TpHWPHcHqeg8wewparoBg&gws_rd=ssl#q=2880+6A87+8AE4+23A2+8372++792E+D758+99B9+A724+937A
 [page-updates]: https://github.com/paulfurley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown
+[paul-twitter]: https://twitter.com/paul_furley
