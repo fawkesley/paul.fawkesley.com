@@ -9,7 +9,9 @@ using Nextcloud on a Raspberry Pi in my home.*
 
 ![Nextcloud home screen](/img/raspberry-pi-nextcloud-screenshot.png){: .img-responsive }
 
-[See all updates and edits.][page-updates]
+- Update[2016-12-08]: Added sections on automatically banning IP addresses and sending abuse report emails.
+
+[See all updates and edits to this page.][page-updates]
 
 ## Objective: Kick Dropbox
 
@@ -309,6 +311,12 @@ And fixed `overwrite.cli.url`:
   'overwrite.cli.url' => 'https://cloud.paulfurley.com/nextcloud',
 ```
 
+And specified logging to syslog, rather than a separate file:
+
+```
+  'log_type' => 'syslog',
+```
+
 I gave Nextcloud (or specifically, the `www-data` user) permission to write its own configuration:
 
 ```
@@ -330,6 +338,133 @@ I visited `https:/cloud.paulfurley.com/nextcloud/` and created an admin user. I 
 
 I then used Nextcloud to create a normal (non-admin) user. I will keep the admin user for special occasions.
 
+## Configure outbound email with sSMTP
+
+I wanted the server to be able to email me with alerts and stuff. I configured
+[mailgun][mailgun] for `cloud.paulfurley.com` and used `sSMTP` to relay emails
+through it:
+
+```
+sudo apt-get install ssmtp mailutils
+```
+
+And add some config files:
+
+```
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+```
+
+Then edit both files with your own domain and API key.
+
+## Configure fail2ban
+
+[fail2ban][fail2ban] works by parsing log files for authentication failure messages. When it sees repeated failures, it takes some action. Typically that involves adding a firewall rule to block the offending IP address.
+
+With nextcloud configured to log to syslog, a failed authentication looks like this:
+
+```
+Dec  7 17:57:09 pi-loft-2 ownCloud[31042]: {core} Login failed: 'paul' (Remote IP: '31.105.224.167')
+```
+
+I wrote a [filter][fail2ban-filter] to scan syslog for login failure messages.
+
+```
+wget -O /etc/fail2ban/filter.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
+```
+
+I adapted an [action][fail2ban-action] to parse the log file and whois information for the offending IP and send me that by email:
+
+```
+wget -O /etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
+```
+
+I created a [jail][fail2ban-jail] to activate the filter:
+
+```
+wget -O /etc/fail2ban/jail.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf
+```
+
+Don't forget to edit these with your own details.
+
+### Test the fail2ban jail
+
+From a remote server, I hit a few different endpoints with bad credentials:
+
+```
+$ curl --user paul:badpassword https://cloud.paulfurley.com/nextcloud/index.php
+```
+
+```
+$ curl --user paul:badpassword https://cloud.paulfurley.com/nextcloud/remote.php/dav/files/paul
+<?xml version="1.0" encoding="utf-8"?>
+<d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
+  <s:exception>Sabre\DAV\Exception\NotAuthenticated</s:exception>
+  <s:message>Username or password was incorrect, Username or password was incorrect</s:message>
+</d:error>
+```
+
+While watching the logs:
+
+```
+tail -f /var/log/fail2ban.log /var/log/syslog
+```
+
+Happily, this appeared in the logs, and my remote server could no longer talk to `cloud.paulfurley.com` at all:
+
+```
+Dec  8 14:04:44 pi-loft-2 ownCloud[10257]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+Dec  8 14:05:15 pi-loft-2 ownCloud[31042]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+Dec  8 14:05:46 pi-loft-2 ownCloud[11301]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+
+==> /var/log/fail2ban.log <==
+2016-12-08 14:05:47,189 fail2ban.actions[11783]: WARNING [nextcloud] Ban 46.101.3.6
+
+==> /var/log/syslog <==
+Dec  8 14:05:47 pi-loft-2 sSMTP[12087]: Creating SSL connection to host
+Dec  8 14:05:47 pi-loft-2 sSMTP[12087]: SSL connection using RSA_AES_128_CBC_SHA1
+Dec  8 14:05:49 pi-loft-2 sSMTP[12087]: Sent mail for postmaster@cloud.paulfurley.com (221 See you later. Yours truly, Mailgun) uid=0 username=root outbytes=6178
+```
+
+Shortly after, I received an email - it's working!
+
+```
+Subject: [Fail2Ban] default: banned 46.101.3.6 from
+  pi-loft-2
+To: <cloud-notify@paulfurley.com>
+
+Hi,
+
+The IP 46.101.3.6 has just been banned by Fail2Ban after
+3 attempts against default.
+
+
+Here is more information about 46.101.3.6:
+
+...
+```
+
+
+You can look at the status of a jail with `fail2ban-client`:
+
+```
+$ fail2ban-client status nextcloud
+Status for the jail: nextcloud
+|- filter
+|  |- File list:        /var/log/syslog
+|  |- Currently failed: 1
+|  `- Total failed:     17
+`- action
+   |- Currently banned: 1
+   |  `- IP list:       46.101.3.6
+   `- Total banned:     1
+```
+
+And unban clients too:
+
+```
+fail2ban-client set nextcloud unbanip 46.101.3.6
+```
 
 ## Install Nextcloud iPhone App
 
@@ -344,7 +479,6 @@ I configured a new "cloud" service of the type WebDAV in Scanner Pro. I used the
 https://cloud.paulfurley.com/nextcloud/remote.php/dav/paul/
 ```
 
-
 ## Future Improvements
 
 That was a good minimum viable config, but I've still got some things that need
@@ -353,7 +487,7 @@ improving:
 - Try and move authentication to Nginx (before hitting Nextcloud's PHP) if possible and investigate TLS client certificates.
 - Configure automatic certificate renewal with Let's Encrypt.
 - Improve SSL score (currently B due to weak Diffie Hillman parameters, see [SSL Labs analysis][ssl-labs-results])
-- Set up log monitoring & intrusion detection. Configure fail2ban to understand Nextcloud authentication failures.
+- Set up more log monitoring & intrusion detection.
 - Move postgresql database from the SD card to the external hard drive.
 - Automatically backup configuration.
 - Automatically backup *everything* (incrementally) to another, offsite server.
@@ -380,3 +514,7 @@ improving:
 [page-updates]: https://github.com/paulfurley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown
 [ssl-labs-results]: https://www.ssllabs.com/ssltest/analyze.html?d=cloud.paulfurley.com
 [paul-twitter]: https://twitter.com/paul_furley
+[fail2ban]: http://www.fail2ban.org/wiki/index.php/Main_Page
+[fail2ban-filter]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
+[fail2ban-action]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
+[fail2ban-jail]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf
