@@ -336,6 +336,25 @@ I visited `https:/cloud.paulfurley.com/nextcloud/` and created an admin user. I 
 
 I then used Nextcloud to create a normal (non-admin) user. I will keep the admin user for special occasions.
 
+## Configure outbound email with sSMTP
+
+I wanted the server to be able to email me with alerts and stuff. I configured
+[mailgun][mailgun] for `cloud.paulfurley.com` and used `sSMTP` to relay emails
+through it:
+
+```
+sudo apt-get install ssmtp mailutils
+```
+
+And add some config files:
+
+```
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+```
+
+Then edit both files with your own domain and API key.
+
 ## Configure fail2ban
 
 [fail2ban][fail2ban] works by parsing log files for authentication failure messages. When it sees repeated failures, it takes some action. Typically that involves adding a firewall rule to block the offending IP address.
