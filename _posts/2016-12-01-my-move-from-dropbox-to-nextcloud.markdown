@@ -9,7 +9,9 @@ using Nextcloud on a Raspberry Pi in my home.*
 
 ![Nextcloud home screen](/img/raspberry-pi-nextcloud-screenshot.png){: .img-responsive }
 
-[See all updates and edits.][page-updates]
+- Update[2016-12-08]: Added sections on automatically banning IP addresses and sending abuse report emails.
+
+[See all updates and edits to this page.][page-updates]
 
 ## Objective: Kick Dropbox
 
