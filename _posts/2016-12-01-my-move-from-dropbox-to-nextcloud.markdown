@@ -9,7 +9,7 @@ using Nextcloud on a Raspberry Pi in my home.*
 
 ![Nextcloud home screen](/img/raspberry-pi-nextcloud-screenshot.png){: .img-responsive }
 
-- Update[2016-12-08]: Added sections on automatically banning IP addresses and sending abuse report emails.
+- Update[2016-12-08]: Added sections on automatically banning IP addresses and sending abuse report emails. Added paragraph about generating custom Diffie Hellman parameters.
 
 [See all updates and edits to this page.][page-updates]
 
@@ -284,7 +284,16 @@ sudo chown -R root /var/www/html/nextcloud
 sudo chgrp -R www-data /var/www/html/nextcloud
 ```
 
+I generated a 4096 (large) Diffie-Hellman parameter to use with SSL. I did it on my fast laptop and transferred it to the pi, lest I'd been there all day:
+
+```
+sudo openssl dhparam -out /tmp/dhparam.pem 4096
+scp /tmp/dhparam.pem pi-loft-2:~/etc/nginx/ssl/dhparam.pem 4096
+```
+
 I installed and enabled a [nextcloud Nginx configuration file][nginx-nextcloud]:
+
+If you're still waiting for the Diffie Hellman parameters file to be generated, you can temporarily comment out the line starting `ssl_dhparam` and it'll start without that.
 
 ```
 wget -O /etc/nginx/sites-available/nextcloud https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/nginx/sites-available/nextcloud
