@@ -20,3 +20,5 @@ kramdown:
 exclude:
   - Dockerfile
   - Makefile
+  - less
+  - CNAME
