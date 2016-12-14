@@ -1,5 +1,6 @@
 ---
 title: "My Barcamp 2015 Highlights"
+permalink: /my-barcamp-2015-highlights/
 ---
 
 I've just parted ways with a friendly and interesting bunch of people - exactly
