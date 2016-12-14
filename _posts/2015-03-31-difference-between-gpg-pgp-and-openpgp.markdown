@@ -1,5 +1,6 @@
 ---
 title: The Difference Between GPG, GnuPG, PGP and OpenPGP
+permalink: /difference-between-gpg-pgp-and-openpgp/
 ---
 
 This seems to come up a *lot* - is it a PGP key or a GPG key, and what's OpenPGP?
