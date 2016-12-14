@@ -1,5 +1,6 @@
 ---
 title: "Hello, Thinking Digital 2015!"
+permalink: /hello-thinking-digital-2015/
 ---
 
 I'm on the way to [Thinking Digital](http://www.thinkingdigital.co.uk) and getting excited about what sounds like an incredible event.
