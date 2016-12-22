@@ -9,7 +9,7 @@ Don't worry, it's simple, and best explained with a brief timeline:
 
 ## Pretty Good Privacy (PGP)
 
-Pretty Good Privacy is *proprietary software* and was originally written by [Phil Zimmerman](https://en.wikipedia.org/wiki/Phil_Zimmermann) in 1991. After several changes of hands, it's now owed by Symantec Corp. They also own the registered trademark for "PGP", "Pretty Good" and "Pretty Good Privacy".
+Pretty Good Privacy is *proprietary software* and was originally written by [Phil Zimmerman][phil-zimmerman] in 1991. After several changes of hands, it's now owed by Symantec Corp. They also own the registered trademark for "PGP", "Pretty Good" and "Pretty Good Privacy".
 
 ## OpenPGP
 
@@ -17,15 +17,15 @@ After PGP took off in popularity, others wanted to write software that was compa
 
 In 1997 PGP Inc proposed to the IETF a standard called OpenPGP and allowed various uses of the name "OpenPGP". This was accepted and the IETF formed the OpenPGP Working Group.
 
-The OpenPGP protocol is currently formalised in the (obsolete) [RFC 2440](https://tools.ietf.org/html/rfc2440) and new [RFC 4880](https://tools.ietf.org/html/rfc4880).
+The OpenPGP protocol is currently formalised in the (obsolete) [RFC 2440][rfc-2440] and new [RFC 4880][rfc-4880].
 
 
 ## GNU Privacy Guard (GnuPG / GPG)
 
-[GNU Privacy Guard](www.gnupg.org), also known as GnuPG and GPG, is the [Free Software Foundation](https://fsf.org/)'s implementation of the OpenPGP protocol, written almost entirely by [Werner Koch](https://en.wikipedia.org/wiki/Werner_Koch).
+[GNU Privacy Guard][gnupg], also known as GnuPG and GPG, is the [Free Software Foundation][fsf]'s implementation of the OpenPGP protocol, written almost entirely by [Werner Koch][werner-koch].
 
 As it is entirely Free Software (licensed under GNU Public Licence v3), you are granted the freedom to inspect and modify the source code [(see my mirror
-here)](https://github.com/paulfurley/gnupg-mirror/). Furthermore, accordingly, some versions do not include proprietary "encumbered" algorithms such as IDEA.
+here)][gnupg-mirror]. Furthermore, accordingly, some versions do not include proprietary "encumbered" algorithms such as IDEA.
 
 ## What to call my key?
 
@@ -37,8 +37,18 @@ So in my opinion, it's probably right to call it an "OpenPGP Key", but I'm not s
 
 ## Other OpenPGP implementations
 
-There are lots of OpenPGP implementations and the one I'm currently 2nd-most excited about is [openpgpjs](https://github.com/openpgpjs/openpgpjs) for Javascript. Doing grown-up encryption in the browser excites me as someone's got a *chance* of building something *pretty*. And seriously, I think that's important if we want encryption to be used by people less geeky than me.
+There are lots of OpenPGP implementations and the one I'm currently 2nd-most excited about is [openpgpjs][openpgpjs] for Javascript. Doing grown-up encryption in the browser excites me as someone's got a *chance* of building something *pretty*. And seriously, I think that's important if we want encryption to be used by people less geeky than me.
 
-The one I'm most excited about is my very own [EncryptIt](https://github.com/paulfurley/encryptit) for Python, focusing (predictably) on testing and clarity. It's early days and it's by no means the most complete, but I'm taking it deliberately slow to keep the quality high.
+The one I'm most excited about is my very own [EncryptIt][encryptit] for Python, focusing (predictably) on testing and clarity. It's early days and it's by no means the most complete, but I'm taking it deliberately slow to keep the quality high.
 
 **Interested in learning how to use GPG? See my [GPG For Humans](https://paulfurley.com/gpg-for-humans-why-care-about-cryptography/) series.**
+
+[phil-zimmerman]: https://en.wikipedia.org/wiki/Phil_Zimmermann
+[rfc-2440]: https://tools.ietf.org/html/rfc2440
+[rfc-4880]: https://tools.ietf.org/html/rfc4880
+[fsf]: https://fsf.org
+[gnupg]: https://gnupg.org
+[gnupg-mirror]: https://github.com/paulfurley/gnupg-mirror/
+[werner-koch]: https://en.wikipedia.org/wiki/Werner_Koch
+[openpgpjs]: https://github.com/openpgpjs/openpgpjs
+[encryptit]: https://github.com/paulfurley/encryptit
