@@ -4,12 +4,6 @@ permalink: /internet-freedom-festival-2017-monday/
 category: iff2017, internetfreedom, security
 ---
 
-*summary*
-
-![image alt tag](/img/some-image.png){: .img-responsive }
-
-## Now the actual headlines
-
 This week I'm in sunny Valencia, returning once more to the [Internet Freedom Festival (IFF)][iff]. Monday was an amazing first day, with so many interesting ideas and new inspiration. I'm going to write up some notes whenever I can, lest it all fades in time.
 
 
