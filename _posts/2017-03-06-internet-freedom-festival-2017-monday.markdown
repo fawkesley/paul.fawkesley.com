@@ -46,6 +46,8 @@ It was a pleasure to work with some women from [Heart of Code][heart-of-code], a
 
 
 [iff]: https://internetfreedomfestival.org/
+[ian]: http://www.iandrysdale.com
+[tor-project]: https://torproject.org
 [gocardless]: https://gocardless.com
 [snoopers-charter]: https://en.wikipedia.org/wiki/Investigatory_Powers_Act_2016
 [trill-open-collective]: https://opencollective.com/trill
