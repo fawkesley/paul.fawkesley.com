@@ -8,7 +8,7 @@ category: security, startups, sideprojects, publicspeaking, python, arduinoraspb
 
 Here's a long-overdue write up of an interesting thing I stumbled across back in 2013.
 
-It started with a tweet from Liverpool City Council (since deleted) announcing they would be blocking payday loans companies in the libraries and other city buildings.
+It started with a tweet from Liverpool City Council (since deleted) announcing they would be blocking the websites of payday loans companies in the libraries and other city buildings.
 
 I hadn't considered that councils would block specific websites in their libraries.
 
@@ -88,7 +88,9 @@ Straight away looking at this list I'm thinking of problems:
 - Illegal UK: Whaaaat? Does that means sites that *are* illegal in the UK? (I'm not even sure what this would cover), or sites that are *about* illegal things in the UK - like drink driving, for example?
 - Residential IP Addresses: Blocking these is just crappy: I run a personal website off my home internet connection, what's the problem with that? This undermines a core principle of the neutrality of the internet.
 
-A blocked category relies on someone, or something classifying that site. An example of a category would be "gambling" or "pornography". This is typically outsourced to the company that provides the filtering software, and they typically use a mix of human and automated systems to make this classification. That in itself raises some big question the power we give to a distant company to filter our internet, and what oversight there is on when that goes wrong.
+A blocked category relies on someone, or something classifying that site. This is typically outsourced to the company that provides the filtering software, who would typically automate most of the classification process. In other words, a computer makes most of the decisions.
+
+It's concerning for me how much power we give to these third parties and their proprietary computer systems to control what information we're allowed to look at.
 
 ## There were 1,187 blocked URLs.
 
@@ -107,13 +109,13 @@ I've picked out a few that stood out for me:
 
 You can explore the full list in the [spreadsheet][2013-spreadsheet] provided by the council.
 
-# One Year Later
+## One Year Later
 
 The first request was of limited value because I couldn't date any of the block requests, and I couldn't get any of the reasoning behind the blocks. They could have been decades old, which doesn't give much clue about the context of why they were blocked.
 
 I figured that if I placed [another request][second-foi] in a year I would at least be able to see what sites had been added or removed in that time.
 
-# 30 blocked categories, down with Consumer Protection!
+## 30 blocked categories, down with Consumer Protection!
 
 This time there were 30 blocked categories, but they'd changed a little.
 
@@ -129,7 +131,7 @@ Blocked since 2013:
 
 I can't imagine why Consumer Protection would be blocked - weird.
 
-# 538 blocked websites
+## 538 blocked websites
 
 Encouragingly, this time the number of blocked websites had halved.
 
@@ -147,7 +149,7 @@ Again, the full list is in the [2014 spreadsheet][2014-spreadsheet] provided by 
 
 It's pretty weird for a local council to be blocking the website of a department of the Ministry of Defence.
 
-Hopefully this post highlights some of the moral questions raised when censoring the internet...
+Hopefully this post highlights some of the moral questions raised when censoring the internet.
 
 [Contact me on twitter.][paul-twitter]
 
