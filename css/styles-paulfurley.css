@@ -1,10 +1,19 @@
-span.navbar-site-title {
-  font-family: 'PT Serif', serif;
-  /* text-transform: uppercase;*/
-  font-variant: small-caps;
+section {
+  margin-bottom: 30px;
+}
+
+.masthead {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+a.navbar-site-title {
   font-size: 45px;
-  float: left;
-  display: block;
+  line-height: 100px;
+}
+
+.about-portrait {
+  max-width: 200px;
 }
 
 article.blog-teaser {
