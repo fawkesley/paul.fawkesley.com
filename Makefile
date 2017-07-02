@@ -2,11 +2,11 @@ TAG_NAME=blog
 
 .PHONY: site
 site:   lint
-	docker build --tag=${TAG_NAME} .
-	docker run \
-    --volume "${PWD}:/opt/www.paulfurley.com" \
-    ${TAG_NAME} \
-    jekyll build --source /opt/www.paulfurley.com --destination /opt/www.paulfurley.com/_site
+	bundle exec jekyll build
+
+.PHONY: run
+run:
+	bundle exec jekyll serve --host 0.0.0.0 --port 4567
 
 .PHONY: install
 install: site
@@ -22,3 +22,7 @@ clean:
 lint:
 	find _layouts _includes -type f -exec dos2unix {} \+
 	dos2unix *.html
+
+.PHONY: deploy
+deploy: site
+	./_config/rsync-to-server

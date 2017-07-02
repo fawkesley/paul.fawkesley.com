@@ -18,7 +18,9 @@ kramdown:
   input: GFM
 
 exclude:
-  - Dockerfile
   - Makefile
   - less
   - CNAME
+  - Gemfile
+  - Gemfile.lock
+  - README.md
