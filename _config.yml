@@ -21,3 +21,6 @@ exclude:
   - Makefile
   - less
   - CNAME
+  - Gemfile
+  - Gemfile.lock
+  - README.md
