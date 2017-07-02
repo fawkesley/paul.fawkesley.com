@@ -2,11 +2,7 @@ TAG_NAME=blog
 
 .PHONY: site
 site:   lint
-	docker build --tag=${TAG_NAME} .
-	docker run \
-    --volume "${PWD}:/opt/www.paulfurley.com" \
-    ${TAG_NAME} \
-    jekyll build --source /opt/www.paulfurley.com --destination /opt/www.paulfurley.com/_site
+	bundle exec jekyll build
 
 .PHONY: run
 run:
