@@ -8,6 +8,10 @@ site:   lint
     ${TAG_NAME} \
     jekyll build --source /opt/www.paulfurley.com --destination /opt/www.paulfurley.com/_site
 
+.PHONY: run
+run:
+	bundle exec jekyll serve --host 0.0.0.0 --port 4567
+
 .PHONY: install
 install: site
 	sudo mv --backup=numbered --no-target-directory --force _site /var/www/www.paulfurley.com
