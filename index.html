@@ -11,21 +11,52 @@ permalink: /
       <img src="/img/paul-m-furley-backend-developer.png" alt="Paul M Furley" class="about-portrait img-responsive">
       <h1>I'm <span class="about-bold">Paul</span>, an <span class="about-bold">Engineer</span></h1>
 
-      <span class="about-medium">
-        I help teams turn <b>ideas</b> into <b>version 1</b>.
-      </span>
+      <p class="about-medium">I love making things.</p>
 
-        <br>
-        <span class="about-small">
-          I care about digital &amp; civil rights, open culture, democracy and sustainable living.
-        </span>
+      <p class="about-small">I care about human rights, internet freedom, equality.</p>
 
-        <hr>
+      <hr>
     </div>
 
     <div class="container">
       <div class="row">
-        <h1>Things I've Built</h1>
+
+        <h2>Recent blog posts</h2>
+        <ul>
+          {% for post in site.posts|limit:3 %}
+          <li>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <h2>Bio</h2>
+
+        <p>I have a First in Engineering (Electronics) from Durham University.</p>
+
+        <p>I've built software for <b>printing machines</b> and <b>high-speed
+        network devices</b>, collected and aggregated data for
+        <b>ScraperWiki</b>, <b>Shelter</b> and <b>Global Witness</b>, built
+        dashboard backends for <b>Government Digital Service</b> and created the
+        whole tech stack for <b>Sea Level Research</b> and was on the first <a href="http://transformation.blog.nhs.uk/">NHS
+        Digital Transformation team.</a></p>
+
+        <p>I'm currently tech lead for <a href="http://coop.co.uk/dpr">Digital Product Research</a> at Co-op and technical advisor at <a href="http://www.projectsbyif.com">Projects By If.</a></p>
+
+        <p><a href="https://uk.linkedin.com/in/paulfurley">Full CV on LinkedIn.</a></p>
+
+        <h2>Speaking</h2>
+
+        <p>
+        I've talked publicly about <b>Information Hiding</b> at Breakerfaire,
+        <b>Building With Straw</b> at Barcamp, <a href="https://www.meetup.com/People-before-pixels/events/226879464/">Developers and User Research
+            at People Before Pixels</a>, <b>Modernising the Shipping Industry</b> at a
+        mySociety Meetup and an <b>Introduction to Public Key Cryptography</b> at
+        Liverpool's Bitcoin and Cryptography meetup.</p>
+
+        <p>I enjoy communicating <b>complex ideas</b> to non-technical audiences.</p>
+
+        <h2>Things I've Built</h2>
         <div class="col-md-12 blog-main">
           <div class="row">
 
@@ -132,28 +163,6 @@ permalink: /
             </div>
           </div>
         </div>
-
-        <h1>Bio</h1>
-        <span class="about-small">
-        I have a First in Engineering (Electronics) from Durham University.<br/>
-        I've built software for <b>printing machines</b> and <b>high-speed
-        network devices</b>, collected and aggregated data for
-        <b>ScraperWiki</b>, <b>Shelter</b> and <b>Global Witness</b>, built
-        dashboard backends for <b>Government Digital Service</b> and created the
-        whole tech stack for <b>Sea Level Research</b>.
-        <a href="https://uk.linkedin.com/in/paulfurley">Full CV on LinkedIn</a>.
-        </span>
-
-        <h1>Speaking</h1>
-        <span class="about-small">
-        I've talked publicly about <b>Information Hiding</b> at Breakerfaire,
-        <b>Building With Straw</b> at Barcamp, <b>Developers and User Research</b>
-        at People Before Pixels, <b>Modernising the Shipping Industry</b> at a
-        mySociety Meetup and an <b>Introduction to Public Key Cryptography</b> at
-        Liverpool's Bitcoin and Cryptography meetup.<br>
-        I enjoy communicating <b>complex ideas</b> to non-technical audiences.
-        </span>
-
         <h2>Blog highlights</h2>
         <div class="col-md-12 blog-main">
           <div class="row">
