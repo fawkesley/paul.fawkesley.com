@@ -22,3 +22,7 @@ clean:
 lint:
 	find _layouts _includes -type f -exec dos2unix {} \+
 	dos2unix *.html
+
+.PHONY: deploy
+deploy: site
+	./_config/rsync-to-server
