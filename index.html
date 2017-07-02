@@ -6,6 +6,7 @@ permalink: /
 ---
 
 <div class="widewrapper main">
+
     <div class="container about">
 
       <img src="/img/paul-m-furley-backend-developer.png" alt="Paul M Furley" class="about-portrait img-responsive">
@@ -15,37 +16,27 @@ permalink: /
 
       <p class="about-small">I care about human rights, internet freedom, equality.</p>
 
-      <hr>
     </div>
 
-    <div class="container">
-      <div class="row">
 
-        <h2>Recent blog posts</h2>
-        <ul>
-          {% for post in site.posts limit:3 %}
-          <li>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-          </li>
-          {% endfor %}
-        </ul>
+    <section class="container">
+      <h2>I love teams with a mission</h2>
 
-        <h2>Bio</h2>
+      <p>I've built software for <a href="/arduino-isnt-just-for-hackers/">printing machines</a> and <b>high-speed
+      network devices</b>, scraped and analysed data for
+      <b>ScraperWiki</b>, <b>Shelter</b> and <b>Global Witness</b>, built
+      backends for <b>Government Digital Service</b>, created the whole stack for <b>Sea Level Research</b> and kicked off the
+      <a href="http://transformation.blog.nhs.uk/">NHS Transformation.</a></p>
 
-        <p>I have a First in Engineering (Electronics) from Durham University.</p>
 
-        <p>I've built software for <b>printing machines</b> and <b>high-speed
-        network devices</b>, collected and aggregated data for
-        <b>ScraperWiki</b>, <b>Shelter</b> and <b>Global Witness</b>, built
-        dashboard backends for <b>Government Digital Service</b> and created the
-        whole tech stack for <b>Sea Level Research</b> and was on the first <a href="http://transformation.blog.nhs.uk/">NHS
-        Digital Transformation team.</a></p>
+      <p>I'm currently tech lead for <a href="http://coop.co.uk/dpr">Digital Product Research</a> at Co-op and technical advisor at <a href="http://www.projectsbyif.com">Projects By If.</a></p>
 
-        <p>I'm currently tech lead for <a href="http://coop.co.uk/dpr">Digital Product Research</a> at Co-op and technical advisor at <a href="http://www.projectsbyif.com">Projects By If.</a></p>
+      <p>I have a First in Engineering (Electronics) from Durham University. My <a href="https://uk.linkedin.com/in/paulfurley">CV is on LinkedIn.</a></p>
 
-        <p><a href="https://uk.linkedin.com/in/paulfurley">Full CV on LinkedIn.</a></p>
+    </section>
 
-        <h2>Speaking</h2>
+    <section class="container">
+      <h2>I enjoy sharing through public speaking</h2>
 
         <p>
         I've talked publicly about <b>Information Hiding</b> at Breakerfaire,
@@ -55,117 +46,133 @@ permalink: /
         Liverpool's Bitcoin and Cryptography meetup.</p>
 
         <p>I enjoy communicating <b>complex ideas</b> to non-technical audiences.</p>
+    </section>
 
-        <h2>Things I've Built</h2>
-        <div class="col-md-12 blog-main">
-          <div class="row">
+    <section class="container">
+      <h2>I wrote these things recently</h2>
+      <ul>
+        {% for post in site.posts limit:3 %}
+        <li>
+        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
 
-            <div class="col-md-4 col-sm-6">
-              <article class="blog-teaser">
-                <header>
-                  <a href="#">
-                  <img src="/img/pilot-planner-thumbnail.png" alt="TODO">
-                  <h3>Pilot Planner</h3>
+    <div class="container">
+
+      <h2>I built these a while ago</h2>
+
+        <div class="row">
+
+          <div class="col-md-4 col-sm-6">
+            <article class="blog-teaser">
+              <header>
+                <a href="#">
+                <img src="/img/pilot-planner-thumbnail.png" alt="TODO">
+                <h3>Pilot Planner</h3>
+              </a>
+              </header>
+
+              <div class="body">
+                A mobile-first web app built for the marine industry using
+                React and Django Rest Framework.
+              </div>
+
+            </article>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <article class="blog-teaser">
+              <header>
+                <a href="#">
+                  <img src="/img/picocolour-thumbnail.jpg" alt="TODO">
+                  <h3>PicoColour Software</h3>
                 </a>
-                </header>
+              </header>
 
-                <div class="body">
-                  A mobile-first web app built for the marine industry using
-                  React and Django Rest Framework.
-                </div>
+              <div class="body">
+                The entire software stack for a digital printing machine,
+                using Python, PyQt and Arduino.
+              </div>
 
-              </article>
-            </div>
+            </article>
+          </div>
 
-            <div class="col-md-4 col-sm-6">
-              <article class="blog-teaser">
-                <header>
-                  <a href="#">
-                    <img src="/img/picocolour-thumbnail.jpg" alt="TODO">
-                    <h3>PicoColour Software</h3>
-                  </a>
-                </header>
+          <div class="col-md-4 col-sm-6">
+            <article class="blog-teaser">
+              <header>
+                <a href="#">
+                  <img src="/img/festival-weather-thumbnail.png" alt="TODO">
+                  <h3>Festival Weather</h3>
+                </a>
+              </header>
 
-                <div class="body">
-                  The entire software stack for a digital printing machine,
-                  using Python, PyQt and Arduino.
-                </div>
+              <div class="body">
+                A hack-day project to deliver daily weather reports by SMS.
+                Built with Python and Twilio.
+              </div>
 
-              </article>
-            </div>
+            </article>
+          </div>
 
-            <div class="col-md-4 col-sm-6">
-              <article class="blog-teaser">
-                <header>
-                  <a href="#">
-                    <img src="/img/festival-weather-thumbnail.png" alt="TODO">
-                    <h3>Festival Weather</h3>
-                  </a>
-                </header>
+          <div class="col-md-4 col-sm-6">
+            <article class="blog-teaser">
+              <header>
+                <a href="#">
+                  <img src="/img/open-wifi-pi-thumbnail.png" alt="TODO">
+                  <h3>Open WiFi Pi</h3>
+                </a>
+              </header>
 
-                <div class="body">
-                  A hack-day project to deliver daily weather reports by SMS.
-                  Built with Python and Twilio.
-                </div>
+              <div class="body">
+                A custom Linux build providing an isolated wireless
+                guest network. Configured with Ansible.
+              </div>
 
-              </article>
-            </div>
+            </article>
+          </div>
 
-            <div class="col-md-4 col-sm-6">
-              <article class="blog-teaser">
-                <header>
-                  <a href="#">
-                    <img src="/img/open-wifi-pi-thumbnail.png" alt="TODO">
-                    <h3>Open WiFi Pi</h3>
-                  </a>
-                </header>
+          <div class="col-md-4 col-sm-6">
+            <article class="blog-teaser">
+              <header>
+                <a href="#">
+                  <img src="/img/twitter-train-times-thumbnail.png" alt="TODO">
+                  <h3>Twitter Trains</h3>
+                </a>
+              </header>
 
-                <div class="body">
-                  A custom Linux build providing an isolated wireless
-                  guest network. Configured with Ansible.
-                </div>
+              <div class="body">
+                A Twitter bot to find your next train and platform
+                number. Built with Python.
+              </div>
 
-              </article>
-            </div>
+            </article>
+          </div>
 
-            <div class="col-md-4 col-sm-6">
-              <article class="blog-teaser">
-                <header>
-                  <a href="#">
-                    <img src="/img/twitter-train-times-thumbnail.png" alt="TODO">
-                    <h3>Twitter Trains</h3>
-                  </a>
-                </header>
+          <div class="col-md-4 col-sm-6">
+            <article class="blog-teaser">
+              <header>
+                <a href="http://www.thinkingliverpool.com">
+                  <img src="/img/thinking-liverpool-thumbnail.png" alt="TODO">
+                  <h3>Thinking Liverpool</h3>
+                </a>
+              </header>
 
-                <div class="body">
-                  A Twitter bot to find your next train and platform
-                  number. Built with Python.
-                </div>
+              <div class="body">
+                An event listing of talks and debates in Liverpool. Curated
+                by me, built with Jinja from iCal.
+              </div>
 
-              </article>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-              <article class="blog-teaser">
-                <header>
-                  <a href="http://www.thinkingliverpool.com">
-                    <img src="/img/thinking-liverpool-thumbnail.png" alt="TODO">
-                    <h3>Thinking Liverpool</h3>
-                  </a>
-                </header>
-
-                <div class="body">
-                  An event listing of talks and debates in Liverpool. Curated
-                  by me, built with Jinja from iCal.
-                </div>
-
-              </article>
-            </div>
+            </article>
           </div>
         </div>
-        <h2>Blog highlights</h2>
-        <div class="col-md-12 blog-main">
-          <div class="row">
+
+    </div>
+
+    <div class="container">
+      <h2>I've got a few blog highlights</h2>
+        <div class="row">
             {% for post in site.posts %}
             {% if post.is_highlighted %}
             <div class="col-md-6 col-sm-6">
@@ -189,22 +196,22 @@ permalink: /
             </div>
             {% endif %}
             {% endfor %}
-          </div>
         </div>
+    </div>
 
+    <div class="container">
 
-        <h2>All blog posts</h2>
-        <ul>
+      <h2>I've written a few more things</h2>
+      <ul>
           {% for post in site.posts %}
           <li>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+              <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
           </li>
           {% endfor %}
-        </ul>
+      </ul>
 
-        <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+      <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
-      </div>
     </div>
 
     <div class="container">
