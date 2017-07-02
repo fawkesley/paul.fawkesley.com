@@ -18,7 +18,6 @@ kramdown:
   input: GFM
 
 exclude:
-  - Dockerfile
   - Makefile
   - less
   - CNAME
