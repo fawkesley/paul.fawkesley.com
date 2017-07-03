@@ -12,19 +12,19 @@ You should see a list of keys that you've contacted.
 
 **TIP:** I like to display `Name`, `Fingerprint` and `Expiry` as columns. By default Enigmail shows the unsafe, short `Key ID` which we should ignore. You can tweak the columns by pressing the little button on the right of the column headers.
 
-![Enigmail showing fingerprint and expiry](/img/enigmail-showing-fingerprint-and-expiry-2.png)
+![Enigmail showing fingerprint and expiry](/img/enigmail-showing-fingerprint-and-expiry-2.png){: .img-responsive }
 
 ## Find your own key
 
 Search for your long key ID, for example `0x309F635DAD1B5517` in the `Search for` box. You should see your key:
 
-![Enigmail key management window showing a single key search result](/img/enigmail-key-management-with-long-key-id.png)
+![Enigmail key management window showing a single key search result](/img/enigmail-key-management-with-long-key-id.png){: .img-responsive }
 
 ## Change expiration date
 
 Right click on your key and select `Change Expiration Date`. You should see a window like this:
 
-![Enigmail window showing key and two subkeys with a control to extend the expiry](/img/enigmail-change-expiration-date.png)
+![Enigmail window showing key and two subkeys with a control to extend the expiry](/img/enigmail-change-expiration-date.png){: .img-responsive }
 
 Make sure your primary key and subkeys are selected.
 
