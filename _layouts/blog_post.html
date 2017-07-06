@@ -1,83 +1,32 @@
 {% include header.html %}
 {% include header_link.html %}
 
-    <div class="widewrapper main">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 blog-main">
-                    <article class="blog-post">
-                        <header>
+<article class="blog-post container">
 
-                            <h1>{{ page.title }}</h1>
-                            <!--<div class="lead-image">
-                                <img src="/img/hands-big.png" alt="Hands" class="img-responsive">
-                                <div class="meta clearfix">
+<h1>{{ page.title }}</h1>
 
-                                    <div class="author">
-                                        <i class="fa fa-user"></i>
-                                        <span class="data">{{ page.author }}</span>
-                                    </div>
-                                    <div class="date">
-                                        <i class="fa fa-calendar"></i>
-                                        <span class="data">{{ page.date |date_to_long_string }}</span>
-                                    </div>
-                                    <div class="comments">
-                                        <i class="fa fa-comments"></i>
-                                        <span class="data"><a href="#comments">26 Comments</a></span>
-                                    </div>
-                                </div>
-                          </div>-->
-                        </header>
-                        <div class="body">
+{{ content }}
 
-                        {{ content }}
-
-                        </div>
-                    </article>
+</article>
 
 
-                    {% include social_buttons.html %}
+<div class="container">
+{% include social_buttons.html %}
+</div>
 
-                </div>
-                <aside class="col-md-4 blog-aside">
-
-                    {% if site.categories[page.category] %}
-                    <div class="aside-widget">
-                        <header>
-                            <h3>Related</h3>
-                        </header>
-                        <div class="body">
-                            <ul class="tales-list">
-                                {% for related_post in site.categories[page.category] reversed %}
-                                {% if related_post.title != page.title %}
-                                <li><a href="{{ related_post.url | prepend: site.baseurl }}">
-                                  {{ related_post.title }}
-                                </a></li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <div class="aside-widget">
-                        <header>
-                            <h3>Author's Favourites</h3>
-                        </header>
-                        <div class="body">
-                            <ul class="tales-list">
-                                {% for post in site.posts %}
-                                {% if post.is_highlighted %}
-                                <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.snappy_title }}</a></li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-                </aside>
-            </div>
-        </div>
-    </div>
+{% if site.categories[page.category].size > 1 %}
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        {% for related_post in site.categories[page.category] reversed %}
+        {% if related_post.title != page.title %}
+        <li><a href="{{ related_post.url | prepend: site.baseurl }}">
+          {{ related_post.title }}
+        </a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+  </aside>
+{% endif %}
 
 {% include footer.html %}
