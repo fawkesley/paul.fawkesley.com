@@ -1,40 +1,31 @@
-    <footer>
-        <div class="widewrapper footer">
-            <div class="container">
-                <div class="row">
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
 
-                    <div class="col-md-6 footer-widget">
-                        <h3> <i class="fa fa-star"></i> Blog Highlights</h3>
-                        <ul class="tales-list">
-                          {% for post in site.posts %}
-                          {% if post.is_highlighted %}
-                          <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.snappy_title }}</a></li>
-                          {% endif %}
-                          {% endfor %}
-
-                        </ul>
-                    </div>
-
-                    <div class="col-md-6 footer-widget">
-                        <a id="contact"></a>
-                        <h3> <i class="fa fa-envelope"></i>Contact Me</h3>
-
-                        <span>Feedback, freelancing or anything else - drop me a line:</span>
-
-                        <span class="email">
-                          Email: <a href="mailto:paul@paulfurley.com">paul@paulfurley.com</a><br>
-                          PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a>
-                        </span>
-                    </div>
-                </div>
-            </div>
+          <h3> <i class="fa fa-star"></i> Blog Highlights</h3>
+          <ul class="tales-list">
+            {% for post in site.posts %}
+            {% if post.is_highlighted %}
+            <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.snappy_title }}</a></li>
+            {% endif %}
+            {% endfor %}
+          </ul>
         </div>
-    </footer>
 
-    <script>window.jQuery || document.write('<script src="/js/vendor/jquery/jquery-1.11.0.min.js"><\/script>')</script>
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
 
-    <script src="/js/vendor/bootstrap/bootstrap.min.js"></script>
-    <script src="/js/vendor/modernizr/modernizr.js"></script>
+          <p>Feedback, freelancing or anything else - drop me a line:</p>
+
+	  <p>Email: <a href="mailto:paul@paulfurley.com">paul@paulfurley.com</a></p>
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+
+        </div>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>
