@@ -1,3 +1,0 @@
-#!/bin/sh
-
-rsync -avr --delete-after --delete-excluded _site/ paulfurley@www.paulfurley.com:/var/www/www.paulfurley.com

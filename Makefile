@@ -6,7 +6,7 @@ site:   lint
 
 .PHONY: run
 run:
-	bundle exec jekyll serve --host 0.0.0.0 --port 4567
+	bundle exec jekyll serve --host 0.0.0.0 --port 4567 --force_polling
 
 .PHONY: install
 install: site
@@ -24,5 +24,5 @@ lint:
 	dos2unix *.html
 
 .PHONY: deploy
-deploy: site
-	./_config/rsync-to-server
+deploy:
+	./_config/deploy
