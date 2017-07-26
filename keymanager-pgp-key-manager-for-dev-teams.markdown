@@ -4,6 +4,8 @@ permalink: /keymanager-pgp-key-manager-for-dev-teams/
 layout: bare_html
 ---
 
+# Manage and monitor your team's PGP keys
+
 Keymanager helps dev teams set up and keep on top of their PGP keys.
 
 ## Keep on top of team PGP keys
