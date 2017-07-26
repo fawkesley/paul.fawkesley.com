@@ -3,8 +3,9 @@
       <div class="row">
         <div class="col-half">
 
-          <h3> <i class="fa fa-star"></i> Blog Highlights</h3>
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
           <ul class="tales-list">
+            <li><a href="{{ site.baseurl }}{% link keymanager-pgp-key-manager-for-dev-teams.markdown %}">Keymanager: configure and monitor your team's PGP keys</a></li>
             {% for post in site.posts %}
             {% if post.is_highlighted %}
             <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.snappy_title }}</a></li>
