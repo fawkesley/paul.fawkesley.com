@@ -40,7 +40,7 @@ To tell the world about your new key expiry date, you'll need to send it to the 
 
 Right click on the key and select `Send public key to keyserver`
 
-## Remind your contacts refresh their keys
+## Remind your contacts to refresh their keys
 
 Your contacts will need to get your updated key from the keysevers by refreshing their keys. Some software does this automatically.
 
