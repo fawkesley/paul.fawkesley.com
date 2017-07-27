@@ -8,6 +8,8 @@ If you use [GNU Privacy Guard (GnuPG / GPG)][gnupg] to manage your PGP keys on t
 
 You'll need to replace my key fingerprint with your own (that's the long text starting `A999`).
 
+## Extend your key expiry
+
 Open up a command-line terminal and type the following:
 
 ```
@@ -20,13 +22,21 @@ y
 save
 ```
 
+## Push it to the keyservers
+
 Remember to push your updated key to the keyservers:
 
 ```
 $ gpg --send-keys 'A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517'
 ```
 
+## Remind your contacts to refresh their keys
+
 Your contacts will need to refresh your key from the keyservers in order to be able to use your key again.
+
+If a contact says your key has expired, you'll know what to tell them.
+
+## Help me improve this page
 
 {% include pgp_user_research_callout.markdown %}
 
