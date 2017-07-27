@@ -48,6 +48,8 @@ If this didn't work, you could alternatively try [the GnuPG guide][gpg-guide].
 
 ## Help me improve this page
 
+{% include pgp_user_research_callout.markdown %}
+
 *Was this helpful?* I'd love to [hear from you!][email]
 
 [email]: mailto:paul@paulfurley.com

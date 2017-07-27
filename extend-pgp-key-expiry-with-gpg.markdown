@@ -28,7 +28,9 @@ $ gpg --send-keys 'A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517'
 
 Your contacts will need to refresh your key from the keyservers in order to be able to use your key again.
 
-**Was this helpful?** I'd love to know why (or why not) [Email me][email]
+{% include pgp_user_research_callout.markdown %}
+
+*Was this helpful?* I'd love to [hear from you!][email]
 
 [gnupg]: https://gnupg.org/
 [email]: mailto:paul@paulfurley.com
