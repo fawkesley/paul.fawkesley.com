@@ -22,7 +22,9 @@ XGo8Un24WP40IT78XjKO
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-PGP keys always start with `-----BEGIN PGP PUBLIC KEY BLOCK-----` and end with `-----END PGP PUBLIC KEY BLOCK-----`.
+PGP keys always start with
+`-----BEGIN PGP PUBLIC KEY BLOCK-----` and end with
+`-----END PGP PUBLIC KEY BLOCK-----`.
 
 ## There are shorter ways of referring to PGP keys
 
@@ -30,19 +32,30 @@ PGP public keys are quite long so there are more compact ways of referring to a 
 
 ### PGP Fingerprint
 
-A PGP fingerprint is the safest way of talking about a key. It's effectively impossible for two different public keys to have the same fingerprint.
+My public key fingerprint is
 
-- `A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517` - **use this!**
-- `0xA999B7498D1A8DC473E53C92309F635DAD1B5517` - key fingerprint (hex format - for computers)
+`A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517`
 
-People often print their PGP fingerprint onto a business card or post it on social media. This is good practice.
+The fingerprint is a safe way of telling other people about my public key - I can print it on my business card instead of trying to print my whole public key.
+
+From my fingerprint, someone can get my public key and be very confident they got the right one.
+
+That's because it's (effectively) impossible for two different public keys to have the same fingerprint.
+
+Fingerprints can also be written in hex format, but this is mostly for computers:
+
+```
+0xA999B7498D1A8DC473E53C92309F635DAD1B5517
+```
 
 ### PGP long ID
 
 Long IDs the last 16 characters of a fingerprint.
 
-- `0x309F635DAD1B5517`
+- `0x309F635DAD1B5517` (hex format)
 - `309F635DAD1B5517`
+
+They're normally written in the hex format.
 
 ### PGP short ID
 
@@ -51,9 +64,13 @@ Short IDs are the last 8 characters of a fingerprint.
 - `0xAD1B5517`
 - `AD1B5517`
 
-**Short IDs are unsafe and should not be used**
+**Short IDs are unsafe**
 
-It's possible to create a fake 'imposter' key that has the same short ID as someone else's key. Don't use short IDs.
+Unlike a fingerprint, it's possible to create a fake 'imposter' key that has the same short ID as someone else's key.
+
+If you told someone your short ID, they might get the imposter key and not realise.
+
+Don't use short IDs.
 
 ## Can I help?
 
