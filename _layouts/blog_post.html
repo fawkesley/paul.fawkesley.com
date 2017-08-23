@@ -3,7 +3,10 @@
 <body>
 {% include header_link.html %}
 
-<article class="blog-post container">
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="{{ page.date | date: '%Y-%m-%dT00:00:00+00:00' }}" content="{{ page.date | date: '%Y-%m-%dT00:00:00+00:00' }}">{{ page.date | date: '%B %Y' }}</time>
+  </header>
 
 <h1>{{ page.title }}</h1>
 
