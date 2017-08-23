@@ -324,10 +324,21 @@ img {
   #about-photo-box {
     order: 2;
   }
-  
+
   #about-text-box {
     order: 1;
   }
 }
 
 
+// Paul's styles
+
+.blog-post > header {
+  padding-top: 44px;
+
+  time {
+    font-size: $header-size / 1.5;
+    color: $paragraph-color;
+  }
+
+}
