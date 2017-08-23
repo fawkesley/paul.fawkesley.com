@@ -7,8 +7,13 @@
   <header>
     <time pubdate itemprop="datePublished" datetime="{{ page.date | date: '%Y-%m-%dT00:00:00+00:00' }}" content="{{ page.date | date: '%Y-%m-%dT00:00:00+00:00' }}">{{ page.date | date: '%B %Y' }}</time>
   </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul M Furley
+		</span>
+	</span>
 
-<h1>{{ page.title }}</h1>
+<h1 itemprop="headline">{{ page.title }}</h1>
 
 {{ content }}
 
