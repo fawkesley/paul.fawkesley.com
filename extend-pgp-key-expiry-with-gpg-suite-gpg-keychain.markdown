@@ -12,7 +12,7 @@ You should see a list of all the keys that you've contacted.
 
 ![GPG Keychain showing PGP keys](/img/gpg-keychain-showing-keys.png){: .img-responsive }
 
-**TIP:** I like to display `Name`, `Fingerprint` and `Expiry` as columns. By default GPG Keychain shows the unsafe, short `Key ID` which we should ignore. You can tweak the columns by right clicking on the column headers and ticking the columns you want.
+**TIP:** I like to display `Name`, `Fingerprint` and `Expiry` as columns. You can tweak the columns by right clicking on the column headers and ticking the columns you want. Older versions of GPG Keychain show the unsafe, short `Key ID` which we should ignore.
 
 ## Find your own key
 
