@@ -8,7 +8,7 @@ layout: page
 
 From the Mac applications drawer, open the GPG Keychain app.
 
-You should see a list of keys that you've contacted.
+You should see a list of all the keys that you've contacted.
 
 ![GPG Keychain showing PGP keys](/img/gpg-keychain-showing-keys.png){: .img-responsive }
 
@@ -16,7 +16,7 @@ You should see a list of keys that you've contacted.
 
 ## Find your own key
 
-Search for your long key ID, for example `0x87B1D4FA04E58A63` in the box in the top right.
+Check the box in the bottom right labelled `Show secret keys only` to limit the list of keys to your own.
 
 Select your key and click the `Details` button. You should see a panel on the right showing details about your key.
 
