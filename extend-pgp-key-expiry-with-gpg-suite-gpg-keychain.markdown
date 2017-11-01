@@ -8,15 +8,15 @@ layout: page
 
 From the Mac applications drawer, open the GPG Keychain app.
 
-You should see a list of keys that you've contacted.
+You should see a list of all the keys that you've contacted.
 
 ![GPG Keychain showing PGP keys](/img/gpg-keychain-showing-keys.png){: .img-responsive }
 
-**TIP:** I like to display `Name`, `Fingerprint` and `Expiry` as columns. By default GPG Keychain shows the unsafe, short `Key ID` which we should ignore. You can tweak the columns by right clicking on the column headers and ticking the columns you want.
+**TIP:** I like to display `Name`, `Fingerprint` and `Expiry` as columns. You can tweak the columns by right clicking on the column headers and ticking the columns you want. Older versions of GPG Keychain show the unsafe, short `Key ID` which we should ignore.
 
 ## Find your own key
 
-Search for your long key ID, for example `0x87B1D4FA04E58A63` in the box in the top right.
+Check the box in the bottom right labelled `Show secret keys only` to limit the list of keys to your own.
 
 Select your key and click the `Details` button. You should see a panel on the right showing details about your key.
 
@@ -46,7 +46,7 @@ Your contacts will need to get your updated key from the keysevers by refreshing
 
 In any case, if a contact says your key has expired, you'll know what to tell them.
 
-If this didn't work, you could alternatively try [the GnuPG guide][gpg-guide].
+If this didn't work, you could try the [official documentation][official-docs] or the [command-line GnuPG guide][gpg-guide].
 
 ## Help me improve this page
 
@@ -56,3 +56,4 @@ If this didn't work, you could alternatively try [the GnuPG guide][gpg-guide].
 
 [email]: mailto:paul@paulfurley.com
 [gpg-guide]: /extend-pgp-key-expiry-with-gpg/
+[official-docs]: https://gpgtools.tenderapp.com/kb/gpg-keychain-faq/renew-add-or-remove-an-expiration-date-of-a-key
