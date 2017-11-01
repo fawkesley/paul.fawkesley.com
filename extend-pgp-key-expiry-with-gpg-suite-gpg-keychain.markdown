@@ -46,7 +46,7 @@ Your contacts will need to get your updated key from the keysevers by refreshing
 
 In any case, if a contact says your key has expired, you'll know what to tell them.
 
-If this didn't work, you could alternatively try [the GnuPG guide][gpg-guide].
+If this didn't work, you could try the [official documentation][official-docs] or the [command-line GnuPG guide][gpg-guide].
 
 ## Help me improve this page
 
@@ -56,3 +56,4 @@ If this didn't work, you could alternatively try [the GnuPG guide][gpg-guide].
 
 [email]: mailto:paul@paulfurley.com
 [gpg-guide]: /extend-pgp-key-expiry-with-gpg/
+[official-docs]: https://gpgtools.tenderapp.com/kb/gpg-keychain-faq/renew-add-or-remove-an-expiration-date-of-a-key
