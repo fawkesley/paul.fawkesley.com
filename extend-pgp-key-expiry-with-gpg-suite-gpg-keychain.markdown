@@ -48,11 +48,7 @@ In any case, if a contact says your key has expired, you'll know what to tell th
 
 If this didn't work, you could try the [official documentation][official-docs] or the [command-line GnuPG guide][gpg-guide].
 
-## Help me improve this page
-
-{% include pgp_user_research_callout.markdown %}
-
-*Was this helpful?* I'd love to [hear from you!][email]
+{% include help_support_expirybot.markdown %}
 
 [email]: mailto:paul@paulfurley.com
 [gpg-guide]: /extend-pgp-key-expiry-with-gpg/

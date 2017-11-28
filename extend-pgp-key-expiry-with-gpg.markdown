@@ -36,11 +36,6 @@ Your contacts will need to refresh your key from the keyservers in order to be a
 
 If a contact says your key has expired, you'll know what to tell them.
 
-## Help me improve this page
-
-{% include pgp_user_research_callout.markdown %}
-
-*Was this helpful?* I'd love to [hear from you!][email]
+{% include help_support_expirybot.markdown %}
 
 [gnupg]: https://gnupg.org/
-[email]: mailto:paul@paulfurley.com
