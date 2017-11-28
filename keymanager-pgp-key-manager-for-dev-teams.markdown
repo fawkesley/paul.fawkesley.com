@@ -1,5 +1,5 @@
 ---
-title: Expirybot for Teams: Manage and monitor your team's PGP keys
+title: "Expirybot for Teams: Manage and monitor your team's PGP keys"
 permalink: /keymanager-pgp-key-manager-for-dev-teams/
 layout: bare_html
 ---
