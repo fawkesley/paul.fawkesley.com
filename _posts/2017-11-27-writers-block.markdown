@@ -2,6 +2,7 @@
 title: "Writer's block"
 permalink: /writers-block/
 category: sideprojects
+image: paul-in-gladstones-library.jpg
 ---
 
 Today I'm experiencing something seriously strange for me - I can't face the idea of building!
