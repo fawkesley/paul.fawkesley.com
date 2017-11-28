@@ -5,7 +5,7 @@
 
           <h3> <i class="fa fa-star"></i> Highlights</h3>
           <ul class="tales-list">
-            <li><a href="{{ site.baseurl }}{% link keymanager-pgp-key-manager-for-dev-teams.markdown %}">Expirybot for Teams: manage your organisation's PGP keys</a></li>
+            <li><a href="{{ site.baseurl }}{% link keymanager-pgp-key-manager-for-dev-teams.markdown %}">Expirybot for Teams: monitor your organisation's PGP keys</a></li>
             {% for post in site.posts %}
             {% if post.is_highlighted %}
             <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.snappy_title }}</a></li>

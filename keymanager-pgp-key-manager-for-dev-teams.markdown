@@ -6,12 +6,12 @@ layout: bare_html
 
 # Manage and monitor your team's PGP keys
 
-Expirybot for Teams helps organisatoins keep on top of their PGP keys.
+Expirybot for Teams watches over your organisation's PGP keys.
 
 ## Keep on top of team PGP keys
 
 - Get alerted for any new keys claiming to be `@yourdomain.com`
-- Keep keys valid with expiry reminder alerts to inviduals an escalation to admins
+- Keep keys valid with expiry reminder alerts to inviduals and escalation to admins
 - Ensure your team's keys comply with your cipher and expiry policies
 
 ## Manage Github signed commits
