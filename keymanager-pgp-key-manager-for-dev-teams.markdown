@@ -1,18 +1,18 @@
 ---
-title: Manage and monitor your team's PGP keys
+title: Expirybot for Teams: Manage and monitor your team's PGP keys
 permalink: /keymanager-pgp-key-manager-for-dev-teams/
 layout: bare_html
 ---
 
 # Manage and monitor your team's PGP keys
 
-Keymanager helps dev teams set up and keep on top of their PGP keys.
+Expirybot for Teams helps organisatoins keep on top of their PGP keys.
 
 ## Keep on top of team PGP keys
 
-- Ensure your team's keys comply with your cipher and expiry policies
-- Keep keys valid with expiry reminder alerts
 - Get alerted for any new keys claiming to be `@yourdomain.com`
+- Keep keys valid with expiry reminder alerts to inviduals an escalation to admins
+- Ensure your team's keys comply with your cipher and expiry policies
 
 ## Manage Github signed commits
 
@@ -24,7 +24,7 @@ Keymanager helps dev teams set up and keep on top of their PGP keys.
 
 ## Get early access
 
-Keymanager is still in development. Want early access?
+Expirybot for Teams is still in development. Want early access?
 
 <!-- Begin MailChimp Signup Form -->
 <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
