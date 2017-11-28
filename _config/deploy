@@ -11,8 +11,6 @@ cd "${TMP_DIR}"
 make
 
 
-sleep 5s
-
 rsync -avr --delete-after --delete-excluded ${TMP_DIR}/_site/ paulfurley@www.paulfurley.com:/var/www/www.paulfurley.com
 
 
