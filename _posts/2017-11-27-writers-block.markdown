@@ -2,9 +2,12 @@
 title: "Writer's block"
 permalink: /writers-block/
 category: sideprojects
+image: paul-in-gladstones-library.jpg
 ---
 
 Today I'm experiencing something seriously strange for me - I can't face the idea of building!
+
+<!--more-->
 
 For the last 2 years or so I've been working full time and, sadly, there's been a shortage of building real stuff. I've learned tonnes about user research, hustling and testing product ideas, but have done very little significant building and almost no launching.
 

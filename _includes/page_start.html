@@ -27,8 +27,24 @@
     <![endif]-->
 
     <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
     <meta property="og:title" content="{{ page.title }}" />
-    {% if page.image %}<meta property="og:image" content="{{ page.image |prepend: site.baseurl | prepend: "/img/" |absolute_url }}" />{% endif %}
+    {% if page.image %}
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="{{ page.image |prepend: site.baseurl | prepend: "/img/" |absolute_url }}" />
+    {% endif %}
+
+    {% if page.excerpt %}
+      <meta content="{{ page.excerpt |strip_html }}" property="og:description">
+    {% endif %}
+
+    {% if page.layout == "blog_post" %}
+      <meta content="article" property="og:type">
+    {% else %}
+      <meta content="website" property="og:type">
+    {% endif %}
+
+    <meta name="twitter:site" content="@paul_furley">
 
 
     <script>

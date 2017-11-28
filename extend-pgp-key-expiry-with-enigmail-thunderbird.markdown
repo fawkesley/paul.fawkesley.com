@@ -2,6 +2,7 @@
 title: How to extend PGP expiry date with Enigmail / Thunderbird
 permalink: /extend-pgp-key-expiry-with-enigmail-thunderbird/
 layout: page
+image: enigmail-change-expiration-date.png
 ---
 
 ## Open the Key Management window

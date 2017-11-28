@@ -2,6 +2,7 @@
 title: How to extend PGP expiry date with GPG Suite (GPG Keychain)
 permalink: /extend-pgp-key-expiry-with-gpg-suite-gpg-keychain/
 layout: page
+image: gpg-keychain-showing-expiry-dialog.png
 ---
 
 ## Open GPG Keychain
