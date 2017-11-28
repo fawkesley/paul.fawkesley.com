@@ -1,0 +1,32 @@
+---
+title: "Buy me a beer"
+permalink: /buy-me-a-beer/
+layout: page
+---
+
+I love building things that are useful for people.
+
+I also love beer.
+
+If you'd like to buy me a beer, you'll be boosting my motivation and supporting my projects.
+
+## Buy with Paypal
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+## Buy with Bitcoin
+
+[![1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv](/img/bitcoin-qr-code.png){: .img-responsive }][bitcoin-url]
+
+
+Oh, and to say 'cheers', I'll actually send you a picture of the beer...
+
+![Pump handle of a fancy Manchester craft beer](/img/beer-pump.jpg){: .img-responsive }
+
+[bitcoin-url]: bitcoin:1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv
