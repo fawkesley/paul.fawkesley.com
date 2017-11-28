@@ -3,7 +3,7 @@ title: "Arduino Isn't Just For Hackers"
 snappy_title: "Arduino Isn't Just For Hackers"
 permalink: /arduino-isnt-just-for-hackers/
 is_highlighted: true
-image: arduino-isnt-just-for-hackers-thumbnail.jpg
+image: picocolour-printing-machine.jpg
 bfa_virtual_template:
   - hierarchy
 sfw_pwd:
