@@ -78,9 +78,9 @@ Since each network has a unique identifier, to achieve my scheme I just concaten
 
 That produced bytes which can be substituted in for the last octets of the MAC address.
 
-Note that the first half of the MAC address refers to a manufacturer. In my case, my real MAC address starts with `b4:b6:76` which means Intel.
+Note that the first byte `02` signifies the address is [locally administered](https://en.wikipedia.org/wiki/MAC_address#Universal_vs._local). Real, burned-in MAC addresses start with 3 bytes designing their manufacturer, for example `b4:b6:76` for Intel.
 
-I wasn't sure if routers might discriminate against unknown manufacturers so I decided to keep that part of the MAC and randomize only the second half.
+It's possible that some routers may reject locally administered MACs but I haven't encountered that yet.
 
 On every connection up, the script calls `nmcli` to set the spoofed MAC address for every connection:
 
@@ -105,6 +105,8 @@ The full script is [available on Github](https://gist.github.com/paulfurley/46e0
 <script src="https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f.js"></script>
 
 Enjoy!
+
+*Update: [Use locally administered MAC addresses](https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f/revisions#diff-824d510864d58c07df01102a8f53faef) to avoid clashing with real Intel ones. Thanks [@_fink](https://twitter.com/fink_/status/937305600005943296)*
 
 [Thoughts? Get in touch.][paul-twitter]
 
