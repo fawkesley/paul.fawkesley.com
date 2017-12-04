@@ -171,6 +171,7 @@ I'm going to try a rule that automatically unsubscribes from anything that didn'
 
 This might be yak-shaving, it might be worthwhile. I'm enjoying it, and it's my sabbatical, so there!
 
+Update: [Inboxbot is now on Github.](https://github.com/paulfurley/inboxbot)
 
 
 [Thoughts? Get in touch.][paul-twitter]
