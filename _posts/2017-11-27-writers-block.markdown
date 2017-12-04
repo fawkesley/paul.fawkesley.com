@@ -1,7 +1,7 @@
 ---
 title: "Writer's block"
 permalink: /writers-block/
-category: sideprojects
+category: sabbatical
 image: paul-in-gladstones-library.jpg
 ---
 
