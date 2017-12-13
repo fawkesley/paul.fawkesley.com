@@ -1,11 +1,11 @@
 TAG_NAME=blog
 
 .PHONY: site
-site:   lint
+site:   lint dependenices
 	bundle exec jekyll build
 
 .PHONY: run
-run:
+run: dependencies
 	bundle exec jekyll serve --host 0.0.0.0 --port 4567 --force_polling
 
 .PHONY: install
@@ -24,5 +24,9 @@ lint:
 	dos2unix *.html
 
 .PHONY: deploy
-deploy:
+deploy: dependencies
 	./_config/deploy
+
+.PHONY: dependencies
+dependencies:
+	@./_config/install_deps
