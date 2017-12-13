@@ -1,10 +1,6 @@
 ---
 title: Speaking at Breakerfaire, 11th December 2012
 permalink: /introduction-to-information-hiding/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - 81h7ekhV6Ktc
 category: publicspeaking
 ---
 ## Beneath the Surface: An Introduction to Information Hiding

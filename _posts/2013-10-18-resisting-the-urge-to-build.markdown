@@ -4,10 +4,6 @@ snappy_title: Resisting the Urge to Build
 permalink: /resisting-the-urge-to-build/
 is_highlighted: true
 image: resisting-the-urge-to-build-thumbnail.jpg
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - r5F56CBO08O7
 category: startups
 ---
 You may remember a few months back I launched a new site - *minutemate.co.uk* - which helps you to monitor your mobile phone usage and alert you if you've overspent your monthly minutes, texts and so on.

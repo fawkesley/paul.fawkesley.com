@@ -1,10 +1,6 @@
 ---
 title: Raspberry Pi project ideas
 permalink: /raspberry-pi-project-ideas/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - 36cQVhOwiBU7
 category: sideprojects
 ---
 I finally got my hands on a Raspberry Pi this Christmas, long overdue I appreciate. I'd done a fair amount of industrial work with the Arduino and got on very well with it. The slightly higher level and versatility of the Raspberry Pi is pretty exciting.

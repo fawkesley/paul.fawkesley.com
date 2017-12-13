@@ -1,10 +1,6 @@
 ---
 title: Automating our Heroku deployments from Jenkins
 permalink: /automating-heroku-deployments-from-jenkins/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - teqdflOi5i3O
 category: devops
 
 ---

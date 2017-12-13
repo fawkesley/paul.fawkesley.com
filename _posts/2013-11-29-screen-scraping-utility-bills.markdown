@@ -4,10 +4,6 @@ snappy_title: Screen Scrape Your Utility Bills
 permalink: /screen-scraping-utility-bills/
 is_highlighted: true
 image: screen-scrape-your-utility-bills-thumbnail.png
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - 3GmOdPGWGAGS
 category: sideprojects
 ---
 At the heart of my last project MinuteMate was the ability to programatically retrieve billing information from my Vodafone online account.

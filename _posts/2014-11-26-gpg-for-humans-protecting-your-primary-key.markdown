@@ -1,10 +1,6 @@
 ---
 title: 'GPG For Humans, Part 3: Protecting your Primary Key'
 permalink: /gpg-for-humans-protecting-your-primary-key/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - VGZeyzRnJ6FU
 category: gpgforhumans
 ---
 In the last post we talked about public and private, or secret, keys. The whole security of GPG relies on making sure your secret key can't be used by anyone else. In an Internet-connected world, this can be really tough. It's awkward to change keys, so ideally we'll keep the same key for years, if not decades.

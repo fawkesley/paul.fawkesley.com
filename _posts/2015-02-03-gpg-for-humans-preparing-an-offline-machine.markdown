@@ -1,10 +1,6 @@
 ---
 title: 'GPG For Humans, Part 4: Preparing an Offline Machine'
 permalink: /gpg-for-humans-preparing-an-offline-machine/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - 2bMiJXa1jQQL
 category: gpgforhumans
 ---
 Last time we talked about the importance of protecting your primary secret key as, if stolen, an attacker could take over your entire GPG identity.

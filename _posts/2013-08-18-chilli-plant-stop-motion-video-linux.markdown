@@ -1,10 +1,6 @@
 ---
 title: 'Chilli Cam: Stop Motion Video using old Netbook'
 permalink: /chilli-plant-stop-motion-video-linux/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - GbhDQz6NevHH
 category: sideprojects
 ---
 I love hot food so a [grow-your-own chilli plant][1] kit was a great present to receive last Christmas.

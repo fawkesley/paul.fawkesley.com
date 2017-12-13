@@ -1,10 +1,6 @@
 ---
 title: 'Your Private Medical Record May Be At Risk From March 2014'
 permalink: /your-private-medical-record-may-be-at-risk/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - i44qbxwIVkvo
 category: privacy
 ---
 ## NHS Care Data

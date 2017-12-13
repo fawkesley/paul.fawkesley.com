@@ -1,10 +1,6 @@
 ---
 title: 'GPG For Humans, Part 2: Public Key Crypto Primer'
 permalink: /gpg-for-humans-public-key-crypto-primer/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - of6Qwpv4RDVy
 category: gpgforhumans
 ---
 Public-key or "asymmetric" crypto is a cunning piece of maths (which I happily

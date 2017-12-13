@@ -1,10 +1,6 @@
 ---
 title: Improving Freecycle with SMS Alerts
 permalink: /improving-freecycle-with-sms-alerts/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - RmXuP2P9SvNH
 category: sideprojects
 ---
 I love the concept of Freecycle - you've got something you want to get rid of, so you offer it for free on the condition that someone comes and collects it. It's still basically a simple email list where you write OFFER or WANTED in the subject - nothing too fancy.

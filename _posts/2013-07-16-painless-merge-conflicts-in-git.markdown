@@ -1,10 +1,6 @@
 ---
 title: Painless merge conflicts in Git
 permalink: /painless-merge-conflicts-in-git/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - gOp5NbDPlvJx
 category: devops
 ---
 Resolving merge conflicts in Git can be a pain - I always find I need to see the **common ancestor** to understand what's going on with the two conflicting versions.

@@ -1,10 +1,6 @@
 ---
 title: Bar Camp for Beginners
 permalink: /bar-camp-for-beginners/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - vWZxtphp7hNy
 category: publicspeaking
 ---
 A few weekends ago I went to [Bar Camp Manchester](http://barcampmanchester.co.uk) - my first one. I had no expectations and, to be honest, I only skimmed the FAQs before I left and not a lot else. This post is for Bar Camp Beginners - like me - to guide you on how to get the most out of a BarCamp.

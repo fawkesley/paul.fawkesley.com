@@ -1,10 +1,6 @@
 ---
 title: Python PEP8 Style Guide Checker for Vim
 permalink: /python-pep8-style-guide-checker-vim/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - iVTIOA1h7VFn
 category: python
 ---
 ## Using Pathogen, Syntastic and flake8

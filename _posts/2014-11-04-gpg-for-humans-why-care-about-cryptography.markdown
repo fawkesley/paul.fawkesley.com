@@ -5,10 +5,6 @@ permalink: /gpg-for-humans-why-care-about-cryptography/
 redirect_from: "/gpg-for-humans/"
 is_highlighted: false
 image: gpg-for-humans-thumbnail.png
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - X7tqqIH9QDMp
 category: gpgforhumans
 
 ---

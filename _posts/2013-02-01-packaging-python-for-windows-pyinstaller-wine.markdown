@@ -1,10 +1,6 @@
 ---
 title: Packaging Python for Windows with Pyinstaller and Wine
 permalink: /packaging-python-for-windows-pyinstaller-wine/
-bfa_virtual_template:
-  - hierarchy
-sfw_pwd:
-  - 7WyLGtNqsbTV
 category: python
 
 ---
