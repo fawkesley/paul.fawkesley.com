@@ -21,3 +21,4 @@ Paul
 [user-research]: https://docs.google.com/forms/d/e/1FAIpQLScWVg-l6BrWrw331SFwquTKHy_BtRwO_OYxSxGfGQ2XMKAByA/viewform
 [buy-me-a-beer]: /buy-me-a-beer/
 [expirybot-for-teams]: /keymanager-pgp-key-manager-for-dev-teams/
+[email]: mailto:paul@paulfurley.com
