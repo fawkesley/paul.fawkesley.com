@@ -11,7 +11,7 @@ cd "${TMP_DIR}"
 make
 
 
-rsync -avr --delete-after --delete-excluded ${TMP_DIR}/_site/ paulfurley@www.paulfurley.com:/var/www/www.paulfurley.com
+rsync -avr --delete-after --delete-excluded ${TMP_DIR}/_site/ website-deploy@www.paulfurley.com:/var/www/www.paulfurley.com
 
 
 echo rm -rf "${TMP_DIR}"
