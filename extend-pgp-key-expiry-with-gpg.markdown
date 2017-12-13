@@ -27,7 +27,7 @@ save
 Remember to push your updated key to the keyservers:
 
 ```
-$ gpg --send-keys 'A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517'
+$ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys 'A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517'
 ```
 
 ## Remind your contacts to refresh their keys
