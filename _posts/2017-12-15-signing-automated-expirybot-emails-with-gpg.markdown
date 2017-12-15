@@ -9,10 +9,11 @@ image: /signed-email-from-expirybot.png
 
 <!--more-->
 
+![Expirybot email signed with GPG](/img/signed-email-from-expirybot.png){: .img-responsive }
+
 I get a lot of emails back from people who've received [my PGP expiry notification emails](https://www.paulfurley.com/expirybot). One of the requests that's come up several times is,
 
 'This is PGP, why don't you encrypt and sign the emails'?
-
 
 ## Many people have lost their PGP keys
 
@@ -26,8 +27,6 @@ But I should _definitely_ sign the emails. The reason I haven't been is that I'v
 The problem is, if I sign the emails, it's difficult for Mailgun to add to my email without it either breaking the signature or it sitting _outside_ the closing `-----END PGP SIGNATURE-----`. Neither is ideal
 
 Long story short: I did a lot of legwork to implement my own unsubscribe functionality, and now I'm sending GPG-signed emails.
-
-![Expirybot email signed with GPG](/img/signed-email-from-expirybot.png){: .img-responsive }
 
 As you can see I'm using _inline_ signatures - where the message body is the signed text - rather than the [PGP/MIME][pgp-mime] format. The reason is that PGP/MIME signed emails appear with an attachment called `signature.asc`. That's fine for people who understand PGP, but as I described above, the more suspicious users probably won't take well to an unfamiliar email attachment.
 
