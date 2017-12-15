@@ -5,7 +5,7 @@ category: sideprojects, sabbatical
 image: virustotal-detection-results.png
 ---
 
-*This week I've built laid some good groundwork for Expirybot and had fun playing part-time security researcher.*
+*This week I've laid some good groundwork for Expirybot and had fun playing part-time security researcher.*
 
 <!--more-->
 
@@ -18,7 +18,7 @@ This week has _flown_ by but it's been interesting and productive, with most of 
 
 ## Finished migrating my PGP keyserver to debian
 
-I didn't really want to have to do this, but unfortunately sks version 1.1.6 isn't available on Ubuntu. Since I was stuck on 1.1.5 I got dropped the the public pool, meaning my server no longer received requests directly from members of the public. That didn't directly break Expirybot, since I'm still receiving updates from my keyserver peers, but there's other types of PGP improvement research which _does_ depend in getting raw traffic.
+I didn't really want to have to do this, but unfortunately sks version 1.1.6 isn't available on Ubuntu. Since I was stuck on 1.1.5 I got dropped from [the public pool][sks-pool], meaning my server no longer received requests directly from members of the public. That didn't directly break Expirybot, since I'm still receiving updates from my keyserver peers, but there's other types of PGP improvement research which _does_ depend in getting raw traffic.
 
 I took the opportunity to move off Digital Ocean and get a new server inside the EU - with Hetzer, at an incredibly affordable 7 ish EUR per month for a 2GB machine. I managed to rebuild sks 1.1.6 and migrate keyserver.paulfurley.com without breaking too much. Shortly after, I'm back in the pool and once again receiving ~1% of global PGP keyserver queries.
 
@@ -101,3 +101,4 @@ Here's the list - if you've got any feedback, let me know!
 [Thoughts? Get in touch.][paul-twitter]
 
 [paul-twitter]: https://twitter.com/paul_furley
+[sks-pool]: https://sks-keyservers.net/status/
