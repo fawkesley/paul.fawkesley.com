@@ -1,7 +1,7 @@
 TAG_NAME=blog
 
 .PHONY: site
-site:   lint dependenices
+site:   lint dependencies
 	bundle exec jekyll build
 
 .PHONY: run
