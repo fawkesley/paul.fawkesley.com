@@ -1,5 +1,5 @@
 ---
-title: "Sabbatical, week 3"
+title: "Sabbatical, week&nbsp;3"
 permalink: /2017-sabbatical-week-3/
 category: sideprojects, sabbatical
 image: virustotal-detection-results.png

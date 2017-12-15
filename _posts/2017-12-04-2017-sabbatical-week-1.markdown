@@ -1,5 +1,5 @@
 ---
-title: "Sabbatical, week 1"
+title: "Sabbatical, week&nbsp;1"
 permalink: /2017-sabbatical-week-1/
 category: sabbatical
 image: sefton-park-palm-house.jpg
