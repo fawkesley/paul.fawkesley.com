@@ -1,0 +1,12 @@
+server {
+    # Redirect any apex domain requests straight to https://www...
+    # Note that this must come after the letsencrypt section with .well-known, otherwise
+    # we'll try to redirect that request to HTTPS.
+
+    listen 80;
+    listen  [::]:80;
+    server_name  paulfurley.com;
+    return 301 https://www.paulfurley.com$request_uri;
+}
+
+

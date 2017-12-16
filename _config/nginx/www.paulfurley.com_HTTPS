@@ -1,32 +1,6 @@
 server {
-  listen 80;
-
-  location /.well-known/acme-challenge/ {
-    # For the letsencrypt "webroot" plugin
-    # http://letsencrypt.readthedocs.org/en/latest/using.html#webroot
-    
-    root /etc/letsencrypt/fake-webroot;
-  }
-
-  location / {
-    # Redirect (almost) anything on HTTP to HTTPS
-    return 301 https://$host$request_uri;
-  } 
-}
-
-server {
-    # Redirect any apex domain requests straight to https://www...
-    # Note that this must come after the letsencrypt section with .well-known, otherwise
-    # we'll try to redirect that request to HTTPS.
-
-    listen 80;
-    server_name  paulfurley.com;
-    return 301 https://www.paulfurley.com$request_uri;
-}
-
-
-server {
     listen 443;
+    listen [::]:443;
     server_name www.paulfurley.com;
 
     root /var/www/www.paulfurley.com;
@@ -56,6 +30,9 @@ server {
     add_header X-Content-Type-Options nosniff;
 
     # https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#Logjam_(DH_EXPORT)
+    ## To generate, run:                                                        
+    ## $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048              
+    ##  
     ssl_dhparam /etc/ssl/certs/dhparam.pem;  # LOGJAM and various others
 
     access_log            /var/log/nginx/www.paulfurley.com/access.log;
@@ -67,15 +44,25 @@ server {
         expires 7d;
     }
 
-    location = /favicon.ico {
-        return 204;
-        access_log     off;
-        log_not_found  off;
-    }
     location = /apple-touch-icon.png { log_not_found off; }
     location = /apple-touch-icon-120x120-precomposed.png { log_not_found off; }
     location = /apple-touch-icon-120x120.png { log_not_found off; }
     location = /apple-touch-icon-precomposed.png { log_not_found off; }
+
+    location = /wp-login.php {
+       # also /phpmyadmin /admin/config.php /recordings/index.php /.git/HEAD
+
+       # Run this as root:
+       # dd if=/dev/zero bs=1M count=10240 | gzip > /var/www/zipbomb.gz
+
+       # more_clear_headers Content-Length
+       # add_header Content-Encoding: gzip;
+       # add_header Content-Length 9420800;
+       gzip_static always;
+       # gzip_proxied expired no-cache no-store private auth;
+
+       alias /var/www/zipbomb;
+    }
 
     # Redirect rules
     rewrite ^/pgp$ https://www.paulfurley.com/309F635DAD1B5517.public.asc redirect;
@@ -95,6 +82,7 @@ server {
     rewrite ^/wp-content/uploads/2013/11/Vodafone-online-network-tab-screenshot.png$ /img/vodafone-online-network-tab-screenshot.png permanent;
     rewrite ^/wp-content/uploads/2014/08/Freecycle-too-many-emails.png$ /img/freecycle-too-many-emails.png permanent;
     rewrite ^/wp-content/uploads/2014/08/CloudMailin-email-forwarding-management-panel.png$ /img/cloudmailin-email-management-panel.png permanent;
+
     rewrite ^/wp-content/uploads/2014/08/Freecycle-filtering-sms-alert1.png$ /img/freecycle-sms-alert.png permanent;
     rewrite ^/wp-content/uploads/2014/10/internet-of-things-toaster.jpg$ /img/internet-of-things-toaster.jpg permanent;
     rewrite ^/wp-content/uploads/2014/10/inside-a-beautiful-straw-bale-house.jpg$ /img/inside-a-beautiful-straw-bale-house.jpg permanent;
@@ -103,8 +91,11 @@ server {
     rewrite ^/category/gpg-for-humans/$ /gpg-for-humans-why-care-about-cryptography/ permanent;
     rewrite ^/gpg-for-humans/$ /gpg-for-humans-why-care-about-cryptography/ permanent;
 
-    rewrite ^/category/blog/$ /blog/ permanent;
+    rewrite ^/category/blog/$ /#blog permanent;
+    rewrite ^/blog/$ /#blog permanent;
+
     rewrite ^/contact/$ /#contact redirect;
+    rewrite ^/expirybot/?$ /expirybot-emails-pgp-users-before-their-key-expires/ redirect;
 
     # rewrite ^/wp-content/uploads/2013/02/baltic-creative-unit-51.jpg$
     # rewrite ^/wp-content/uploads/2013/11/Vodafone-online-network-tab-screenshot-1024x563.png$
