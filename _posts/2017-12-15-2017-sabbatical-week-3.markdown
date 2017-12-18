@@ -29,7 +29,7 @@ This was harder than I expected, but I got quite a bit of independent feedback t
 
 I spent the first part of the week building this, and a new web service for handling unsubscribes (necessary for signing the emails).
 
-I'm now in a _much_ better place for building new parts of the service, which I also started to test on people - more below. I spent a few hours on Friday [writing up how I sign the emails](https://www.paulfurley.com/signing-automated-expirybot-emails-with-gpg/).
+I'm now in a _much_ better place for building new features for Expirybot, which I also started to test on people - more below. I spent a few hours on Friday [writing up how I sign the emails](https://www.paulfurley.com/signing-automated-expirybot-emails-with-gpg/).
 
 
 ## Wrote a scraper for auction data, then went to the auction
