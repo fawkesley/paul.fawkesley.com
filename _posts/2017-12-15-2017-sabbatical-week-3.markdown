@@ -42,7 +42,7 @@ The auction was pretty exciting for two or three lots, then it got boring and I 
 
 Nope, I'm not going to become a landlord just yet, but I am thinking about how to do it in a way that's not morally bankrupt, doesn't push up prices, and doesn't make it harder for people to buy houses.
 
-I had a good email exchange with the nice folks from [Generation Rent](http://www.generationrent.org/) asking for guidance on what they consider being an ethical landlord. I'd much prefer to _build_ houses as an investment… now there's a worthwhile enterprise … but that's completely out of reach for me. For now I'm more interested in [investing in green energy](http://www.suttonkersh.co.uk/properties/listview/?FormSearchText=&FormSearchTextField=&geolat=&geolon=&georad=&section=sale&transType=1&searchSales=Search&priceMin=0&propType=&priceMax=75000&beds=&location=).
+I had a good email exchange with the nice folks from [Generation Rent](http://www.generationrent.org/) asking for guidance on what they consider being an ethical landlord. I'd much prefer to _build_ houses as an investment… now there's a worthwhile enterprise … but that's completely out of reach for me. For now I'm more interested in [investing in green energy.][abundance-investment]
 
 
 ## Investigated EE apparently leaking my phone number to a website
@@ -102,3 +102,4 @@ Here's the list - if you've got any feedback, let me know!
 
 [paul-twitter]: https://twitter.com/paul_furley
 [sks-pool]: https://sks-keyservers.net/status/
+[abundance-investment]: https://www.abundanceinvestment.com/
