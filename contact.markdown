@@ -20,13 +20,13 @@ My key fingerprint is:
 - A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517
 - [https://twitter.com/paul_furley/status/884532990050795521](https://twitter.com/paul_furley/status/884532990050795521)
 
-### Download from paulfurley.com
+### Import from paulfurley.com
 
 ```
 curl -L https://www.paulfurley.com/pgp | gpg --import
 ```
 
-### Download from keyservers with GPG
+### Import from my keyserver with GPG
 
 ```
 gpg --keyserver keyserver.paulfurley.com --recv-key 0xA999B7498D1A8DC473E53C92309F635DAD1B5517
