@@ -1,7 +1,9 @@
 ---
 title: "Expirybot emails PGP users before their key expires"
+snappy_title: "Expirybot emails PGP users before their key expires"
 permalink: /expirybot-emails-pgp-users-before-their-key-expires/
 category: security, sideprojects, gpgforhumans
+is_highlighted: true
 ---
 
 A month ago I started a side project to try and make the world a little easier for PGP users. This is how I started small.

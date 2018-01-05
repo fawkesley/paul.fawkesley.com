@@ -1,5 +1,7 @@
 ---
-title: Building Software Users Love
+title: "Building Software Users Love"
+snappy_title: "Building Software Users Love"
+is_highlighted: true
 permalink: /building-software-users-love/
 ---
 
