@@ -28,8 +28,6 @@ curl -L https://www.paulfurley.com/pgp | gpg --import
 
 ### Download from keyservers with GPG
 
-If you can use the command line:
-
 ```
 gpg --keyserver keyserver.paulfurley.com --recv-key 0xA999B7498D1A8DC473E53C92309F635DAD1B5517
 ```
