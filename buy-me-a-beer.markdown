@@ -21,6 +21,8 @@ If you'd like to buy me a beer, you'll be boosting my motivation and supporting 
   1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv
 </a>
 
+## Buy with Litecoin
+
 <a href="litecoin:LWy8XE1LNJff4WgqDVcf7HoLiwrF3qrR7u">
   ![LWy8XE1LNJff4WgqDVcf7HoLiwrF3qrR7u](/img/litecoin-qr-code.png){: .img-responsive }
   LWy8XE1LNJff4WgqDVcf7HoLiwrF3qrR7u
