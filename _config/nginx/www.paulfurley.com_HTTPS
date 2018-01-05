@@ -94,7 +94,6 @@ server {
     rewrite ^/category/blog/$ /#blog permanent;
     rewrite ^/blog/$ /#blog permanent;
 
-    rewrite ^/contact/$ /#contact redirect;
     rewrite ^/expirybot/?$ /expirybot-emails-pgp-users-before-their-key-expires/ redirect;
 
     # rewrite ^/wp-content/uploads/2013/02/baltic-creative-unit-51.jpg$
