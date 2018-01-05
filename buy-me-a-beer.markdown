@@ -16,11 +16,16 @@ If you'd like to buy me a beer, you'll be boosting my motivation and supporting 
 
 ## Buy with Bitcoin
 
-[![1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv](/img/bitcoin-qr-code.png){: .img-responsive }][bitcoin-url]
+<a href="bitcoin:1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv">
+  ![1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv](/img/bitcoin-qr-code.png){: .img-responsive }
+  1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv
+</a>
 
+<a href="litecoin:LWy8XE1LNJff4WgqDVcf7HoLiwrF3qrR7u">
+  ![LWy8XE1LNJff4WgqDVcf7HoLiwrF3qrR7u](/img/litecoin-qr-code.png){: .img-responsive }
+  LWy8XE1LNJff4WgqDVcf7HoLiwrF3qrR7u
+</a>
 
-Oh, and to say 'cheers', I'll actually send you a picture of the beer...
+## Cheers! :D
 
 ![Pump handle of a fancy Manchester craft beer](/img/beer-pump.jpg){: .img-responsive }
-
-[bitcoin-url]: bitcoin:1HZ9ftFydKVQggGyYFyZ6D1u5Fcv312bVv
