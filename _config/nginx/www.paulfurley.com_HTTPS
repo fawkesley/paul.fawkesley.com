@@ -53,18 +53,13 @@ server {
     location = /.well-known/assetlinks.json              { return 404; access_log off; log_not_found off; }
     location = /.well-known/dnt-policy.txt               { return 404; access_log off; log_not_found off; }
 
-    location = /wp-login.php {
-       # also /phpmyadmin /admin/config.php /recordings/index.php /.git/HEAD
+
+    location ~ ^(/wp-login.php|/admin/config.php|/recordings/index.php|/phpmyadmin) {
 
        # Run this as root:
        # dd if=/dev/zero bs=1M count=10240 | gzip > /var/www/zipbomb.gz
 
-       # more_clear_headers Content-Length
-       # add_header Content-Encoding: gzip;
-       # add_header Content-Length 9420800;
        gzip_static always;
-       # gzip_proxied expired no-cache no-store private auth;
-
        alias /var/www/zipbomb;
     }
 
