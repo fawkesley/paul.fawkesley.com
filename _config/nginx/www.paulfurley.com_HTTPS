@@ -44,10 +44,14 @@ server {
         expires 7d;
     }
 
-    location = /apple-touch-icon.png { log_not_found off; }
-    location = /apple-touch-icon-120x120-precomposed.png { log_not_found off; }
-    location = /apple-touch-icon-120x120.png { log_not_found off; }
-    location = /apple-touch-icon-precomposed.png { log_not_found off; }
+    location = /apple-touch-icon.png                     { return 404; access_log off; log_not_found off; }
+    location = /apple-touch-icon-precomposed.png         { return 404; access_log off; log_not_found off; }
+    location = /apple-touch-icon-120x120.png             { return 404; access_log off; log_not_found off; }
+    location = /apple-touch-icon-120x120-precomposed.png { return 404; access_log off; log_not_found off; }
+    location = /apple-app-site-association               { return 404; access_log off; log_not_found off; }
+    location = /.well-known/apple-app-site-association   { return 404; access_log off; log_not_found off; }
+    location = /.well-known/assetlinks.json              { return 404; access_log off; log_not_found off; }
+    location = /.well-known/dnt-policy.txt               { return 404; access_log off; log_not_found off; }
 
     location = /wp-login.php {
        # also /phpmyadmin /admin/config.php /recordings/index.php /.git/HEAD
