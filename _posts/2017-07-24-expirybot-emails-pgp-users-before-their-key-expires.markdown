@@ -4,9 +4,12 @@ snappy_title: "Expirybot emails PGP users before their key expires"
 permalink: /expirybot-emails-pgp-users-before-their-key-expires/
 category: security, sideprojects, gpgforhumans
 is_highlighted: true
+image: expirybot-email.png
 ---
 
 A month ago I started a side project to try and make the world a little easier for PGP users. This is how I started small.
+
+![Screenshot of an email reminder](/img/expirybot-email.png)
 
 It's easy to moan about PGP, and occasionally people declare it 'dead'. But many groups like the Internet Freedom community continue to depend on PGP to safely carry out their work.
 
