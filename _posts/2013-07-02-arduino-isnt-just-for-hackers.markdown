@@ -8,6 +8,8 @@ category: arduinoraspberrypi
 ---
 *[Arduino](http://www.arduino.cc) turned out to be the perfect match for <a title="JF Machines Ltd, digital inkjet printing machine manufacturers" href="http://www.jfmachines.co.uk" target="_blank">JF Machines Ltd</a>, a manufacturer of industrial digital printing machines. The open source platform offered them supply security, enormous flexibility and simple PC interfacing, all at an incredible price.*
 
+<!--more-->
+
 Back in 2009 I worked in JF Machines Ltd - the family firm - producing the user operator software for their new digital printing machine, the PicoColour (if you're imaging a desktop printer, try 1.5 tonnes of precision-engineered printing press...)
 
 ![PicoColour digital inkjet printing machine](/img/picocolour-printing-machine.jpg){: .img-responsive }

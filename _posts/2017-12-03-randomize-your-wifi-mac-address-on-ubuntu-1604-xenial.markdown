@@ -4,6 +4,7 @@ snappy_title: "Randomize your WiFi MAC address on Ubuntu 16.04"
 permalink: /randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/
 category: security
 is_highlighted: true
+image: captive-portal-our-hotel.gif
 image: terminal-window-nmcli-commands.png
 ---
 

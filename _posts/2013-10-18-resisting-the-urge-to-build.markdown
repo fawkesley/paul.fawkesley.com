@@ -8,6 +8,8 @@ category: startups
 ---
 You may remember a few months back I launched a new site - *minutemate.co.uk* - which helps you to monitor your mobile phone usage and alert you if you've overspent your monthly minutes, texts and so on.
 
+<!--more-->
+
 ![minutemate.co.uk](/img/minute-mate-home-page.png){: .img-responsive }
 
 Being totally honest, MinuteMate seemed to follow a pattern familiar to many techies launching things which goes something like this: "build product, launch, wonder who customer might be, avoid actually speaking to customers at all costs".

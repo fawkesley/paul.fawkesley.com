@@ -11,6 +11,8 @@ A month ago I started a side project to try and make the world a little easier f
 
 ![Screenshot of an email reminder](/img/expirybot-email.png)
 
+<!--more-->
+
 It's easy to moan about PGP, and occasionally people declare it 'dead'. But many groups like the Internet Freedom community continue to depend on PGP to safely carry out their work.
 
 After many years of using and thinking about PGP I decided to open my ears, listen out for problems and see if there was anything I could do.

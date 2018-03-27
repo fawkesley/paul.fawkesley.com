@@ -9,6 +9,8 @@ permalink: /building-software-users-love/
 
 I'm Paul, and I'm a developer on the NHS.UK Alpha project. I wanted to share some thoughts about different ways of delivering software, and why we're working in the way we are.
 
+<!--more-->
+
 ## It's Hard Building for Users You Don't Understand
 
 I have some experience working in organisations where software was written to a specification – a large document which supposedly captured everything there was to know about a problem.
