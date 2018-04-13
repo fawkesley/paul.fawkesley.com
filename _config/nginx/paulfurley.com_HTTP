@@ -10,6 +10,14 @@ server {
       root /etc/letsencrypt/fake-webroot;
     }
 
+    location = /.well-known/carddav {
+        return 302 https://carddav.fastmail.com;
+    }
+
+    location = /.well-known/caldav {
+        return 302 https://caldav.fastmail.com;
+    }
+
     location / {
         return 301 https://www.paulfurley.com$request_uri;
     }
