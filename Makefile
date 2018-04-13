@@ -30,3 +30,8 @@ deploy: dependencies
 .PHONY: dependencies
 dependencies:
 	@./_config/install_deps
+
+.PHONY: download_nginx_config
+download_nginx_config:
+	scp www.paulfurley.com:/etc/nginx/sites-enabled/paulfurley.com* _config/nginx/
+	scp www.paulfurley.com:/etc/nginx/sites-enabled/www.paulfurley.com* _config/nginx/
