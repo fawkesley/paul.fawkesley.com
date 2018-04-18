@@ -10,9 +10,7 @@ category: security,devops
 
 [Do Not Track](https://allaboutdnt.com/) is an HTTP header which indicates a person's preference to opt out of tracking. Most browsers require the person to explicitly turn on this setting. You can interpret it as a clear request to avoid tracking.
 
-If you value your users' choice for privacy, you should respect these requests. Don't load Google Analytics for these people.
-
-It's incredibly simple to disable Google Analytics for people with Do Not Track. Put the tracking code inside `if(navigator.doNotTrack != "1") {`:
+It's simple to respect your visitors' preference for privacy. Just put any analytics tracking code inside this `if` statement:
 
 <script src="https://gist.github.com/paulfurley/bb900465c21b8570d8763af9a07fcfc7.js"></script>
 
