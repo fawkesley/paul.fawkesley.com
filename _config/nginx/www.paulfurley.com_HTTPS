@@ -63,6 +63,11 @@ server {
        alias /var/www/zipbomb;
     }
 
+    location /requests {
+      # Subject access requests, etc
+      autoindex on;
+    }
+
     # Redirect rules
     rewrite ^/pgp$ https://www.paulfurley.com/309F635DAD1B5517.public.asc redirect;
 
