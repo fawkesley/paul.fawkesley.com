@@ -9,9 +9,9 @@ image: expirybot-email.png
 
 A month ago I started a side project to try and make the world a little easier for PGP users. This is how I started small.
 
-![Screenshot of an email reminder](/img/expirybot-email.png)
-
 <!--more-->
+
+![Screenshot of an email reminder](/img/expirybot-email.png)
 
 It's easy to moan about PGP, and occasionally people declare it 'dead'. But many groups like the Internet Freedom community continue to depend on PGP to safely carry out their work.
 
