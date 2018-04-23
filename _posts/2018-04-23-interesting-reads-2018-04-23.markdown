@@ -1,0 +1,30 @@
+---
+title: "Interesting reads, 23 April 2018"
+permalink: /interesting-reads-2018-04-23/
+category: interestingreads
+---
+
+*Interesting reads, 23 April 2018*
+
+<!--more-->
+
+- [Russian hackers targeting millions of devices around the world, US and UK warn](https://www.independent.co.uk/news/uk/home-news/russian-hackers-target-millions-devices-cyber-attacks-us-uk-intelligence-warn-a8307696.html) — Unsurprising, but it's unusual to hear this sort of statement from the National Cyber Security Centre (NCSC).
+
+- [astralship.org](https://astralship.org/index.html) — Intriguing community work space in a converted chapel in beautiful north Wales.
+
+- [EX-99.1](https://www.sec.gov/Archives/edgar/data/1018724/000119312518121161/d456916dex991.htm) — Jess Bezos' annual shareholder letter. I admire the obsessive amount of thought that's gone into cultivating a culture of high standards, which is the topic of much of this letter.
+
+- [Random Darknet Shopper (2014)](https://wwwwwwwwwwwwwwwwwwwwww.bitnik.org/r/) — Amazing art project, a robot which bought a random item from the "Darknet" each week.
+
+- [Palantir Knows Everything About You](https://www.bloomberg.com/features/2018-palantir-peter-thiel/) — Palantir *"is using War on Terror tools to track American citizens"*. The company also builds ["predictive policing"](https://www.economist.com/news/briefing/21582042-it-getting-easier-foresee-wrongdoing-and-spot-likely-wrongdoers-dont-even-think-about-it), unaccountable algorithms which reinforce the biases of the data that trained them.
+
+- [The ticking time bomb: Fake ad blockers in Chrome Web Store](https://palant.de/2018/04/18/the-ticking-time-bomb-fake-ad-blockers-in-chrome-web-store) — Malicious people fork genuine ad-blockers, wait till a large number of people install them, then update them with hidden malware.
+
+- [Google disables “domain fronting” capability used to evade censors](https://arstechnica.com/information-technology/2018/04/google-disables-domain-fronting-capability-used-to-evade-censors/) — Domain fronting allows an app to obscure the true origin of a web request by passing a different TLS SNI hostname than the inner HTTP Host header. It's an important technique for bypassing censorship systems, and while it wasn't a deliberate feature, it's sad that Google has broken it.
+
+- [Facebook starts its facial recognition push to Europeans](https://techcrunch.com/2018/04/20/just-say-no/) — Quick! GDPR isn't for another month, so let's sneak in some auto-opt-in creepy facial recognition settings while we've got the chance.
+
+- [Securing Elections — Schneier on Security](https://www.schneier.com/blog/archives/2018/04/securing_electi_1.html) — Oh my, electronic voting is completely broken.
+
+- [One in three heart surgeons refuse difficult operations to avoid poor mortality ratings, survey shows ](https://www.telegraph.co.uk/science/2016/06/03/one-in-three-heart-surgeons-refuse-difficult-operations-to-avoid/) — Transparency isn't always good. I wonder if this is a sample size issue, if the ratings were aggregated across a hospital, would this still happen?
+
