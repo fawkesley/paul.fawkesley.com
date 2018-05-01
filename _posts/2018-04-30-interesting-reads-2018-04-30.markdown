@@ -1,0 +1,30 @@
+---
+title: "Interesting reads, 30 April 2018"
+permalink: /interesting-reads-2018-04-30/
+category: interestingreads
+---
+
+*Interesting reads, 30 April 2018*
+
+<!--more-->
+
+- [How vulture capitalists ate Toys 'R' Us](http://theweek.com/articles/761124/how-vulture-capitalists-ate-toys-r) — Devastating. The financial trickery that bankrupted Toys 'R' Us while enriching the buyers with $200 million in fees.
+
+- [New AI Imaging Technique Reconstructs Photos with Realistic Results](https://news.developer.nvidia.com/new-ai-imaging-technique-reconstructs-photos-with-realistic-results/) — Incredible, it's unintuitive to me how these models can "invent" missing information, but of course they've seen a lot of similar images before.
+
+- [We’re underestimating the mind-warping potential of fake video](https://www.vox.com/science-and-health/2018/4/20/17109764/deepfake-ai-false-memory-psychology) — Fake news will be supercharged by fake video. How are we going to cope with fake *history*?
+
+- [AI Creates Fake Obama](https://spectrum.ieee.org/tech-talk/robotics/artificial-intelligence/ai-creates-fake-obama) — Linked from the previous fake video article, examples of fake video of Obama generated from real speeches.
+
+- [Wunderscan](https://bcarrigan.com/2018/04/20/wunderscan/) — Cute, salvaging a laser barcode scanner to create a home shopping list gadget.
+
+- [Electric Buses Are Hurting the Oil Industry](https://www.bloomberg.com/news/articles/2018-04-23/electric-buses-are-hurting-the-oil-industry) — Only 8 years ago electric buses are being laughed at, now you can see their effect in oil sales data.
+
+- [The Revolutionary Giant Ocean Cleanup Machine Is About To Set Sail](https://www.fastcompany.com/40560810/the-revolutionary-giant-ocean-cleanup-machine-is-about-to-set-sail) — "Revolutionary" (and necessary) would be to stop creating disposable plastics, but nice effort to clean up what's already been dumped in the sea.
+
+- [To censor the internet, 10 countries use Canadian filtering technology, researchers say](http://www.cbc.ca/news/technology/citizen-lab-netsweeper-internet-filtering-tech-censorship-1.4631243) — If you're working on surveillance and censorship technology, think hard about its "dual use" against citizens of oppressive regimes.
+
+- [Matrix and Riot confirmed as the basis for France’s Secure Instant Messenger app](https://matrix.org/blog/2018/04/26/matrix-and-riot-confirmed-as-the-basis-for-frances-secure-instant-messenger-app/) — Superb to see a Government adopting a (good) open source solution for their internal end-to-end encrypted messenger.
+
+- [This ‘Demonically Clever’ Backdoor Hides In a Tiny Slice of a Computer Chip](https://www.wired.com/2016/06/demonically-clever-backdoor-hides-inside-computer-chip/) — Terrifying, a single tweak to a processor's etching mask can insert a remotely exploitable backdoor.
+
