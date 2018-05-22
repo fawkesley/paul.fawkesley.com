@@ -18,6 +18,6 @@ category: interestingreads
 
 - [EFAIL - vulnerability in email clients using PGP and S/MIME](https://efail.de/) — Researchers found a crypto-fail in the way some email clients handle encrypted HTML emails. They put out a [mysterious tweet](https://twitter.com/seecurity/status/995906576170053633) but bizarrely withheld the actual vulnerability, making it impossible to know what to advise. The [EFF jumped in with unhelpful advice](https://www.eff.org/deeplinks/2018/05/attention-pgp-users-new-vulnerabilities-require-you-take-action-now), and some sort of holy war broke out. It was a total mess.
 
-- [LocationSmart API Vulnerability](https://www.robertxiao.ca/hacking/locationsmart/) — If you had real-time access to the location of every callphone in the US, you'd protect that information really carefully, right?
+- [LocationSmart API Vulnerability](https://www.robertxiao.ca/hacking/locationsmart/) — If you had real-time access to the location of every cellphone in the US, you'd protect that information really carefully, right?
 
 - ['Huggybug Your Family Today': Don't play around with children's online safety](https://www.youtube.com/watch?v=C_W-VkQ4oSk) — Brilliant spoof from Consumers International on the reality of internet-connected childrens' toys.
