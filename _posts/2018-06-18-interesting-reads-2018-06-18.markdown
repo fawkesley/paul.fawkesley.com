@@ -1,0 +1,26 @@
+---
+title: "Interesting reads, 18 June 2018"
+permalink: /interesting-reads-2018-06-18/
+category: interestingreads
+---
+
+*Interesting things I read on the Internet this week*
+
+<!--more-->
+
+- [How I became Leonardo da Vinci on the Blockchain](https://shkspr.mobi/blog/2018/06/how-i-became-leonardo-da-vinci-on-the-blockchain/) — Verisart are presumably better at raising venture capital than understanding the problem of art fraud.
+
+- [Standard Notes — A Simple And Private Notes App](https://standardnotes.org/) — I really like these folks, their philosophy and their business model. Thanks to [Francis](https://flourish.org) for the tip.
+
+- [Why did Continental order its mobile workforce to stop using WhatsApp?](https://medium.com/@wireapp/why-did-continental-order-its-mobile-workforce-to-stop-using-whatsapp-520981f36fc) — The answer: they don't know how WhatsApp handles your contacts, which contain very personal information.
+
+- [Apple quietly banned developers from selling and sharing users’ contacts](https://www.theverge.com/2018/6/12/17454736/apple-app-store-developers-contacts-list) — I really hope they're working on some clever API changes too.
+
+- [skskeyserver / sks-keyserver / issues / #57 : Anyone can make any PGP key unimportable — Bitbucket](https://bitbucket.org/skskeyserver/sks-keyserver/issues/57/anyone-can-make-any-pgp-key-unimportable) — A researcher crafted and pushed a seriously broken PGP key. It propagated and is still causing problems for keyservers, including my own. We need to figure out how to make [sks](https://bitbucket.org/skskeyserver/sks-keyserver/wiki/Home) more accessible to a wider developer community since it's so widely depended upon. [Hockeypuck](https://hockeypuck.github.io/) looks good.
+
+- [Confessions of a Disk Cracker: the secrets of 4am.](https://paleotronic.com/2018/06/15/confessions-of-a-disk-cracker-the-secrets-of-4am/) — Cool, cracking old software for future preservation. *"I’ve had several authors find their own software and thank me for preserving it."*
+
+- [Dark Web Drug Vendor Pleads Guilty After Feds Traced His Bitcoin Transactions](https://www.bleepingcomputer.com/news/legal/dark-web-drug-vendor-pleads-guilty-after-feds-traced-his-bitcoin-transactions/) — I somehow expected drug dealers to be less incompetent than this. Always great reading the official scoop of how folks like this get caught.
+
+- [Fibonacci Hashing: The Optimization that the World Forgot (or: a Better Alternative to Integer Modulo)](https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/) — This went a bit over my head, but was awesome nonetheless, especially Vi Hart's explainer video.
+
