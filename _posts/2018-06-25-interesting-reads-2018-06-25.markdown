@@ -1,0 +1,28 @@
+---
+title: "Interesting reads, 25 June 2018"
+permalink: /interesting-reads-2018-06-25/
+category: interestingreads
+---
+
+*Interesting things I read on the Internet this week*
+
+<!--more-->
+
+- [Face recognition with OpenCV, Python, and deep learning](https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/) — It's getting easier and easier.
+
+- [YouTube's Blocks MIT Courses, Blender Videos, and More (Updated)](https://torrentfreak.com/youtubes-piracy-filter-blocks-mit-courses-blender-videos-and-more-180618/) — What happens when you automate censorship at scale.
+
+- [Amazon shareholders want Jeff Bezos to stop selling a controversial facial recognition tool](https://www.independent.co.uk/news/business/amazon-recognition-shareholders-jeff-bezos-letter-privacy-surveillance-facial-recognition-a8405221.html) — Go shareholders.
+
+- [macOS Breaks Your OpSec by Caching Data From Encrypted Hard Drives](https://www.bleepingcomputer.com/news/apple/macos-breaks-your-opsec-by-caching-data-from-encrypted-hard-drives/) — This is a horrible blunder, and apparently it's been like this for years.
+
+- [In Major Privacy Win, Supreme Court Rules Police Need Warrant To Track Your Cellphone](https://www.npr.org/2018/06/22/605007387/supreme-court-rules-police-need-warrant-to-get-location-information-from-cell-to?t=1529684968994) — In the US: that's right, they didn't need one before...
+
+- [How to Use Slack and Not Go Crazy](https://pspdfkit.com/blog/2018/how-to-use-slack-and-not-go-crazy/) — These folks have developed some fantastic full-remote working practices.
+
+- [Twitter ‘smytes’ customers](https://techcrunch.com/2018/06/21/twitter-smytes-customers/?guccounter=1) — Appalling behaviour by Twitter: acquiring a business then shutting it down with zero notice, screwing all the customers.
+
+- [We grew up with IRC. Let's take it further.](https://irc.com/) — Curious, Andrew from London Trust Media Holdings (Private Interenet Access) has acquired another classic internet institution.
+
+- [Codec2: a whole Podcast on a Floppy Disk](https://auphonic.com/blog/2018/06/01/codec2-podcast-on-floppy-disk/) — Neat, a voice compression codec using the WaveNet neural network.
+
