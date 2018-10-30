@@ -1,17 +1,26 @@
 #!/bin/sh -eux
 
 THIS_SCRIPT=$0
-THIS_DIR=$(dirname ${THIS_SCRIPT}£)
+THIS_DIR=$(dirname ${THIS_SCRIPT})
+REPO_DIR=${THIS_DIR}/..
 
-TMP_DIR=$(mktemp -d --suffix .site)
+TMP_REPO_DIR=$(mktemp -d --suffix .site)
 
-git --work-tree=${TMP_DIR} checkout master -- .
+REMOTE=$(git remote get-url origin)
 
-cd "${TMP_DIR}"
+git clone ${REPO_DIR} "${TMP_REPO_DIR}"
+git clone ${REPO_DIR} -b build "${TMP_REPO_DIR}/_site"
+
+cd "${TMP_REPO_DIR}"
 make
 
+cd _site
+git add --all .
+git commit -m "Autocommit from Jekyll build"
 
-rsync -avr --delete-after --delete-excluded ${TMP_DIR}/_site/ website-deploy@www.paulfurley.com:/var/www/www.paulfurley.com
+echo "# pushing to github build branch"
+git remote add github "$REMOTE"
+git push github build:build
 
 
-echo rm -rf "${TMP_DIR}"
+echo rm -rf "${TMP_REPO_DIR}"
