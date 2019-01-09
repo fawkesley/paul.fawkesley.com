@@ -35,7 +35,3 @@ dependencies:
 download_nginx_config:
 	scp www.paulfurley.com:/etc/nginx/sites-enabled/paulfurley.com* _config/nginx/
 	scp www.paulfurley.com:/etc/nginx/sites-enabled/www.paulfurley.com* _config/nginx/
-
-.PHONY: 309F635DAD1B5517.public.asc
-309F635DAD1B5517.public.asc:
-	gpg --export-options export-minimal,export-clean --armor --export 0xA999B7498D1A8DC473E53C92309F635DAD1B5517 > $@
