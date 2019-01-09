@@ -3,7 +3,7 @@ server {
     listen [::]:443;
     server_name www.paulfurley.com;
 
-    root /var/www/www.paulfurley.com;
+    root /var/www/www.paulfurley.com/html;
 
     ssl_certificate           /etc/letsencrypt/live/www.paulfurley.com/fullchain.pem;
     ssl_certificate_key       /etc/letsencrypt/live/www.paulfurley.com/privkey.pem;
@@ -106,6 +106,8 @@ server {
 
     rewrite ^/2018-04-09-interesting-reads-2018-04-09/?$ /interesting-reads-2018-04-09/ permanent;
     rewrite ^/2018-04-16-interesting-reads-2018-04-16/?$ /interesting-reads-2018-04-16/ permanent;
+
+    rewrite ^/keymanager-pgp-key-manager-for-dev-teams/?$ https://www.fluidkeys.com redirect;
 
     # rewrite ^/wp-content/uploads/2013/02/baltic-creative-unit-51.jpg$
     # rewrite ^/wp-content/uploads/2013/11/Vodafone-online-network-tab-screenshot-1024x563.png$
