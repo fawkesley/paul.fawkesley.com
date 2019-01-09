@@ -20,7 +20,7 @@ git commit -m "Autocommit from Jekyll build"
 
 echo "# pushing to github build branch"
 git remote add github "$REMOTE"
-git push github build:build
+git push -f github build:build
 
 
 echo rm -rf "${TMP_REPO_DIR}"
