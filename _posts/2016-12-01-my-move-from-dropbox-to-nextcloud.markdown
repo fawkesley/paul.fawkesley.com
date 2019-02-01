@@ -522,7 +522,7 @@ improving:
 [google-fingerprint]: https://www.google.co.uk/?gfe_rd=cr&ei=0TpHWPHcHqeg8wewparoBg&gws_rd=ssl#q=2880+6A87+8AE4+23A2+8372++792E+D758+99B9+A724+937A
 [page-updates]: https://github.com/paulfurley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown
 [ssl-labs-results]: https://www.ssllabs.com/ssltest/analyze.html?d=cloud.paulfurley.com
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley
 [fail2ban]: http://www.fail2ban.org/wiki/index.php/Main_Page
 [fail2ban-filter]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
 [fail2ban-action]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf

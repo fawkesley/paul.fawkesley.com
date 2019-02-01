@@ -106,4 +106,4 @@ We talked about compressing data using [Opera Mini][opera-mini] and creating a l
 
 [iff]: https://internetfreedomfestival.org/
 [iff-twitter]: https://twitter.com/internetff
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley

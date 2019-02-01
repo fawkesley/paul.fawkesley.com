@@ -100,7 +100,7 @@ Here's the list - if you've got any feedback, let me know!
 
 [Thoughts? Get in touch.][paul-twitter]
 
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley
 [sks-pool]: https://sks-keyservers.net/status/
 [abundance-investment]: https://www.abundanceinvestment.com/
 [hetzner-vps]: https://www.hetzner.com/virtual-server?country=gb

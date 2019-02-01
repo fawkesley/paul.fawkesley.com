@@ -154,4 +154,4 @@ Phew.
 
 [Thoughts? Get in touch.][paul-twitter]
 
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley

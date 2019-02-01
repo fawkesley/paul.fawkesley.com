@@ -57,7 +57,7 @@ For JF Machines, Arduino was a great fit. Although it has required them to gain 
 **Arduino, 1 nil!**
 
 
-I'd like to hear your thoughts - why not give me a shout on <a title="Paul Furley on Twitter" href="https://twitter.com/paul_furley" target="_blank">Twitter</a> or <a title="Contact" href="http://paulfurley.com/contact/" target="_blank">drop me an email</a>?
+I'd like to hear your thoughts - why not give me a shout on <a title="Paul Fawkesley on Twitter" href="https://twitter.com/fawkesley" target="_blank">Twitter</a> or <a title="Contact" href="http://paulfurley.com/contact/" target="_blank">drop me an email</a>?
 
 **UPDATE:** Join the (extensive) discussion at [Reddit][2] and [Hack A Day][3] - many thanks for all the interest!
 

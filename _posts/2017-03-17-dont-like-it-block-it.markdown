@@ -163,4 +163,4 @@ Hopefully this post highlights some of the moral questions raised when censoring
 [2014-spreadsheet]: https://www.whatdotheyknow.com/request/232900/response/586666/attach/2/Copy%20of%20URLs.xlsx
 
 
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley

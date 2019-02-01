@@ -1,4 +1,4 @@
-title: "Paul M Furley, developer"
+title: "Paul Fawkesley, Engineer"
 url: "https://www.paulfurley.com"
 gems:
   - jekyll-redirect-from
@@ -13,7 +13,7 @@ defaults:
       type: "posts"
     values:
       layout: "blog_post"
-      author: "Paul M Furley"
+      author: "Paul Fawkesley"
 
 excerpt_separator: <!--more-->
 

@@ -53,7 +53,7 @@ This seemed like a promising start so I gave myself permission to build somethin
 
 It's been a lovely month!
 
-Thoughts? [@paul_furley][paul-twitter] [paul@paulfurley.com][paul-email]
+Thoughts? [@fawkesley][paul-twitter] [paul@paulfurley.com][paul-email]
 
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley
 [paul-email]: mailto:paul@paulfurley.com

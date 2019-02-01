@@ -176,4 +176,4 @@ Update: [Inboxbot is now on Github.](https://github.com/paulfurley/inboxbot)
 
 [Thoughts? Get in touch.][paul-twitter]
 
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley

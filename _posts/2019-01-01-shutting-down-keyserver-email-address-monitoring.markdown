@@ -85,4 +85,4 @@ Thanks,
 Paul
 
 [fluidkeys-feedback-list]: https://eepurl.com/gffcu9
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley

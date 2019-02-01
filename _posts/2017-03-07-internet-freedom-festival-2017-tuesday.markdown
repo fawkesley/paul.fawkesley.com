@@ -99,4 +99,4 @@ This was a really impressive project, especially considering it's been going for
 [tor-project]: https://torproject.org
 [gocardless]: https://gocardless.com
 [iff-twitter]: https://twitter.com/internetff
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley

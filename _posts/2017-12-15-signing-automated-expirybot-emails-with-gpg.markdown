@@ -124,5 +124,5 @@ This will be completely free. If it's something you're interested in, [pop me an
 [example-unsubscribe-link]: https://www.expirybot.com/unsubscribe/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjExMjQxMDAsImVtbCI6Im5vYm9keUBleGFtcGxlLmNvbSJ9.4QHDqjoyAhV6V2cBlRO2EuWAYwSv-4RvbrPxwOBbKhE/
 [json-web-token]: https://en.wikipedia.org/wiki/JSON_Web_Token
 [decode-jwt]: https://jwt.io/
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley
 [paul-email]: mailto:paul@paulfurley.com
