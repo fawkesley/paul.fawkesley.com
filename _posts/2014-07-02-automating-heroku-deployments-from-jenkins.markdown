@@ -36,4 +36,4 @@ It turns out quite a large chunk of the work came about from configuring our Jen
 
 None of this is rocket science, but I do believe that taking the time to implement this clean, conservative & repeatable processes will be worth every penny six months down the line when I'm trying to push out a 2am bugfix for a major client...
 
-*<a href="https://twitter.com/paul_furley" target="_blank">Paul</a> is CTO of <a href="http://sealevelresearch.com" target="_blank">Sea Level Research</a>, a startup helping shipping ports to optimize their logistics.*
+*<a href="https://twitter.com/fawkesley" target="_blank">Paul</a> is CTO of <a href="http://sealevelresearch.com" target="_blank">Sea Level Research</a>, a startup helping shipping ports to optimize their logistics.*

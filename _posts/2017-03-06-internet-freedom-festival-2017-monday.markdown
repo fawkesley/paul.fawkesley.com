@@ -58,4 +58,4 @@ It was a pleasure to work with some women from [Heart of Code][heart-of-code], a
 [peng]: https://pen.gg
 [heart-of-code]: http://heartofcode.org/
 [iff-twitter]: https://twitter.com/internetff
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley

@@ -58,7 +58,7 @@ Thanks for reading, and until next time.
 
 [Get in touch.][paul-twitter]
 
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley
 [dpr-website]: https://dpr.coop.co.uk
 [gladstones-library]: https://www.gladstoneslibrary.org/
 [palm-house]: http://palmhouse.org.uk/

@@ -124,9 +124,9 @@ I was a bit knackered for [this session][kill-the-messenger-session], but I did 
 [kill-the-messenger-session]: https://internetfreedomfestival.org/wiki/index.php/Kill_the_Messenger:_Block,_Erase,_and_Delete_in_the_name_of_Freedom%3F
 [gdpr]: https://ico.org.uk/for-organisations/data-protection-reform/overview-of-the-gdpr/
 
-I'm [@paul_furley][paul-twitter] on Twitter.
+I'm [@fawkesley][paul-twitter] on Twitter.
 
 
 [iff]: https://internetfreedomfestival.org/
 [iff-twitter]: https://twitter.com/internetff
-[paul-twitter]: https://twitter.com/paul_furley
+[paul-twitter]: https://twitter.com/fawkesley
