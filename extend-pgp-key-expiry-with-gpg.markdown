@@ -28,6 +28,9 @@ y
 save
 ```
 
+If you get stuck, see the [official GnuPG documentation.](https://www.gnupg.org/gph/en/manual.html#AEN329)
+
+
 ## Push it to the keyservers
 
 Remember to push your updated key to the keyservers:
