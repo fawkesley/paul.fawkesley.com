@@ -13,6 +13,12 @@ You'll need to replace my key fingerprint with your own (that's the long text st
 Open up a command-line terminal and type the following:
 
 ```
+$ gpg --quick-set-expire 'A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517' 3m
+```
+
+If that doesn't work, you may have an old version of GnuPG. Do this instead:
+
+```
 $ gpg --edit-key 'A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517'
 key 0
 expire
