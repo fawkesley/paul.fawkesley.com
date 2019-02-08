@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Thoughts about decoupling PGP and email clients</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Thoughts about decoupling PGP and email clients" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/resisting-the-urge-to-build-thumbnail.jpg" />
+    
+
+    
+      <meta content="Thanks to the Bitmask session at the Internet Freedom Festival 2016 for starting me off thinking about this.
+
+I want to see widespread adoption of end-to-end email encryption. Email is brilliant, it’s not going away, and it’s fast becoming the least-secure part of our Internet lives.
+
+Why can’t I opt in to PGP-encrypted bank statements by email? Why can’t I exchange encrypted emails with my mum?
+
+This post is some ideas about getting non-geek users using PGP. To keep things simple let’s imagine an Apple user who currently uses Apple’s mail clients on the desktop and phone.
+
+I believe if we want to gain mass adoption of end-to-end email encryption, we need to do two things:
+
+
+  Hide encryption from the user.
+  Stop trying to build PGP into mail clients.
+
+
+Hide it from the user
+
+The first point has become obvious thanks to services like iMessage and WhatsApp which just went ahead and built end-to-end crypto and barely told anyone about it. They hid the crypto bits rather than making the user understand them. They had the advantage of using a centralized public-key infrastructure, so we have to trust them not to screw us over.
+
+On the second point, ordinary users are not interested in learning about public/private key pairs or verifying key fingerprints. Let’s not make them.
+
+One of the objections I hear about hiding crypto goes along the lines of “then it’s easy to man-in-the-middle those users, so there’s no point doing it”.
+
+Yep, if we automate and hide the hard stuff, those users will have a less secure PGP experience than us geeks, but it’s a lot more secure than what they’re currently doing!.
+
+Let’s stop aiming for perfect. Today everything is broken. Tomorrow, let’s aim for slightly less broken.
+
+Stop trying to build PGP into mail clients
+
+Apple make beautiful mail clients that people like to use. Their mail clients don’t support PGP. Should I really be telling my friends and family to switch to Thunderbird and install this weird plugin called Enigmail?
+
+And what’s the story for mobile? Go and download another unfamiliar application, then get the app that syncs your keys, uhhh…
+
+There are always going to be beautiful mail clients that don’t care to support PGP. The skills required to make a beautiful mail clients are quite different from those required to implement PGP.
+
+Mailpile is a valiant effort to do both - hooray to those folks - but I’ve come to believe that’s the wrong approach.
+
+I think we need to de-couple the mail client and the PGP capability.
+
+Personal PGP Proxies
+
+How about this: every company, family or close organisation gets their own “PGP proxy”. This is a small, publicly routable computer which performs several functions:
+
+
+  Hold the public &amp; private keys of users (more securely than desktop computers do)
+  Proxy inbound IMAP and SMTP from users’ mail clients
+  Add and remove PGP encryption to emails as they pass through the proxy
+  Advertise the user’s public key in outbound emails
+  Discover other users’ public keys via inbound emails, keyservers and other means
+  Automate key rotation
+
+
+For example, I can set up a PGP proxy for my family and reconfigure the SMTP and IMAP settings in my family’s mobiles and desktops to point at the proxy.
+
+When my Dad sends my Mum and email, it goes like this:
+
+
+  Dad’s mail client connects to our PGP proxy via SMTP, authenticates somehow, delivers email to proxy
+  PGP proxy attaches Dad’s public key to outbound email
+  PGP proxy finds Mum’s public key (somehow)
+  PGP proxy encrypts the email to Mum
+  PGP proxy connects to Gmail via SMTP, authenticates with Dad’s actual Gmail username &amp; password, sends email
+
+
+Mum’s inbox now receives an encrypted email. This would look bad if she logged into webmail, but that’s OK because her mail client &amp; PGP proxy do a similar dance for receiving the email:
+
+
+  Mum’s mail client connects to PGP proxy via IMAP, authenticates somehow
+  PGP proxy connects to Gmail using Mum’s Gmail credentials
+  PGP proxy downloads Dad’s email, see that it’s encrypted
+  PGP proxy uses Mum’s private key to decrypt email
+  PGP proxy removes the attached public key and records it for later
+  PGP proxy sends decrypted email via IMAP to Mum’s mail client
+
+
+Now Mum sees the exact same email that Dad originally sent. Neither knows that Google didn’t get to read their email on this occasion.
+
+Problems
+
+There are some problems with this scheme:
+
+
+  It completely breaks webmail, and many people love Gmail’s web interface.
+  It requires someone setting up and running a PGP proxy, and keeping it safe. (Although it’s probably easier to keep this safe than a desktop computer)
+
+
+And probably a load more.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2016-05-23T00:00:00+00:00" content="2016-05-23T00:00:00+00:00">May 2016</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Thoughts about decoupling PGP and email clients</h1>
+
+<p>Thanks to the Bitmask session at the Internet Freedom Festival 2016 for starting me off thinking about this.</p>
+
+<p>I want to see widespread adoption of end-to-end email encryption. Email is brilliant, it’s not going away, and it’s fast becoming the least-secure part of our Internet lives.</p>
+
+<p>Why can’t I opt in to PGP-encrypted bank statements by email? Why can’t I exchange encrypted emails with my mum?</p>
+
+<p>This post is some ideas about getting <strong>non-geek users</strong> using PGP. To keep things simple let’s imagine an Apple user who currently uses Apple’s mail clients on the desktop and phone.</p>
+
+<p>I believe if we want to gain mass adoption of end-to-end email encryption, we need to do two things:</p>
+
+<ol>
+  <li>Hide encryption from the user.</li>
+  <li>Stop trying to build PGP into mail clients.</li>
+</ol>
+
+<h2 id="hide-it-from-the-user">Hide it from the user</h2>
+
+<p>The first point has become obvious thanks to services like iMessage and WhatsApp which just went ahead and built end-to-end crypto and barely told anyone about it. They <em>hid the crypto bits</em> rather than making the user understand them. They had the advantage of using a <em>centralized</em> public-key infrastructure, so we have to trust them not to screw us over.</p>
+
+<p>On the second point, ordinary users are not interested in learning about public/private key pairs or verifying key fingerprints. Let’s not make them.</p>
+
+<p>One of the objections I hear about hiding crypto goes along the lines of “then it’s easy to man-in-the-middle those users, so there’s no point doing it”.</p>
+
+<p>Yep, if we automate and hide the hard stuff, those users will have a less secure PGP experience than us geeks, but <em>it’s a lot more secure than what they’re currently doing!</em>.</p>
+
+<p>Let’s stop aiming for perfect. Today everything is broken. Tomorrow, let’s aim for slightly less broken.</p>
+
+<h2 id="stop-trying-to-build-pgp-into-mail-clients">Stop trying to build PGP into mail clients</h2>
+
+<p>Apple make beautiful mail clients that people like to use. Their mail clients don’t support PGP. Should I really be telling my friends and family to switch to Thunderbird and install this weird plugin called Enigmail?</p>
+
+<p>And what’s the story for mobile? Go and download <em>another</em> unfamiliar application, then get the app that syncs your keys, uhhh…</p>
+
+<p>There are always going to be beautiful mail clients that don’t care to support PGP. The skills required to make a beautiful mail clients are quite different from those required to implement PGP.</p>
+
+<p>Mailpile is a valiant effort to do both - hooray to those folks - but I’ve come to believe that’s the wrong approach.</p>
+
+<p>I think we need to de-couple the mail client and the PGP capability.</p>
+
+<h2 id="personal-pgp-proxies">Personal PGP Proxies</h2>
+
+<p>How about this: every company, family or close organisation gets their own “PGP proxy”. This is a small, publicly routable computer which performs several functions:</p>
+
+<ul>
+  <li>Hold the public &amp; private keys of users (more securely than desktop computers do)</li>
+  <li><em>Proxy</em> inbound IMAP and SMTP from users’ mail clients</li>
+  <li>Add and remove PGP encryption to emails as they pass through the proxy</li>
+  <li>Advertise the user’s public key in outbound emails</li>
+  <li>Discover other users’ public keys via inbound emails, keyservers and other means</li>
+  <li>Automate key rotation</li>
+</ul>
+
+<p>For example, I can set up a PGP proxy for my family and reconfigure the SMTP and IMAP settings in my family’s mobiles and desktops to point at the proxy.</p>
+
+<p>When my Dad sends my Mum and email, it goes like this:</p>
+
+<ul>
+  <li>Dad’s mail client connects to our PGP proxy via SMTP, authenticates somehow, delivers email to proxy</li>
+  <li>PGP proxy attaches Dad’s public key to outbound email</li>
+  <li>PGP proxy finds Mum’s public key (somehow)</li>
+  <li>PGP proxy encrypts the email to Mum</li>
+  <li>PGP proxy connects to Gmail via SMTP, authenticates with Dad’s actual Gmail username &amp; password, sends email</li>
+</ul>
+
+<p>Mum’s inbox now receives an encrypted email. This would look bad if she logged into webmail, but that’s OK because her mail client &amp; PGP proxy do a similar dance for receiving the email:</p>
+
+<ul>
+  <li>Mum’s mail client connects to PGP proxy via IMAP, authenticates somehow</li>
+  <li>PGP proxy connects to Gmail using Mum’s Gmail credentials</li>
+  <li>PGP proxy downloads Dad’s email, see that it’s encrypted</li>
+  <li>PGP proxy uses Mum’s private key to decrypt email</li>
+  <li>PGP proxy removes the attached public key and records it for later</li>
+  <li>PGP proxy sends decrypted email via IMAP to Mum’s mail client</li>
+</ul>
+
+<p>Now Mum sees the exact same email that Dad originally sent. Neither knows that Google didn’t get to read their email on this occasion.</p>
+
+<h2 id="problems">Problems</h2>
+
+<p>There are some problems with this scheme:</p>
+
+<ul>
+  <li>It completely breaks webmail, and many people love Gmail’s web interface.</li>
+  <li>It requires someone setting up and running a PGP proxy, and keeping it safe. (Although it’s probably easier to keep this safe than a desktop computer)</li>
+</ul>
+
+<p>And probably a load more.</p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/hardening-my-development-machine/">
+          Hardening my Development Machine
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/taking-back-my-data-move-from-dropbox-to-nextcloud/">
+          Taking Back My Data, Part 1: Move from Dropbox to Nextcloud
+        </a></li>
+        
+        
+        
+        <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">
+          Randomize your WiFi MAC address on Ubuntu 16.04
+        </a></li>
+        
+        
+        
+        <li><a href="/smart-tvs-in-the-bedroom/">
+          Smart TVs in the bedoom
+        </a></li>
+        
+        
+        
+        <li><a href="/shutting-down-keyserver-email-address-monitoring/">
+          Shutting down keyserver email address monitoring
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

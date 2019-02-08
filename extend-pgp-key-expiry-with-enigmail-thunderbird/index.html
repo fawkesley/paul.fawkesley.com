@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>How to extend PGP expiry date with Enigmail / Thunderbird</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="How to extend PGP expiry date with Enigmail / Thunderbird" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/enigmail-change-expiration-date.png" />
+    
+
+    
+
+    
+      <meta content="website" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+      <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+    <div class="widewrapper main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 blog-main">
+                    <article class="blog-post">
+                        <header>
+                            <h1>How to extend PGP expiry date with Enigmail / Thunderbird</h1>
+                        </header>
+                        <div class="body">
+
+                        <h2 id="open-the-key-management-window">Open the Key Management window</h2>
+
+<p>In Thunderbird, select the <code class="highlighter-rouge">Enigmail</code> menu, then select <code class="highlighter-rouge">Key Management</code></p>
+
+<p>You should see a list of keys that you’ve contacted.</p>
+
+<p><strong>TIP:</strong> I like to display <code class="highlighter-rouge">Name</code>, <code class="highlighter-rouge">Fingerprint</code> and <code class="highlighter-rouge">Expiry</code> as columns. By default Enigmail shows the unsafe, short <code class="highlighter-rouge">Key ID</code> which we should ignore. You can tweak the columns by pressing the little button on the right of the column headers.</p>
+
+<p><img src="/img/enigmail-showing-fingerprint-and-expiry-2.png" alt="Enigmail showing fingerprint and expiry" class="img-responsive" /></p>
+
+<h2 id="find-your-own-key">Find your own key</h2>
+
+<p>Search for your long key ID, for example <code class="highlighter-rouge">0x309F635DAD1B5517</code> in the <code class="highlighter-rouge">Search for</code> box. You should see your key:</p>
+
+<p><img src="/img/enigmail-key-management-with-long-key-id.png" alt="Enigmail key management window showing a single key search result" class="img-responsive" /></p>
+
+<h2 id="change-expiration-date">Change expiration date</h2>
+
+<p>Right click on your key and select <code class="highlighter-rouge">Change Expiration Date</code>. You should see a window like this:</p>
+
+<p><img src="/img/enigmail-change-expiration-date.png" alt="Enigmail window showing key and two subkeys with a control to extend the expiry" class="img-responsive" /></p>
+
+<p>Make sure your primary key and subkeys are selected.</p>
+
+<p>Choose a time period. I personally recommend 3 months to 1 year.</p>
+
+<p>Select <code class="highlighter-rouge">OK</code> and follow the prompt.</p>
+
+<h2 id="push-your-updated-key-to-the-keyservers">Push your updated key to the keyservers</h2>
+
+<p>To tell the world about your new key expiry date, you’ll need to send it to the keyservers</p>
+
+<p>Right click on the key and select <code class="highlighter-rouge">Upload Public Keys to Keyserver</code></p>
+
+<h2 id="remind-your-contacts-refresh-their-keys">Remind your contacts refresh their keys</h2>
+
+<p>Your contacts will need to get your updated key from the keysevers by refreshing their keys. Some software does this automatically.</p>
+
+<p>In any case, if a contact says your key has expired, you’ll know what to tell them.</p>
+
+<p>If this didn’t work, you could alternatively try <a href="/extend-pgp-key-expiry-with-gpg/">the GnuPG guide</a>.</p>
+
+<h2 id="support-expirybot-and-other-pgp-projects">Support Expirybot and other PGP projects</h2>
+
+<p><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot</a> takes time and money to run and develop.</p>
+
+<p>Happily, I love spending time building useful things.</p>
+
+<p>If you’d like to support my wallet and boost my motivation, here are some ideas that would be super helpful:</p>
+
+<ul>
+  <li>Take a look at <a href="https://www.fluidkeys.com">Fluidkeys, software to automate your team’s PGP keys</a></li>
+  <li><a href="/buy-me-a-beer/">Buy me a beer</a> (Paypal &amp; Bitcoin gratefully accepted)</li>
+  <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScWVg-l6BrWrw331SFwquTKHy_BtRwO_OYxSxGfGQ2XMKAByA/viewform">Do a 2-minute survey</a> to help me understand how you use PGP</li>
+  <li><a href="mailto:paul@paulfurley.com">Say hello by email</a> - I’d love to hear from you!</li>
+</ul>
+
+<p>You rock.</p>
+
+<p>Paul</p>
+
+
+
+                        </div>
+                    </article>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

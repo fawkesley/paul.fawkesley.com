@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Hardening my Development Machine</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Hardening my Development Machine" />
+    
+
+    
+      <meta content="This post describes ways that I’ve hardened my development machine against
+attackers, without restricting my ability to do “risky” activities like
+run other people’s code. In short, it involves VMs, containers and a bit of
+discipline.
+
+Running Other People’s Code is Essential
+
+As part of my work as a developer, I spend a lot of time testing out random
+code from the Internet. Whether that be some fancy OCR code or a new Django
+library, it’s brilliant to be able to quickly spin up other people’s code in
+unfamiliar languages and have a play.
+
+To me, this is what the Internet is all about; sharing scrappy ideas through
+the medium of code.
+
+The kind of code I’m talking about often isn’t nicely packaged. It often hasn’t
+even been reviewed or tested - it’s just there, take it or leave it.
+
+Current Operating Systems Are Too Permissive
+
+The problem with running other people’s code, at least with my current setup,
+is that any code I run has exactly the same privilege as me.
+
+For starters, any code I run can both read and write anything inside my home
+directory, /home/paul/. It can read all my files - including those inside my
+encfs encrypted filesystem. It can read my SSH &amp; PGP keys, but that’s OK,
+because they’re encrypted with a password, right?
+
+Except, oh dear, it’s running as me, so it can hang around and wait for me to
+type in my password, then decrypt the underlying keys.
+
+OK, it probably can’t access “system” stuff on my filesystem - eg root-access
+
+  stuff, because that requires me to type sudo and enter my password. But,
+oops, we just learned that it can snoop my keyboard, so maybe it can after all.
+
+
+Yes, maybe I’ve over-simplified it a bit, but essentially, anything I run as
+me is basically the same as me.
+
+Aside from all my data, if someone gains access to my SSH &amp; PGP keys, they get
+to totally impersonate me: they can trash servers I’m responsible for, they
+can commit code as me and release malicious packages under my name, screwing
+over my users.  As a developer, I have a responsibility to keep my users safe,
+so I mustn’t let this happen.
+
+Is There a Way to Safely Run Untrusted Code?
+
+Clearly it’s important to be able to run other people’s code. It’s not helpful
+to say “don’t run anything you don’t trust” as trust is complex, and most of
+the stuff on the Internet hasn’t earned our trust, but that doesn’t mean we
+shouldn’t be able to use it.
+
+The question is, can we run other people’s code without putting our own
+data and identity at risk?
+
+Using Containers and Virtual Machines
+
+We need a way to reduce the scope of what code is able to do, and modern
+operating systems have a lot of things on offer.
+
+These are the simple rules I use to harden my machine. Absolutely, this is by
+no means perfect, but it’s an excellent trade-off of usability and security,
+and it’s a lot less broken than it was before :)
+
+Do Development Inside a Virtual Machine
+
+The biggest change to my way of working was moving all my development inside
+a virtual machine.
+
+I share my ~/repo/ directory through from the host machine to the virtual
+machine, allowing me to edit code on the host machine and run it on the guest
+machine.
+
+It’s important to be a bit limited about what you share into the virtual
+machine - for example, don’t share your whole home directory else you’re
+back in the same position!
+
+I configure the machine using Vagrant which gives me the extra
+benefit of making it reproducible and throw-away - I can (and do) regularly
+destroy the machine and rebuild it from scratch.
+
+That also means I can more easily re-install my host machine, or move to
+another operating system altogether, without having to work out how to rebuild
+my dev machine each time.
+
+Some tips:
+
+
+  Limit what directories you share from the host to virtual machine
+  Avoid using git inside the virtual machine: do that outside.
+  Don’t enable SSH forwarding as this allows a compromised virtual machine
+to impersonate your SSH identity.
+  Configure the machine with code, so that it can be destroyed regularly.
+  Destroy it regularly.
+  Automate out anything you find annoying each time you rebuild the machine.
+  Use a VM per project if it makes sense.
+
+
+Feel free to rip of my virtual machine config from Github.
+
+Keep My Host Machine Simple
+
+Now I’ve got a throw-away virtual machine to mess around with, I’ve become a
+lot stricter about the security of the host machine.
+
+One of the best ways to reduce the “attack surface” - the number of possible
+ways of attacking my machine - is to reduce the amount of code it runs overall,
+or in other words, keep it simple.
+
+Think twice before running sudo on the host machine.
+
+Use Only the System Package Manager
+
+I’ve noticed more and more libraries whose install
+instructions involve curl and sudo bash… eek.
+
+I try to be strict about only installing packages through the system package
+manager - in my case, apt on Ubuntu.
+
+There are a number of benefits to only using the system package manager:
+
+
+  Some level of vetting has happened by a competent person, in my case a Debian
+or Ubuntu package maintainer. Yes, they’re often volunteers with little time
+but in my experience these fine folks care a lot about security.
+  It’s much easier to resolve “dependency hell” when you know what versions
+you’re running.
+  Packages installed through the package manager are more easily removed (at
+least when they’re well behaved).
+
+
+Be Incredibly Selective About Third-Party Repositories
+
+Conscientious organisations release their software in a number of native
+package formats, for example .DEB on Debian, Ubuntu and co. They usually
+combine this with running their own repositories (PPAs, whatever) which makes
+life incredibly simple.
+
+There’s nothing wrong with using third-party repositories, but bear in mind
+that these packages have root access on your machine, can automatically update
+themselves, and are potentially completely unvetted.
+
+Be aware of how much trust you are placing in the organisation’s honesty and
+ability to keep their machines secure. (If I were an attacker looking for
+“value for money” I’d go after a popular PPA eg python-opencv that isn’t
+subject to the scrutiny of the Debian maintainers).
+
+Sandbox Mail Client and Web Browser
+
+The last piece of the puzzle, at least for now, is hardening my web browser and
+email client. Although I have trust in Mozilla Firefox and Thunderbird (perhaps
+misplaced on the latter), when exploits are found they can be en masse,
+for example through adverts placed on high profile websites.
+
+This is especially true for the Tor Browser as most users run a single
+version and all traffic passes through exit nodes, which can be compromised.
+
+There’s no reason for my browser to be able to read my SSH &amp; PGP keys, so I run
+it inside a neat containerising tool called firejail. This prevents it
+from seeing other processes, files and so on outside of limits defined in its
+“profile.”
+
+Nope, It’s Not Perfect
+
+Sure, there are flaws. One is that I’m currently running Google Chrome for
+work stuff and it doesn’t play well with firejail. Oh, and it’s installed from
+a PPA, so Google has root on my machine. That needs some work.
+
+Recently I’ve found myself thinking more and more, let’s stop nitpicking
+about perfection. At the moment, security of everything is basically s**t:
+email, desktop computers, internet of things, it’s all totally broken.
+
+Let’s strive to notch up from “shit” to “satisfactory”, and go from there.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2016-03-22T00:00:00+00:00" content="2016-03-22T00:00:00+00:00">March 2016</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Hardening my Development Machine</h1>
+
+<p><em>This post describes ways that I’ve hardened my development machine against
+attackers, without restricting my ability to do “risky” activities like
+run other people’s code. In short, it involves VMs, containers and a bit of
+discipline.</em></p>
+
+<h2 id="running-other-peoples-code-is-essential">Running Other People’s Code is Essential</h2>
+
+<p>As part of my work as a developer, I spend a lot of time testing out random
+code from the Internet. Whether that be some fancy OCR code or a new Django
+library, it’s brilliant to be able to quickly spin up other people’s code in
+unfamiliar languages and have a play.</p>
+
+<p>To me, this is what the Internet is all about; sharing scrappy ideas through
+the medium of code.</p>
+
+<p>The kind of code I’m talking about often isn’t nicely packaged. It often hasn’t
+even been reviewed or tested - it’s just there, take it or leave it.</p>
+
+<h2 id="current-operating-systems-are-too-permissive">Current Operating Systems Are Too Permissive</h2>
+
+<p>The problem with running other people’s code, at least with my current setup,
+is that any code I run has exactly the same privilege as me.</p>
+
+<p>For starters, any code I run can both read and write anything inside my home
+directory, <code class="highlighter-rouge">/home/paul/</code>. It can read all my files - including those inside my
+encfs encrypted filesystem. It can read my SSH &amp; PGP keys, but that’s OK,
+because they’re encrypted with a password, right?</p>
+
+<p>Except, oh dear, it’s running as me, so it can hang around and wait for me to
+type in my password, then decrypt the underlying keys.</p>
+
+<p>OK, it probably can’t access “system” stuff on my filesystem - eg root-access</p>
+<ul>
+  <li>stuff, because that requires me to type <code class="highlighter-rouge">sudo</code> and enter my password. But,
+oops, we just learned that it can snoop my keyboard, so maybe it can after all.</li>
+</ul>
+
+<p>Yes, maybe I’ve over-simplified it a bit, but essentially, anything I run as
+me is <em>basically the same as me</em>.</p>
+
+<p>Aside from all my data, if someone gains access to my SSH &amp; PGP keys, they get
+to totally impersonate me: they can trash servers I’m responsible for, they
+can commit code as me and release malicious packages under my name, screwing
+over my users.  As a developer, I have a responsibility to keep my users safe,
+so I mustn’t let this happen.</p>
+
+<h2 id="is-there-a-way-to-safely-run-untrusted-code">Is There a Way to Safely Run Untrusted Code?</h2>
+
+<p>Clearly it’s important to be able to run other people’s code. It’s not helpful
+to say “don’t run anything you don’t trust” as trust is complex, and most of
+the stuff on the Internet hasn’t earned our trust, but that doesn’t mean we
+shouldn’t be able to use it.</p>
+
+<p>The question is, can we run other people’s code without putting our own
+data and identity at risk?</p>
+
+<h2 id="using-containers-and-virtual-machines">Using Containers and Virtual Machines</h2>
+
+<p>We need a way to reduce the scope of what code is able to do, and modern
+operating systems have a lot of things on offer.</p>
+
+<p>These are the simple rules I use to harden my machine. Absolutely, this is by
+no means perfect, but it’s an excellent trade-off of usability and security,
+and it’s a lot less broken than it was before :)</p>
+
+<h3 id="do-development-inside-a-virtual-machine">Do Development Inside a Virtual Machine</h3>
+
+<p>The biggest change to my way of working was moving <em>all</em> my development inside
+a virtual machine.</p>
+
+<p>I share my <code class="highlighter-rouge">~/repo/</code> directory through from the host machine to the virtual
+machine, allowing me to edit code on the host machine and run it on the guest
+machine.</p>
+
+<p>It’s important to be a bit limited about what you share into the virtual
+machine - for example, don’t share your whole home directory else you’re
+back in the same position!</p>
+
+<p>I configure the machine using <a href="https://www.vagrantup.com/downloads.html">Vagrant</a> which gives me the extra
+benefit of making it reproducible and throw-away - I can (and do) regularly
+destroy the machine and rebuild it from scratch.</p>
+
+<p>That also means I can more easily re-install my host machine, or move to
+another operating system altogether, without having to work out how to rebuild
+my dev machine each time.</p>
+
+<p>Some tips:</p>
+
+<ul>
+  <li>Limit what directories you share from the host to virtual machine</li>
+  <li>Avoid using git inside the virtual machine: do that outside.</li>
+  <li>Don’t enable SSH forwarding as this allows a compromised virtual machine
+to impersonate your SSH identity.</li>
+  <li>Configure the machine with code, so that it can be destroyed regularly.</li>
+  <li>Destroy it regularly.</li>
+  <li>Automate out anything you find annoying each time you rebuild the machine.</li>
+  <li>Use a VM per project if it makes sense.</li>
+</ul>
+
+<p>Feel free to rip of my <a href="https://github.com/paulfurley/pauls-development-virtual-machine">virtual machine config from Github.</a></p>
+
+<h3 id="keep-my-host-machine-simple">Keep My Host Machine Simple</h3>
+
+<p>Now I’ve got a throw-away virtual machine to mess around with, I’ve become a
+lot stricter about the security of the host machine.</p>
+
+<p>One of the best ways to reduce the “attack surface” - the number of possible
+ways of attacking my machine - is to reduce the amount of code it runs overall,
+or in other words, <em>keep it simple</em>.</p>
+
+<p>Think twice before running <code class="highlighter-rouge">sudo</code> on the host machine.</p>
+
+<h3 id="use-only-the-system-package-manager">Use Only the System Package Manager</h3>
+
+<p>I’ve noticed more and more libraries whose install
+instructions involve <code class="highlighter-rouge">curl</code> and <code class="highlighter-rouge">sudo bash</code>… eek.</p>
+
+<p>I try to be strict about only installing packages through the system package
+manager - in my case, <code class="highlighter-rouge">apt</code> on Ubuntu.</p>
+
+<p>There are a number of benefits to only using the system package manager:</p>
+
+<ul>
+  <li>Some level of vetting has happened by a competent person, in my case a Debian
+or Ubuntu package maintainer. Yes, they’re often volunteers with little time
+but in my experience these fine folks care a <em>lot</em> about security.</li>
+  <li>It’s much easier to resolve “dependency hell” when you know what versions
+you’re running.</li>
+  <li>Packages installed through the package manager are more easily removed (at
+least when they’re well behaved).</li>
+</ul>
+
+<h3 id="be-incredibly-selective-about-third-party-repositories">Be Incredibly Selective About Third-Party Repositories</h3>
+
+<p>Conscientious organisations release their software in a number of native
+package formats, for example .DEB on Debian, Ubuntu and co. They usually
+combine this with running their own repositories (PPAs, whatever) which makes
+life incredibly simple.</p>
+
+<p>There’s nothing wrong with using third-party repositories, but bear in mind
+that these packages have root access on your machine, can automatically update
+themselves, and are potentially completely unvetted.</p>
+
+<p>Be aware of how much trust you are placing in the organisation’s honesty <em>and</em>
+ability to keep <em>their</em> machines secure. (If I were an attacker looking for
+“value for money” I’d go after a popular PPA eg <code class="highlighter-rouge">python-opencv</code> that isn’t
+subject to the scrutiny of the Debian maintainers).</p>
+
+<h3 id="sandbox-mail-client-and-web-browser">Sandbox Mail Client and Web Browser</h3>
+
+<p>The last piece of the puzzle, at least for now, is hardening my web browser and
+email client. Although I have trust in Mozilla Firefox and Thunderbird (perhaps
+misplaced on the latter), when exploits are found they can be en masse,
+for example through adverts placed on high profile websites.</p>
+
+<p>This is especially true for the Tor Browser as most users run a single
+version and all traffic passes through exit nodes, which can be compromised.</p>
+
+<p>There’s no reason for my browser to be able to read my SSH &amp; PGP keys, so I run
+it inside a neat containerising tool called <a href="https://firejail.wordpress.com/">firejail</a>. This prevents it
+from seeing other processes, files and so on outside of limits defined in its
+“profile.”</p>
+
+<h2 id="nope-its-not-perfect">Nope, It’s Not Perfect</h2>
+
+<p>Sure, there are flaws. One is that I’m currently running Google Chrome for
+work stuff and it doesn’t play well with firejail. Oh, and it’s installed from
+a PPA, so Google has root on my machine. That needs some work.</p>
+
+<p>Recently I’ve found myself thinking more and more, let’s stop nitpicking
+about <em>perfection</em>. At the moment, security of everything is basically s**t:
+email, desktop computers, internet of things, it’s all totally broken.</p>
+
+<p>Let’s strive to notch up from “shit” to “satisfactory”, and go from there.</p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        
+        
+        <li><a href="/thoughts-about-decoupling-pgp-and-email-clients/">
+          Thoughts about decoupling PGP and email clients
+        </a></li>
+        
+        
+        
+        <li><a href="/taking-back-my-data-move-from-dropbox-to-nextcloud/">
+          Taking Back My Data, Part 1: Move from Dropbox to Nextcloud
+        </a></li>
+        
+        
+        
+        <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">
+          Randomize your WiFi MAC address on Ubuntu 16.04
+        </a></li>
+        
+        
+        
+        <li><a href="/smart-tvs-in-the-bedroom/">
+          Smart TVs in the bedoom
+        </a></li>
+        
+        
+        
+        <li><a href="/shutting-down-keyserver-email-address-monitoring/">
+          Shutting down keyserver email address monitoring
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

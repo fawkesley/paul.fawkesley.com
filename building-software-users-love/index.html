@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Building Software Users Love</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Building Software Users Love" />
+    
+
+    
+      <meta content="This was originally posted on the NHS.UK Alpha project blog.
+
+I’m Paul, and I’m a developer on the NHS.UK Alpha project. I wanted to share some thoughts about different ways of delivering software, and why we’re working in the way we are.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2015-10-29T00:00:00+00:00" content="2015-10-29T00:00:00+00:00">October 2015</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Building Software Users Love</h1>
+
+<p><em>This was originally posted on the <a href="http://transformation.blog.nhs.uk/building-software-users-love">NHS.UK Alpha project</a> blog.</em></p>
+
+<p>I’m Paul, and I’m a developer on the NHS.UK Alpha project. I wanted to share some thoughts about different ways of delivering software, and why we’re working in the way we are.</p>
+
+<!--more-->
+
+<h2 id="its-hard-building-for-users-you-dont-understand">It’s Hard Building for Users You Don’t Understand</h2>
+
+<p>I have some experience working in organisations where software was written to a specification – a large document which supposedly captured everything there was to know about a problem.</p>
+
+<p>A hypothetical project would go something like this:</p>
+
+<ul>
+  <li>Business analyst works with the users’ manager to understand the users’ problems</li>
+  <li>Business analyst writes lots of requirements documents detailing <em>exactly</em> what the software should do and how</li>
+  <li>Development team receive requirements and make lots of interpretations where things aren’t clear (they never are)</li>
+  <li>Project is delivered, client’s users see the system for the first time, start giving feedback about what’s wrong</li>
+  <li>Any changes must go through “change request” process – it’s like a new piece of work.</li>
+  <li>The interesting thing for me was the observation that <strong>it’s hard building software for users you don’t understand.</strong></li>
+</ul>
+
+<p>I think one of the problems with this type of delivery is that there’s a bit of a Chinese whisper situation going on, where every re-telling of the user need distorts the truth:</p>
+
+<ol>
+  <li>users tell their boss about their problems, not mentioning the hacks and workarounds they currently do</li>
+  <li>their boss tells the business analyst, forgetting some of the detail</li>
+  <li>the business analyst writes it down, losing some nuance</li>
+  <li>the developers read the document and make their own interpretations.</li>
+</ol>
+
+<p>To compound the problem, when software is delivered in one great lump – at the end of the project – it’s too late for feedback from the real users.</p>
+
+<h2 id="build-test-iterate">Build, Test, Iterate</h2>
+
+<p>I’ll come right out and say it: <strong>I don’t think users ever like version 1!</strong></p>
+
+<p>However good we are at capturing user’s needs, I just think that users have to get their hands on the software before we <em>really</em> know what they need.</p>
+
+<p>So an alternative approach, and the one we’re practising at NHS.UK Alpha, is <strong>Build, Test, Iterate</strong>.</p>
+
+<p>The principle is simple enough – you build something small, you try it out on your users, you see what they love and hate, and you do it again, quickly.</p>
+
+<h2 id="keep-it-simple">Keep it Simple</h2>
+
+<p>With everything we build, we try to start simple. It’s always tempting to throw in the kitchen sink, or think up every situation where a solution <em>wouldn’t</em> work. The danger with that is that it’s easy to end up never building anything.</p>
+
+<p>If we have a very broad user base (which in health, we do), it’s helpful to create “personas” – made up people who are based on user interviews, but are specific rather than general. Then we create a solution which works for one of them first, then expand the solution to other personas, if possible.</p>
+
+<p>Personas help to eliminate disagreement about how people on the team think a solution should be. They allow the team to put aside our own opinions and build for the needs of the persona, which reduces our own bias.</p>
+
+<h2 id="keep-it-cheap-fake-it">Keep it Cheap (Fake it)</h2>
+
+<p>Iterating fast is essential, because each round of testing produces a lot of feedback. At each stage, it’s useful to ask the question, <em>“How could we fake a solution well enough to test it?”</em></p>
+
+<p>Using paper and pens is a very fast way of getting ideas out of our heads and in front of users. Although it has limitations – for example it’s hard to show user-interface interactions on paper – it’s much faster than writing code, and users are often perfectly able to pretend they are tapping on an tablet.</p>
+
+<p>We’re also faking it with our prototyping kit. We’ve built <em>just enough</em> backend so that it feels to a user like they’re really booking an appointment, or searching for a GP. We’ve spent exactly no time making it “production ready” – because this is a prototype. We tested it early, so if they’d absolutely hated it, or had no need for it, we would have found out quickly so the cost of throwing it away is low.</p>
+
+<h2 id="developers-get-involved">Developers: Get Involved</h2>
+
+<p>Being a developer isn’t just about writing code.</p>
+
+<p>Writing code is important, but writing the <em>right</em> code is better.</p>
+
+<p>We don’t like waste, and I think we can reduce it by being involved at all stages – from participating in user lab days, to scribbling with sharpies on paper, to implementing production systems.</p>
+
+<p>Ultimately, when we understand the user, it’s easier to build things they love. And that means happy faces all round :)</p>
+
+
+
+</article>
+
+
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

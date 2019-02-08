@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Smart TVs in the bedoom</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Smart TVs in the bedoom" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/tv-built-into-bed.png" />
+    
+
+    
+      <meta content="Here’s a follow-up of why putting camera-enabled smart TVs in the bedroom might be a bad idea
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2018-07-02T00:00:00+00:00" content="2018-07-02T00:00:00+00:00">July 2018</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Smart TVs in the bedoom</h1>
+
+<p><em>Here’s a follow-up of why putting camera-enabled smart TVs in the bedroom might be a bad idea</em></p>
+
+<!--more-->
+
+<p>At <a href="https://lpoolmakefest.org/portfolio/ignite/">Liverpool Makefest</a> on Saturday I gave a talk about keeping smart homes private. I talked about how we’re inviting smart devices into our homes. We’re giving them an intimate status, allowing smart TVs with cameras and microphones into our bedrooms.</p>
+
+<p><img src="/img/tv-built-into-bed.png" alt="Television built into a bed frame" class="img-responsive" /></p>
+
+<p>In a follow up email, someone said they’d mentioned the issue of TV being able to access the living room or bedroom, but their friends didn’t believe them. So here’s a quick explainer on how smart TVs work and how things go wrong.</p>
+
+<h2 id="smart-tvs-are-complex-computers">Smart TVs are complex computers</h2>
+
+<p>Modern smart TVs are complex computers. Just like your computer or phone, they run a full operating system, often based on Android. We connect them to the internet and install applications like Netflix, iPlayer and Skype.</p>
+
+<p>That’s great, but the complexity of being a full-blown computer means there are many ways for things to go wrong.</p>
+
+<p>We’ve all been drilled that keeping computers secure starts with regular security updates and being careful with what things we download and open. The same is exactly true for smart devices.</p>
+
+<h2 id="manufacturers-dont-keep-devices-updated">Manufacturers don’t keep devices updated</h2>
+
+<p>The trouble is that manufacturers don’t keep making security updates.</p>
+
+<p>You might expect your TV to last 10 years, but the manufacturer doesn’t. They’ll release updates for as little time as they can get away with, since it’s expensive to maintain “obsolete” devices. (There <em>are</em> exceptions, and you should give those companies your money)</p>
+
+<p>Over time, researchers and hackers find issues in the software running on smart TVs. Sometimes they’re in the underlying Android operating system (affecting <em>all</em> devices) and sometimes they’re in the manufacturer-specific code used to customize the TV.</p>
+
+<p>Occasionally these software bugs are so serious that they allow someone to take control of the TV — just like a computer virus — giving access to the camera, microphone and internet connection.</p>
+
+<p>This type of serious security bug is precisely why it’s important to install security updates — to fix the bug and prevent it from being exploited. When manufacturers stop supporting a device, they’re leaving your device vulnerable to the next big software bug.</p>
+
+<h2 id="devices-are-often-poorly-designed">Devices are often poorly designed</h2>
+
+<p>Another way smart TVs go wrong is when they’re just poorly engineered.</p>
+
+<p>In my talk I referred to a creepy <a href="https://www.techrepublic.com/article/iot-connected-teddy-bear-leaks-millions-of-kids-conversations-exposed-database-to-blame/">internet-connected teddy bear that leaked 2.2 million voice recordings</a> between children and parents. This was due to a string of bewilderingly incompetent technical decisions.</p>
+
+<p><img src="/img/iot-teddy-bear-cloud-pets.jpg" alt="CloudPets internet-connected teddy bears" class="img-responsive" /></p>
+
+<p>In 2016 <a href="https://www.bbc.co.uk/news/technology-35642749">Troy Hunt found a vulnerability in the Nissan LEAF car</a> which allowed anyone on the internet to take over the air conditioning and heating systems of the vehicle.</p>
+
+<p>The point of these examples is to highlight that manufacturers are making <em>basic</em> security mistakes — they simply aren’t prioritising security, and aren’t protecting your privacy.</p>
+
+<h2 id="devices-dont-always-work-as-designed">Devices don’t always work as designed</h2>
+
+<p>Finally, devices just don’t always do what we expect them to do.</p>
+
+<p>In May this year, a couple received a phone call from a colleague urging them to unplug their Amazon Alexa devices (always-on microphones which respond to voice-commands).</p>
+
+<p>Somehow, the colleague on the phone had just received a voice recording of the couple’s private conversation. It turned out the ever-present microphone <a href="https://www.simplemost.com/amazons-alexa-accidentally-recorded-this-couples-private-conversation-and-sent-it-to-someone/">had made a series of misinterpretations</a> leading to the accidental exposure. According to Amazon:</p>
+
+<blockquote>
+  <p>Echo woke up due to a word in background conversation sounding like ‘Alexa.’ Then, the subsequent conversation was heard as a ‘send message’ request,
+At which point, Alexa said out loud ‘To whom?’ At which point, the background conversation was interpreted as a name in the customers contact list. Alexa then asked out loud, ‘[contact name], right?’ Alexa then interpreted background conversation as ‘right’. As unlikely as this string of events is, we are evaluating options to make this case even less likely.</p>
+</blockquote>
+
+<h2 id="smart-devices-are-a-perfect-storm">Smart devices are a perfect storm</h2>
+
+<p>Smart TVs now have cameras and microphones, and we invite them into our personal spaces.</p>
+
+<p>But they’re just little computers. Computers have bugs, allowing them to be taken over by others.</p>
+
+<p>Many manufacturers put profit over safety, failing to build devices securely and failing to keep on top of bugs.</p>
+
+<p>It’s a perfect storm.</p>
+
+<p>Please think carefully whether you want these things in your bedroom.</p>
+
+<p><a href="https://twitter.com/fawkesley">Thoughts? Get in touch.</a></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/hardening-my-development-machine/">
+          Hardening my Development Machine
+        </a></li>
+        
+        
+        
+        <li><a href="/thoughts-about-decoupling-pgp-and-email-clients/">
+          Thoughts about decoupling PGP and email clients
+        </a></li>
+        
+        
+        
+        <li><a href="/taking-back-my-data-move-from-dropbox-to-nextcloud/">
+          Taking Back My Data, Part 1: Move from Dropbox to Nextcloud
+        </a></li>
+        
+        
+        
+        <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">
+          Randomize your WiFi MAC address on Ubuntu 16.04
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/shutting-down-keyserver-email-address-monitoring/">
+          Shutting down keyserver email address monitoring
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

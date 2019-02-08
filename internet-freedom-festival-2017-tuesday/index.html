@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>The Internet Freedom Festival 2017 (Tuesday)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="The Internet Freedom Festival 2017 (Tuesday)" />
+    
+
+    
+      <meta content="Day two of the Internet Freedom Festival was intense.
+
+Rapid Response To Targeted Threats
+
+It started out with a session by Civil Society Centre for Digital resilience (CiviCDr) and ASL19 on rapid response, which I now understand means helping people in the aftermath of a hacking attack. In this particular case it was about human rights workers having their email accounts hacked by Iranian state sponsored hackers.
+
+As far as I can tell, CiviCDR connects human rights organisations with digital trainers and experts, facilitating these services:
+
+
+  “baseline” training: getting a group of connected organisations up to a basic level of digital security (two-factor auth, etc)
+  incident response: connecting victims of attack with people who can investigate
+  notifications: emailing the community when new types of attack are discovered
+
+
+My main learnings from this session:
+
+
+  Iran performs very sophisticated, one-off attacks tailored for an individual.
+  Google Authenticator 2-factor codes can only be used once to login once, whereas SMS-based codes are valid for 30 minutes and can be used multiple times.
+  There have been successful social-engineering attacks on SMS-based two-factor authentication.
+  Many human rights organisations use Wordpress, but don’t know to keep it updated, so get attacked this way.
+
+
+
+
+Two-factor authentication hugely improves security, but a determined targeted attack can still trick users.
+
+There was a bit of discussion about scaling this with automation, and I heard about a tool called HSF Reporter, which simplifies reporting suspicious emails to the Harms Stories Framework (HSF) engine (can’t find a link).
+
+Journalism and the Right to be Forgotten
+
+This session highlighted the harm to journalism caused by the so called “right to be forgotten”. That doesn’t refer to just one thing, although the European court’s decision that Google had to process right to be forgotten requests is a well-known example.
+
+We learned that “reputation management” firms charge wealthy clients $50,000+ to “clean” their online reputation, serving scary-sounding take-down requests to news sites and blogs which write about their client in a potentially negative light. Small organisations don’t always understand the law, and don’t find it worth going to court, so simply comply with such requests.
+
+Such cases are clearly harmful for public interest reporting.
+
+There are other cases (which these laws were presumably designed for), which make complete sense to me - for example, purging past misdemeanors that are no longer relevant to the public interest.
+
+My take-away from this session was that governments are scrambling to implement laws, these laws overlap with existing data protection and libel laws, and that jurisdictions and borders just make things worse in an Internet world.
+
+Interesting: the BBC maintains a list of sites which have been delisted from Google. The Guardian disapproves. Take a look at five random articles there and you’ll see the problem.
+
+What a mess.
+
+How activists, western media, and USBs and SD cards are revolutionizing North Korean society
+
+Wow. This deeply moving session, painstakingly and carefully told through an interpreter and partner, told of Jung Gwang Il’s false imprisonment, torture and ultimate escape from North Korea.
+
+No Chain, his human-rights NGO, is exposing North Koreans to the outside world by smuggling in USB sticks, SD cards and other devices with a variety of sneaky methods.
+
+He sees times changing in North Korea, with small acts of civil disobedience that were “unthinkable” five years ago.
+
+The main reason for attending the IFF was to call for help. North Korea really has no Internet, so Internet Freedom just doesn’t apply there. He asked for creative ways of bringing Internet to the country, being mindful that doing so is illegal.
+
+Censorship Resistant Circumvention Tool Delivery
+
+In this session I learned about Paskoocheh, another ASL19 project for delivering Android apps to censored users in Iran.
+
+In Iran, the Google Play store doesn’t list “circumvention” apps such as VPNs, and other types of app deemed unsuitable by the government.
+
+Paskoocheh uses some cool delivery techniques like an email autoresponder and a Telegram bot.
+
+To avoid blocking by state censors, it takes advantage of the popularity of S3, hosting files at https://s3.amazonaws.com/....
+
+A censor needs to look inside the packet to be choose whether to block it. In this case, all they could see would be the domain part of the request (the Server Name Indication extension to the TLS handshake), not the URL path.
+
+
+
+On the wire, all requests to URLs under s3.amazonaws.com look the same…
+
+That makes it hard to know whether the request is for an app, or for one of millions of other S3 resources on the Internet.
+
+That certainly doesn’t make it unblockable but it’s working at the moment.
+
+This was a really impressive project, especially considering it’s been going for under a year.
+
+Get in touch.
+IFF on Twitter
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2017-03-07T00:00:00+00:00" content="2017-03-07T00:00:00+00:00">March 2017</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">The Internet Freedom Festival 2017 (Tuesday)</h1>
+
+<p>Day two of the <a href="https://internetfreedomfestival.org/">Internet Freedom Festival</a> was intense.</p>
+
+<h2 id="rapid-response-to-targeted-threats">Rapid Response To Targeted Threats</h2>
+
+<p>It started out with a session by <a href="https://civicdr.org/">Civil Society Centre for Digital resilience (CiviCDr)</a> and <a href="https://asl19.org/en/">ASL19</a> on <a href="https://internetfreedomfestival.org/wiki/index.php/Rapid_Response_To_Targeted_Threats:_CiviCDR_Case_Study">rapid response</a>, which I now understand means helping people in the aftermath of a hacking attack. In this particular case it was about human rights workers having their email accounts hacked by Iranian state sponsored hackers.</p>
+
+<p>As far as I can tell, CiviCDR connects human rights organisations with digital trainers and experts, facilitating these services:</p>
+
+<ol>
+  <li>“baseline” training: getting a group of connected organisations up to a basic level of digital security (two-factor auth, etc)</li>
+  <li>incident response: connecting victims of attack with people who can investigate</li>
+  <li>notifications: emailing the community when new types of attack are discovered</li>
+</ol>
+
+<p>My main learnings from this session:</p>
+
+<ul>
+  <li>Iran performs very sophisticated, one-off attacks tailored for an individual.</li>
+  <li>Google Authenticator 2-factor codes can only be used once to login <em>once</em>, whereas SMS-based codes are valid for 30 minutes and can be used multiple times.</li>
+  <li>There have been successful social-engineering attacks on SMS-based two-factor authentication.</li>
+  <li>Many human rights organisations use Wordpress, but don’t know to keep it updated, so get attacked this way.</li>
+</ul>
+
+<p><img src="/img/two-factor-authentication-screen.png" alt="Two-factor authentication login screen" class="img-responsive" /></p>
+
+<p><em>Two-factor authentication hugely improves security, but a determined targeted attack can still trick users.</em></p>
+
+<p>There was a bit of discussion about scaling this with automation, and I heard about a tool called <a href="https://github.com/epiraces/hsf-reporter-chrome">HSF Reporter</a>, which simplifies reporting suspicious emails to the Harms Stories Framework (HSF) engine (can’t find a link).</p>
+
+<h2 id="journalism-and-the-right-to-be-forgotten">Journalism and the Right to be Forgotten</h2>
+
+<p><a href="https://internetfreedomfestival.org/wiki/index.php/Journalism_and_the_Right_to_be_Forgotten">This session</a> highlighted the harm to journalism caused by the so called “right to be forgotten”. That doesn’t refer to just one thing, although the <a href="https://en.wikipedia.org/wiki/Right_to_be_forgotten#European_Union">European court’s decision</a> that Google had to process right to be forgotten requests is a well-known example.</p>
+
+<p>We learned that “reputation management” firms charge wealthy clients $50,000+ to “clean” their online reputation, serving scary-sounding take-down requests to news sites and blogs which write about their client in a potentially negative light. Small organisations don’t always understand the law, and don’t find it worth going to court, so simply comply with such requests.</p>
+
+<p>Such cases are clearly harmful for public interest reporting.</p>
+
+<p>There are other cases (which these laws were presumably designed for), which make complete sense to me - for example, purging past misdemeanors that are no longer relevant to the public interest.</p>
+
+<p>My take-away from this session was that governments are scrambling to implement laws, these laws overlap with existing data protection and libel laws, and that jurisdictions and borders just make things worse in an Internet world.</p>
+
+<p>Interesting: the BBC maintains <a href="http://www.bbc.co.uk/blogs/internet/entries/1d765aa8-600b-4f32-b110-d02fbf7fd379">a list of sites</a> which have been delisted from Google. The Guardian <a href="https://www.theguardian.com/technology/2015/jul/01/bbc-wrong-right-to-be-forgotten">disapproves</a>. Take a look at five random articles there and you’ll see the problem.</p>
+
+<p>What a mess.</p>
+
+<h2 id="how-activists-western-media-and-usbs-and-sd-cards-are-revolutionizing-north-korean-society">How activists, western media, and USBs and SD cards are revolutionizing North Korean society</h2>
+
+<p>Wow. This deeply moving <a href="https://internetfreedomfestival.org/wiki/index.php/How_activists,_western_media,_and_USBs_and_SD_cards_are_revolutionizing_North_Korean_society.">session</a>, painstakingly and carefully told through an interpreter and partner, told of <a href="https://en.wikipedia.org/wiki/Jeong_Kwang-il">Jung Gwang Il</a>’s false imprisonment, torture and ultimate escape from North Korea.</p>
+
+<p>No Chain, his human-rights NGO, is exposing North Koreans to the outside world by smuggling in USB sticks, SD cards and other devices with a variety of sneaky methods.</p>
+
+<p>He sees times changing in North Korea, with small acts of civil disobedience that were “unthinkable” five years ago.</p>
+
+<p>The main reason for attending the IFF was to call for help. North Korea really has no Internet, so Internet Freedom just doesn’t apply there. He asked for creative ways of bringing Internet to the country, being mindful that doing so is illegal.</p>
+
+<h2 id="censorship-resistant-circumvention-tool-delivery">Censorship Resistant Circumvention Tool Delivery</h2>
+
+<p>In <a href="https://internetfreedomfestival.org/wiki/index.php/Censorship-resistant_circumvention_tool_delivery">this session</a> I learned about <a href="https://paskoocheh.com/">Paskoocheh</a>, another <a href="https://asl19.org/en/">ASL19</a> project for delivering Android apps to censored users in Iran.</p>
+
+<p>In Iran, the Google Play store doesn’t list “circumvention” apps such as VPNs, and other types of app deemed unsuitable by the government.</p>
+
+<p>Paskoocheh uses some cool delivery techniques like an email autoresponder and a Telegram bot.</p>
+
+<p>To avoid blocking by state censors, it takes advantage of the popularity of S3, hosting files at <code class="highlighter-rouge">https://s3.amazonaws.com/...</code>.</p>
+
+<p>A censor needs to look inside the packet to be choose whether to block it. In this case, all they could see would be the <em>domain</em> part of the request (the <a href="https://tools.ietf.org/html/rfc6066#section-3">Server Name Indication</a> extension to the TLS handshake), not the URL path.</p>
+
+<p><img src="/img/wireshark-ssl-sni.png" alt="SSL/TLS Server Name Extension packet showing s3.amazonaws.com" class="img-responsive" /></p>
+
+<p><em>On the wire, all requests to URLs under s3.amazonaws.com look the same…</em></p>
+
+<p>That makes it hard to know whether the request is for an app, or for one of millions of other S3 resources on the Internet.</p>
+
+<p>That certainly doesn’t make it <em>unblockable</em> but it’s working at the moment.</p>
+
+<p>This was a really impressive project, especially considering it’s been going for under a year.</p>
+
+<p><a href="https://twitter.com/fawkesley">Get in touch.</a>
+<a href="https://twitter.com/internetff">IFF on Twitter</a></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/internet-freedom-festival-2017-monday/">
+          The Internet Freedom Festival 2017 (Monday)
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/internet-freedom-festival-2017-wednesday/">
+          The Internet Freedom Festival 2017 (Wednesday)
+        </a></li>
+        
+        
+        
+        <li><a href="/internet-freedom-festival-2017-friday/">
+          The Internet Freedom Festival 2017 (Friday)
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

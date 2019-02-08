@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Packaging Python for Windows with Pyinstaller and Wine</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Packaging Python for Windows with Pyinstaller and Wine" />
+    
+
+    
+      <meta content="If you’ve ever had to deploy Python on Windows you’ll know it’s a headache. If, like me, you develop in Linux, it’s a positive migraine. Hopefully I can help…
+
+I’ve used Pyinstaller v1.5 in the past quite a bit with some success but doing so in Wine on Linux has always been a bit flaky. Since Pyinstaller-2.0 came out a while back I felt it was only right to revisit and see if I could make a more robust setup.
+
+Today I knocked up some scripts to help create and manage a dedicated Wine “build” environment and run Pyinstaller inside Wine to create a “frozen” standalone Windows executable file from your Python source.
+
+Visit the project on GitHub or clone the repo and get involved. On the first run it’ll give you instructions on setting up your dedicated wine environment, but you won’t need to do this again.
+
+$ git clone https://github.com/paulfurley/python-windows-packager
+$ ./package.sh /path/to/my/main.py MyProject
+
+… and *fingers crossed* out pops /tmp/MyProject.exe
+
+Feel free to have a play, fork the code, let me know what you think.
+
+Enjoy!
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2013-02-01T00:00:00+00:00" content="2013-02-01T00:00:00+00:00">February 2013</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Packaging Python for Windows with Pyinstaller and Wine</h1>
+
+<p>If you’ve ever had to deploy Python on Windows you’ll know it’s a headache. If, like me, you develop in Linux, it’s a positive migraine. Hopefully I can help…</p>
+
+<p>I’ve used Pyinstaller v1.5 in the past quite a bit with some success but doing so in Wine on Linux has always been a bit flaky. Since Pyinstaller-2.0 came out a while back I felt it was only right to revisit and see if I could make a more robust setup.</p>
+
+<p>Today I knocked up some scripts to help create and manage a dedicated Wine “build” environment and run Pyinstaller inside Wine to create a “frozen” standalone Windows executable file from your Python source.</p>
+
+<p>Visit the <a title="GitHub" href="https://github.com/paulfurley/python-windows-packager" target="_blank">project on GitHub</a> or clone the repo and get involved. On the first run it’ll give you instructions on setting up your dedicated wine environment, but you won’t need to do this again.</p>
+
+<pre>$ git clone https://github.com/paulfurley/python-windows-packager
+$ ./package.sh /path/to/my/main.py MyProject</pre>
+
+<p>… and *fingers crossed* out pops /tmp/MyProject.exe</p>
+
+<p>Feel free to have a play, fork the code, let me know what you think.</p>
+
+<p>Enjoy!</p>
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        
+        
+        <li><a href="/python-pep8-style-guide-checker-vim/">
+          Python PEP8 Style Guide Checker for Vim
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

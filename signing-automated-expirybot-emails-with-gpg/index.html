@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Signing automated Expirybot emails with GPG</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Signing automated Expirybot emails with GPG" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img//signed-email-from-expirybot.png" />
+    
+
+    
+      <meta content="I’ve started PGP-signing Expirybot’s outgoing emails, but in the process had to build a web service to handle unsubscribes, bounces, complaints and invalid domains.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2017-12-15T00:00:00+00:00" content="2017-12-15T00:00:00+00:00">December 2017</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Signing automated Expirybot emails with GPG</h1>
+
+<p><em>I’ve started PGP-signing Expirybot’s outgoing emails, but in the process had to build a web service to handle unsubscribes, bounces, complaints and invalid domains.</em></p>
+
+<!--more-->
+
+<p><img src="/img/signed-email-from-expirybot.png" alt="Expirybot email signed with GPG" class="img-responsive" /></p>
+
+<p>I get a lot of emails back from people who’ve received <a href="https://www.paulfurley.com/expirybot">my PGP expiry notification emails</a>. One of the requests that’s come up several times is,</p>
+
+<p>‘This is PGP, why don’t you encrypt and sign the emails’?</p>
+
+<h2 id="many-people-have-lost-their-pgp-keys">Many people have lost their PGP keys</h2>
+
+<p>Encrypting the emails is problematic: given that these are expiry emails, many people I email have lost access to their key, so they wouldn’t be able to decrypt the message. Some people don’t have a clue what PGP is (either their email address was re-used or they forgot). These people tend to be suspicious of the email, although a few people reply and ask what it’s all about, after Googling me. If the emails were encrypted, I’m not sure how those people would react to a scary-sounding subject and an unreadable message body. I decided encrypting expiry emails is probably unwise.</p>
+
+<p>But I should <em>definitely</em> sign the emails. The reason I haven’t been is that I’ve been using Mailgun to send my emails. They offer a very helpful feature where they can automatically add an unsubscribe link to your outgoing emails. This saved me a load of time, since I could just go ahead and send emails and let them handle unsubscribes and suppress any future emails sent to an unsubscribed user.</p>
+
+<h2 id="signing-emails-breaks-mailguns-unsubscribe-links">Signing emails breaks Mailgun’s unsubscribe links</h2>
+
+<p>The problem is, if I sign the emails, it’s difficult for Mailgun to add to my email without it either breaking the signature or it sitting <em>outside</em> the closing <code class="highlighter-rouge">-----END PGP SIGNATURE-----</code>. Neither is ideal</p>
+
+<p>Long story short: I did a lot of legwork to implement my own unsubscribe functionality, and now I’m sending GPG-signed emails.</p>
+
+<p>As you can see I’m using <em>inline</em> signatures - where the message body is the signed text - rather than the <a href="https://tools.ietf.org/html/rfc3156">PGP/MIME</a> format. The reason is that PGP/MIME signed emails appear with an attachment called <code class="highlighter-rouge">signature.asc</code>. That’s fine for people who understand PGP, but as I described above, the more suspicious users probably won’t take well to an unfamiliar email attachment.</p>
+
+<h2 id="automating-unattended-gpg-is-quite-interesting">Automating unattended GPG is quite interesting</h2>
+
+<p>I created a <a href="https://keyserver.paulfurley.com/pks/lookup?op=vindex&amp;search=0x9DE7A89E2DE2536F">new PGP key</a> for Expirybot and I needed to be able to access it from my Python code. That meant there wasn’t a lot of point having a password on the key.</p>
+
+<p>Equally, I wanted to limit the damage of putting a private key sitting on a server, waiting to be stolen someday.</p>
+
+<p>I used the same trick I do on my own key, where I exported the signing <em>subkey</em> - without a password - and let Expirybot use that. The <em>primary</em> key I store safely elsewhere, and in a year I can use it to extend the subkey’s expiration and upload it again.</p>
+
+<p>Knowing that I’d forget how I did it, I scripted the key generation and export. You might find it useful for your own keys - <a href="https://github.com/paulfurley/expirybot/blob/master/expirybot/gpg_wrapper/generate_keypair">it’s on Github, of course</a>. (Please don’t judge me by Expirybot’s less-than-perfect code which I admit has a lot of technical debt!)</p>
+
+<h2 id="i-built-a-new-web-service-for-blacklisting">I built a new web service for blacklisting</h2>
+
+<p>I made the decision to move away from Mailgun’s unsubscribe functionality and build my own. I’d been resisting this a bit because in order to provide links people can click on, I need to run a new, always-on, internet-facing (simple) web service. I do love running services like this, but until now Expirybot has been a best-effort bunch of shell scripts and Python strung together in cron. If something’s failed it really hasn’t mattered since maybe someone wouldn’t get a reminder email, but so what?</p>
+
+<p>Building a proper web service is actually a great opportunity to do more of the ideas I’ve got for Expirybot which justified spending the time to get it built and deployed.</p>
+
+<h3 id="user-facing-unsubscribe-endpoint">User-facing unsubscribe endpoint</h3>
+
+<p>This is the obvious bit: the link that a user clicks on. I used <a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JSON web tokens (JWT)</a> to create signed links to add some protection against people changing each other’s subscriptions.</p>
+
+<p>Here’s an example of an unsubscribe link:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/unsubscribe/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjExMjQxMDAsImVtbCI6Im5vYm9keUBleGFtcGxlLmNvbSJ9.4QHDqjoyAhV6V2cBlRO2EuWAYwSv-4RvbrPxwOBbKhE/
+</code></pre>
+</div>
+
+<p>If you <a href="https://jwt.io/">decode the JWT</a> you’ll find it contains this payload:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"exp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1521124100</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"eml"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nobody@example.com"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<h3 id="list-unsubscribe-email-header">List-Unsubscribe email header</h3>
+
+<p>I wanted to allow mail clients like Gmail and Apple Mail to show those ‘magic’ unsubscribe buttons - making it easier for people to unsubscribe, rather than hitting spam. This is enabled by using the <code class="highlighter-rouge">List-Unsubscribe</code> header in the outgoing emails.</p>
+
+<p>There are two forms of <code class="highlighter-rouge">List-Unsubscribe</code>: URL and <code class="highlighter-rouge">mailto:</code> links. In the <code class="highlighter-rouge">mailto</code> version, when the user hits the button, the mail client actually sends an email to the address. This is instant, so it’s preferable to being sent to a website. It’s also safer, since a website could deliver adverts or malware.</p>
+
+<p>For now, I’ve only done the URL link, but I’d like to implement the <code class="highlighter-rouge">mailto:</code> version soon too.</p>
+
+<h3 id="get-unsubscribe-link-api-endpoint">‘Get unsubscribe link’ API endpoint</h3>
+
+<p>In order for Expirybot (which is still cron + shell script + Python) to insert unsubscribe links into emails, it needs to be able to generate the link.</p>
+
+<p>I made a protected API endpoint which Expirybot can call and ask for a link. This endpoint serves a dual-purpose: it <em>also</em> checks that email address and domain against the blacklist. It only returns an unsubscribe link if they’re <em>not</em> unsubscribed, so Expirybot can’t accidentally email someone that it shouldn’t be.</p>
+
+<p>The unsubscribe link contains a JSON web token, signed with Django’s <code class="highlighter-rouge">SECRET_KEY</code>.</p>
+
+<h2 id="synchronising-with-mailgun">Synchronising with Mailgun</h2>
+
+<p>Of course, I needed to import the existing unsubscribe list from Mailgun so I couldn’t email those people who’d previously unsubscribed.</p>
+
+<p>In addition, there were three more things I wanted to import and continue to synchronise with my own service:</p>
+
+<ol>
+  <li><strong>Bounced email addresses</strong>- there were thousands of these, since many PGP keys are very old.</li>
+  <li><strong>Complaints</strong> - there were about 20 of these - these are when someone hits ‘report spam’, and their email provider supports a ‘feedback loop’ which sends the report back to Mailgun.</li>
+  <li><strong>‘No MX’ domains</strong> - Mailgun tries for several days to connect to a domain to deliver email, but ultimately it gives up and logs an error. I didn’t want to continue to email these domains, since they’re either invalid, or they’ve probably changed ownership.</li>
+</ol>
+
+<p>I wrote some Python scripts to synchronise these with my own blacklist, and got it running in cron. This is lovely since I now have a ‘single customer view’ (as they call it in big corporations). That is, I can see everything that’s happened for a given email address, and with that I can get a feel for when I’m helping or annoying people.</p>
+
+<h2 id="next-up-for-expirybot">Next up for Expirybot</h2>
+
+<p>At the moment the 3-days-until-your-key-expires emails I send are unsolicited.</p>
+
+<p>So far, that seems OK - the ratio of happy users to unsubscribes or complaints is very high.</p>
+
+<p>However, I want to do more with Expirybot, like:</p>
+
+<ul>
+  <li>Email people earlier - like 30, 14, 7 days</li>
+  <li>Notify people when a new key is added with the same email address as an existing key</li>
+  <li>Provide ICAL calendar feeds for keys</li>
+  <li>Notify people their key’s cipher preferences (eg SHA1) are no longer considered secure</li>
+  <li>Inform people their (unsafe) short ID is being queried in the keyservers, and helping them correct it</li>
+</ul>
+
+<p>To do this, I feel I need to get their opt-in. The next thing I’m doing for Expirybot is a way for people to ‘sign up’ to monitor they key or email address.</p>
+
+<p>This will be completely free. If it’s something you’re interested in, <a href="mailto:paul@paulfurley.com">pop me an email</a> and I’ll sign you up next week when it’s built. And of course, you’ll be able to use my new unsubscribe functionality if you change your mind :)</p>
+
+<p><a href="https://twitter.com/fawkesley">Thoughts? Get in touch.</a></p>
+
+
+
+</article>
+
+
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

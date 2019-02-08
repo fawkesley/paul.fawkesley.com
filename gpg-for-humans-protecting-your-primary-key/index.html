@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>GPG For Humans, Part 3: Protecting your Primary Key</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="GPG For Humans, Part 3: Protecting your Primary Key" />
+    
+
+    
+      <meta content="In the last post we talked about public and private, or secret, keys. The whole security of GPG relies on making sure your secret key can’t be used by anyone else. In an Internet-connected world, this can be really tough. It’s awkward to change keys, so ideally we’ll keep the same key for years, if not decades.
+
+GPG offers us a solution. In this post we’re going to talk about splitting off your “primary” key and keeping it really safe, then using “subkeys” for every-day use.
+
+The All-Powerful Primary Key
+
+When you create a GPG public/private keypair, by default you get a primary public/private key and one sub public/private key. The primary key has two capabilities, or permissions: Sign and Certify. The subkey has one capability: Encrypt.
+
+$ gpg --edit-key 0x309F635DAD1B5517
+Secret key is available.
+
+pub 4096R/0x309F635DAD1B5517 created: 2014-10-31 expires: 2015-10-31 usage: SC 
+ trust: ultimate validity: ultimate
+sub 4096R/0x627B1B4E8E532C34 created: 2014-10-31 expires: 2015-10-31 usage: E
+
+
+
+The trouble is, the primary key with its Certify capability is too powerful. If someone steals your primary key, the Certify capability allows them to certify other people’s keys, they can generate new subkeys, revoke your keys and so on. They could even generate new subkeys and revoke your subkeys - totally stealing your identity!
+
+In other words, your primary key is your identity - if the secret part is compromised, you’ll need a new key. You can delegate some powers to your subkeys which you can take back at a future date.
+
+Recall that last time we talked about comparing key fingerprints to verify key ownership. Although subkeys have fingerprints too, we’re almost always talking about the primary key’s fingerprint.
+
+I don’t want to carry around the all-powerful primary key on my laptop, phone etc. And that’s OK - it’s possible to remove the secret part of the primary key. But that leaves one problem - notice that the primary key provides both the Certify and Sign capability? Without it, I won’t be able to sign things.
+
+Delegate to Subkeys
+
+The solution is to create another subkey with the Sign capability and use the subkeys to make a new keyring for “every day” use. Your every-day keyring will not contain the secret part of your primary key.
+
+So your set of keys will start off like this:
+
+
+  primary key (Sign, Certify)
+  subkey #1 (Encrypt)
+
+
+Then you’ll add a subkey:
+
+
+  primary key (Sign, Certify)
+  subkey #1 (Encrypt)
+  subkey #2 (Sign)
+
+
+Then you’ll convert this into an every-day keyring, which looks like:
+
+
+  primary key (without secret part - no capabilities)
+  subkey #1 (Encrypt)
+  subkey #2 (Sign)
+
+
+The every-day keyring gives you signing and encryption capabilities but with these restrictions:
+
+
+  It cannot add or revoke any keys (including generating a revocation certificate)
+  It cannot certify other people’s keys.
+
+
+Practise: Create An Every-Day Keyring
+
+In the last post you generated a practice keyring. Here you can practise turning this into an every-day version without the secret part of the primary key.
+
+This is just for fun and you shouldn’t use these keys - we’ll be going through this step-by-step in a later post.
+
+First, add a Sign subkey:
+
+gpg --edit-key 0x309F635DAD1B5517
+Secret key is available.
+
+pub 4096R/0x309F635DAD1B5517 created: 2014-10-31 expires: 2015-10-31 usage: SC 
+ trust: ultimate validity: ultimate
+sub 4096R/0x627B1B4E8E532C34 created: 2014-10-31 expires: 2015-10-31 usage: E
+
+gpg&gt; addkey
+[... follow steps - set a short expiry ...]
+pub  4096R/0x309F635DAD1B5517  created: 2014-10-31  expires: 2015-10-31  usage: SC  
+                               trust: ultimate      validity: ultimate
+sub  4096R/0x627B1B4E8E532C34  created: 2014-10-31  expires: 2015-10-31  usage: E   
+sub  4096R/0x0AC6AD63E8E8A9B0  created: 2014-10-31  expires: 2015-10-31  usage: S   
+[ultimate] (1). Paul Michael Furley &lt;paul@paulfurley.com&gt;
+gpg&gt; save
+
+
+
+Success! Note that there’s now a primary key - pub - and two subkeys - sec. See how the last key with id 0x0AC6AD63E8E8A9B0 has usage S which means Sign.
+
+Create a Full Backup
+
+At this point we can make a full copy (backup) of our keyring (primary and subkeys, public and secret parts):
+
+$ gpg --export-secret-keys --armor 0x309F635DAD1B5517 &gt; 0x309F635DAD1B5517.full_backup.asc
+
+
+
+Create a Partial Backup (Subkeys)
+
+Now we can export the keyring without the secret part of the primary key. This will become our every-day keyring:
+
+$ gpg --export-secret-subkeys --armor 0x309F635DAD1B5517 &gt; 0x309F635DAD1B5517.only_subkeys.asc
+
+
+
+Nuke Your GPG Directory
+
+Move aside your ~/.gnupg/ directory to start afresh. You’ll need to restore your gpg.conf:
+
+$ mv --no-clobber ~/.gnupg ~/.gnupg.BAK
+$ mkdir ~/.gnupg &amp;&amp; cp ~/.gnupg.BAK/gpg.conf ~/.gnupg
+
+
+
+Import Your Partial Backup (Subkeys)
+
+Finally, import your partial backup and peek at your secret keys:
+
+$ gpg --import 0x309F635DAD1B5517.only_subkeys.asc
+$ gpg --list-secret-keys gpg 0x309F635DAD1B5517
+sec#  4096R/0x309F635DAD1B5517 2014-10-31 [expires: 2015-10-31]
+      Key fingerprint = A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517
+uid                            Paul Michael Furley &lt;paul@paulfurley.com&gt;
+ssb   4096R/0x627B1B4E8E532C34 2014-10-31 [expires: 2015-10-31]
+ssb   4096R/0x0AC6AD63E8E8A9B0 2014-10-31 [expires: 2015-10-31]
+
+
+
+Success! See how the sec has changed to sec# to signify that the secret key is missing.
+
+Don’t say I didn’t warn you about GPG’s UX…
+
+Lose Your Every-Day Keyring
+
+Now, if your every-day keyring is lost and your subkeys are compromised, you resurrect your primary key and use it to revoke your subkeys and create new ones.
+
+That’s all very well, but how do we keep the primary key secure? For that, we’re going to need an offline, or “airgapped” machine - meaning it has no connection to the Internet.
+
+And that’s the topic for next week.
+
+Homework!
+
+
+  Some more in-depth reading:
+    
+      https://apapadop.wordpress.com/2013/08/21/using-gnupg-with-qubesos/
+      http://spin.atomicobject.com/2013/11/24/secure-gpg-keys-guide/
+      http://security.stackexchange.com/a/31598
+    
+  
+  Read up on Diceware passphrases at diceware.com
+  For the next post, you will need:
+    
+      2 computers - normal machine + a spare (2 is better but not essential)
+      3x USB sticks (at least 4GB)
+      Ubuntu 14.04 LTS Desktop LiveCD installed on one of the USB sticks with no persistent storage
+    
+  
+
+
+
+
+Upcoming Ebook: I Need Your Help!
+
+
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2014-11-26T00:00:00+00:00" content="2014-11-26T00:00:00+00:00">November 2014</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">GPG For Humans, Part 3: Protecting your Primary Key</h1>
+
+<p>In the last post we talked about public and private, or secret, keys. The whole security of GPG relies on making sure your secret key can’t be used by anyone else. In an Internet-connected world, this can be really tough. It’s awkward to change keys, so ideally we’ll keep the same key for years, if not decades.</p>
+
+<p>GPG offers us a solution. In this post we’re going to talk about splitting off your “primary” key and keeping it really safe, then using “subkeys” for every-day use.</p>
+
+<h2 id="the-all-powerful-primary-key">The All-Powerful Primary Key</h2>
+
+<p>When you create a GPG public/private keypair, by default you get a <em>primary</em> public/private key and one sub public/private key. The primary key has two capabilities, or permissions: Sign and Certify. The subkey has one capability: Encrypt.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ gpg --edit-key 0x309F635DAD1B5517
+Secret key is available.
+
+pub 4096R/0x309F635DAD1B5517 created: 2014-10-31 expires: 2015-10-31 usage: SC 
+ trust: ultimate validity: ultimate
+sub 4096R/0x627B1B4E8E532C34 created: 2014-10-31 expires: 2015-10-31 usage: E
+</code></pre>
+</div>
+
+<p>The trouble is, the primary key with its Certify capability is too powerful. If someone steals your primary key, the Certify capability allows them to certify other people’s keys, they can generate new subkeys, revoke your keys and so on. They could even generate new subkeys and revoke your subkeys - totally stealing your identity!</p>
+
+<p>In other words, your primary key is your <em>identity</em> - if the secret part is compromised, you’ll need a new key. You can delegate some powers to your subkeys which you can take back at a future date.</p>
+
+<p>Recall that last time we talked about comparing key <em>fingerprints</em> to verify key ownership. Although subkeys have fingerprints too, we’re almost always talking about the primary key’s fingerprint.</p>
+
+<p>I don’t want to carry around the all-powerful primary key on my laptop, phone etc. And that’s OK - it’s possible to remove the secret part of the primary key. But that leaves one problem - notice that the primary key provides both the Certify and Sign capability? Without it, I won’t be able to <em>sign</em> things.</p>
+
+<h2 id="delegate-to-subkeys">Delegate to Subkeys</h2>
+
+<p>The solution is to create another subkey with the Sign capability and use the subkeys to make a new keyring for “every day” use. Your every-day keyring will <em>not</em> contain the secret part of your primary key.</p>
+
+<p>So your set of keys will start off like this:</p>
+
+<ul>
+  <li>primary key (Sign, Certify)</li>
+  <li>subkey #1 (Encrypt)</li>
+</ul>
+
+<p>Then you’ll add a subkey:</p>
+
+<ul>
+  <li>primary key (Sign, Certify)</li>
+  <li>subkey #1 (Encrypt)</li>
+  <li>subkey #2 (Sign)</li>
+</ul>
+
+<p>Then you’ll convert this into an every-day keyring, which looks like:</p>
+
+<ul>
+  <li>primary key (without secret part - no capabilities)</li>
+  <li>subkey #1 (Encrypt)</li>
+  <li>subkey #2 (Sign)</li>
+</ul>
+
+<p>The every-day keyring gives you signing and encryption capabilities but with these restrictions:</p>
+
+<ul>
+  <li>It cannot add or revoke any keys (including generating a revocation certificate)</li>
+  <li>It cannot certify other people’s keys.</li>
+</ul>
+
+<h2 id="practise-create-an-every-day-keyring">Practise: Create An Every-Day Keyring</h2>
+
+<p>In the last post you generated a practice keyring. Here you can practise turning this into an every-day version without the secret part of the primary key.</p>
+
+<p>This is just for fun and you shouldn’t use these keys - we’ll be going through this step-by-step in a later post.</p>
+
+<p>First, add a Sign subkey:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>gpg --edit-key 0x309F635DAD1B5517
+Secret key is available.
+
+pub 4096R/0x309F635DAD1B5517 created: 2014-10-31 expires: 2015-10-31 usage: SC 
+ trust: ultimate validity: ultimate
+sub 4096R/0x627B1B4E8E532C34 created: 2014-10-31 expires: 2015-10-31 usage: E
+
+gpg&gt; addkey
+[... follow steps - set a short expiry ...]
+pub  4096R/0x309F635DAD1B5517  created: 2014-10-31  expires: 2015-10-31  usage: SC  
+                               trust: ultimate      validity: ultimate
+sub  4096R/0x627B1B4E8E532C34  created: 2014-10-31  expires: 2015-10-31  usage: E   
+sub  4096R/0x0AC6AD63E8E8A9B0  created: 2014-10-31  expires: 2015-10-31  usage: S   
+[ultimate] (1). Paul Michael Furley &lt;paul@paulfurley.com&gt;
+gpg&gt; save
+</code></pre>
+</div>
+
+<p>Success! Note that there’s now a primary key - <code class="highlighter-rouge">pub</code> - and two subkeys - <code class="highlighter-rouge">sec</code>. See how the last key with id <code class="highlighter-rouge">0x0AC6AD63E8E8A9B0</code> has usage S which means Sign.</p>
+
+<h3 id="create-a-full-backup">Create a Full Backup</h3>
+
+<p>At this point we can make a <strong>full</strong> copy (backup) of our keyring (primary and subkeys, public and secret parts):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ gpg --export-secret-keys --armor 0x309F635DAD1B5517 &gt; 0x309F635DAD1B5517.full_backup.asc
+</code></pre>
+</div>
+
+<h3 id="create-a-partial-backup-subkeys">Create a Partial Backup (Subkeys)</h3>
+
+<p>Now we can export the keyring <em>without</em> the secret part of the primary key. This will become our every-day keyring:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ gpg --export-secret-subkeys --armor 0x309F635DAD1B5517 &gt; 0x309F635DAD1B5517.only_subkeys.asc
+</code></pre>
+</div>
+
+<h3 id="nuke-your-gpg-directory">Nuke Your GPG Directory</h3>
+
+<p>Move aside your <code class="highlighter-rouge">~/.gnupg/</code> directory to start afresh. You’ll need to restore your <code class="highlighter-rouge">gpg.conf</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ mv --no-clobber ~/.gnupg ~/.gnupg.BAK
+$ mkdir ~/.gnupg &amp;&amp; cp ~/.gnupg.BAK/gpg.conf ~/.gnupg
+</code></pre>
+</div>
+
+<h3 id="import-your-partial-backup-subkeys">Import Your Partial Backup (Subkeys)</h3>
+
+<p>Finally, import your partial backup and peek at your secret keys:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ gpg --import 0x309F635DAD1B5517.only_subkeys.asc
+$ gpg --list-secret-keys gpg 0x309F635DAD1B5517
+sec#  4096R/0x309F635DAD1B5517 2014-10-31 [expires: 2015-10-31]
+      Key fingerprint = A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517
+uid                            Paul Michael Furley &lt;paul@paulfurley.com&gt;
+ssb   4096R/0x627B1B4E8E532C34 2014-10-31 [expires: 2015-10-31]
+ssb   4096R/0x0AC6AD63E8E8A9B0 2014-10-31 [expires: 2015-10-31]
+</code></pre>
+</div>
+
+<p>Success! See how the <code class="highlighter-rouge">sec</code> has changed to <code class="highlighter-rouge">sec#</code> to signify that the secret key is missing.</p>
+
+<p>Don’t say I didn’t warn you about GPG’s UX…</p>
+
+<h2 id="lose-your-every-day-keyring">Lose Your Every-Day Keyring</h2>
+
+<p>Now, if your every-day keyring is lost and your subkeys are compromised, you resurrect your primary key and use it to revoke your subkeys and create new ones.</p>
+
+<p>That’s all very well, but how do we keep the primary key secure? For that, we’re going to need an offline, or “airgapped” machine - meaning it has no connection to the Internet.</p>
+
+<p>And that’s the topic for next week.</p>
+
+<h2 id="homework">Homework!</h2>
+
+<ul>
+  <li>Some more in-depth reading:
+    <ul>
+      <li><a href="https://apapadop.wordpress.com/2013/08/21/using-gnupg-with-qubesos/">https://apapadop.wordpress.com/2013/08/21/using-gnupg-with-qubesos/</a></li>
+      <li><a href="http://spin.atomicobject.com/2013/11/24/secure-gpg-keys-guide/">http://spin.atomicobject.com/2013/11/24/secure-gpg-keys-guide/</a></li>
+      <li><a href="http://security.stackexchange.com/a/31598">http://security.stackexchange.com/a/31598</a></li>
+    </ul>
+  </li>
+  <li>Read up on Diceware passphrases at diceware.com</li>
+  <li>For the next post, you will need:
+    <ul>
+      <li>2 computers - normal machine + a spare (2 is better but not essential)</li>
+      <li>3x USB sticks (at least 4GB)</li>
+      <li>Ubuntu 14.04 LTS Desktop LiveCD installed on one of the USB sticks with no persistent storage</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="upcoming-ebook-i-need-your-help">Upcoming Ebook: I Need Your Help!</h2>
+
+<div id="mc_embed_signup">
+</div>
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/gpg-for-humans-why-care-about-cryptography/">
+          GPG For Humans, Part 1: Why Care About Cryptography?
+        </a></li>
+        
+        
+        
+        <li><a href="/gpg-for-humans-public-key-crypto-primer/">
+          GPG For Humans, Part 2: Public Key Crypto Primer
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/gpg-for-humans-preparing-an-offline-machine/">
+          GPG For Humans, Part 4: Preparing an Offline Machine
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

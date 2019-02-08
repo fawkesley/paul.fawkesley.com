@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>The Internet Freedom Festival 2017 (Wednesday)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="The Internet Freedom Festival 2017 (Wednesday)" />
+    
+
+    
+      <meta content="Wednesday was stimulating, exciting, then overwhelming, but excellent.
+
+For the first time I felt I belong in this community, I understand its challenges, and I’ve got something to contribute.
+
+That was cool.
+
+Turkey blocks
+
+In this session, the cool folks at Turkey blocks showed off their realtime censorship-detection system.
+
+This started following a terrorist attack, when the government unhelpfully shut down the internet. That made it impossible for people to contact loved ones at the time of greatest need. Since then, shutdowns have occurred at various times and Turkey Blocks have documented them.
+
+
+Turkey Blocks control the online dialog by detecting and reacting quicker than others.
+
+An interesting technical point is that the method used to censor websites is injecting retransmission packets into TCP streams, disrupting the stream and throttling the connection. As this makes sites unusuable in practice, it’s censorship, even if some prefer the word “throttling”.
+
+They use packet captures from Wireshark to both analyse and illustrate that stream tampering is going on.
+
+Cat and mouse with deep packet inspection
+
+In this session we learned about ways of simulating censorship on a local machine in order to test circumvention techniques.
+
+As circumvention techniques improve, the censors adapt with more eleborate detection techniques, in a game of “cat and mouse”.
+
+Stegotorus offers a solution: make it easier for developers for create new techniques quickly. These techniques are called “pluggable transports” and the theory goes that if developers can bash out a few way over the weekend, it creates an unmanageable workload for the censors.
+
+That’s an elegant case where a decentralised model can defeat a centralised one: the internet community can create a large workload for the censors in a sort of denial of service attack.
+
+
+Stegotorus diagram from https://sri-csl.github.io/stegotorus/
+
+Pluggable Transports Lunch
+
+That session led on to lunch with the pluggable transports community: a highly capable (and welcoming) group of individuals all working towards the same goal of building circumvention tools.
+
+This one was pretty tough on the brain, with some extremely sharp folks from Operator Foundation, Jigsaw, Internews and others whose organisations I didn’t catch.
+
+This community has produced a Pluggable Transport 2.0 specification which is an effort to bring together the community’s individual efforts.
+
+To make it more concrete: suppose you develop an Android app which talks to a backend server. One day you find that your app no longer works in Iran, what do you do? The vision of this community is that you search how to get round filtered internet, find the pluggable transports and do three things:
+
+
+  add a library to your Android build manifest
+  add a line to your backend server Ansible config
+  add a line of code to your app to handle a socket failure, switching to pluggable transports
+
+
+Cool.
+
+Idea: Zero-config Tor Bridges in the Home
+
+… talked to someone from the Tor project about this, seems promising…
+
+Autocrypt: Email Encryption for Everyone
+
+I tried to go this session but it was so full I couldn’t fit in the room!
+
+Have a look at the autocrypt spec, it feels like a very promising approach to email encryption.
+
+Human rights in Venezuela
+
+I had a long, distressing, but inspiring talk with an incredibly brave human rights worker from Venezuela. His challenges made things very real: people close to him have been kidnapped repeatedly until they left the country.
+
+Digital security is a matter of life and death for him. Before we left I taught him about two-factor authentication on Google, which he was very excited about…
+
+Secure communication and information management in rural areas
+
+In this session we broke out into groups and tackled specific problems people in that group are facing. In our case we were working on how to bring low cost internet to Gambia, a recent democracy with no rural internet infrastructure.
+
+They’ve got an interesting opportunity to use neighbouring Senegal, which is geographically close, more or less wherever you are in Gambia.
+
+Currently NGOs buy Senegalese SIM cards and bring them into Gambia, but the cost of data is huge, making it prohibitive.
+
+We talked about compressing data using Opera Mini and creating a line-of-site microwave link from a fixed-line connection in Senegal, as well as mesh networks, like the altermundi community we met at last year’s IFF.
+
+Get in touch.
+IFF on Twitter
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2017-03-08T00:00:00+00:00" content="2017-03-08T00:00:00+00:00">March 2017</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">The Internet Freedom Festival 2017 (Wednesday)</h1>
+
+<p>Wednesday was stimulating, exciting, then overwhelming, but excellent.</p>
+
+<p>For the first time I felt I belong in this community, I understand its challenges, and I’ve got something to contribute.</p>
+
+<p>That was cool.</p>
+
+<h2 id="turkey-blocks">Turkey blocks</h2>
+
+<p>In <a href="https://internetfreedomfestival.org/wiki/index.php/Post-Truth_Censorship:_New_Techniques_for_Realtime_Shutdown_Detection">this session</a>, the cool folks at <a href="https://turkeyblocks.org/">Turkey blocks</a> showed off their realtime censorship-detection system.</p>
+
+<p>This started following a terrorist attack, when the government unhelpfully shut down the internet. That made it impossible for people to contact loved ones at the time of greatest need. Since then, shutdowns have occurred at various times and Turkey Blocks have <a href="https://turkeyblocks.org/reports/">documented them</a>.</p>
+
+<p><img src="/img/turkey-blocks-twitter.png" alt="Tweet from @TurkeyBlocks showing twitter, youtube and facebook being down" class="img-responsive" />
+<em>Turkey Blocks control the online dialog by detecting and reacting quicker than others.</em></p>
+
+<p>An interesting technical point is that the method used to censor websites is injecting retransmission packets into TCP streams, disrupting the stream and throttling the connection. As this makes sites unusuable in practice, it’s censorship, even if some prefer the word “throttling”.</p>
+
+<p>They use packet captures from <a href="https://www.wireshark.org/">Wireshark</a> to both analyse and <em>illustrate</em> that stream tampering is going on.</p>
+
+<h2 id="cat-and-mouse-with-deep-packet-inspection">Cat and mouse with deep packet inspection</h2>
+
+<p>In this <a href="https://internetfreedomfestival.org/wiki/index.php/Playing_cat_and_mouse_with_Deep_Packet_Inspection">session</a> we learned about ways of simulating censorship on a local machine in order to test circumvention techniques.</p>
+
+<p>As circumvention techniques improve, the censors adapt with more eleborate detection techniques, in a game of “cat and mouse”.</p>
+
+<p><a href="https://sri-csl.github.io/stegotorus/">Stegotorus</a> offers a solution: make it easier for developers for create new techniques quickly. These techniques are called “pluggable transports” and the theory goes that if developers can bash out a few way over the weekend, it creates an unmanageable workload for the censors.</p>
+
+<p>That’s an elegant case where a decentralised model can defeat a centralised one: the internet community can create a large workload for the censors in a sort of denial of service attack.</p>
+
+<p><img src="/img/stegotorus-diagram.png" alt="Stegotorus client to server connection, then to Tor network" class="img-responsive" />
+<em>Stegotorus diagram from https://sri-csl.github.io/stegotorus/</em></p>
+
+<h2 id="pluggable-transports-lunch">Pluggable Transports Lunch</h2>
+
+<p>That session led on to lunch with the <a href="https://www.pluggabletransports.info/">pluggable transports community</a>: a highly capable (and welcoming) group of individuals all working towards the same goal of building circumvention tools.</p>
+
+<p>This one was pretty tough on the brain, with some extremely sharp folks from <a href="https://operatorfoundation.org/">Operator Foundation</a>, <a href="https://jigsaw.google.com">Jigsaw</a>, <a href="https://www.internews.org/">Internews</a> and others whose organisations I didn’t catch.</p>
+
+<p>This community has produced a Pluggable Transport 2.0 specification which is an effort to bring together the community’s individual efforts.</p>
+
+<p>To make it more concrete: suppose you develop an Android app which talks to a backend server. One day you find that your app no longer works in Iran, what do you do? The vision of this community is that you search how to get round filtered internet, find the pluggable transports and do three things:</p>
+
+<ol>
+  <li>add a library to your Android build manifest</li>
+  <li>add a line to your backend server Ansible config</li>
+  <li>add a line of code to your app to handle a socket failure, switching to pluggable transports</li>
+</ol>
+
+<p>Cool.</p>
+
+<h2 id="idea-zero-config-tor-bridges-in-the-home">Idea: Zero-config Tor Bridges in the Home</h2>
+
+<p>… talked to someone from the Tor project about this, seems promising…</p>
+
+<h2 id="autocrypt-email-encryption-for-everyone">Autocrypt: Email Encryption for Everyone</h2>
+
+<p>I tried to go <a href="https://internetfreedomfestival.org/wiki/index.php/Autocrypt:_Email_Encryption_for_Everyone">this session</a> but it was so full I couldn’t fit in the room!</p>
+
+<p>Have a look at the <a href="https://autocrypt.readthedocs.io/">autocrypt spec</a>, it feels like a very promising approach to email encryption.</p>
+
+<h2 id="human-rights-in-venezuela">Human rights in Venezuela</h2>
+
+<p>I had a long, distressing, but inspiring talk with an incredibly brave human rights worker from Venezuela. His challenges made things very real: people close to him have been kidnapped repeatedly until they left the country.</p>
+
+<p>Digital security is a matter of life and death for him. Before we left I taught him about two-factor authentication on Google, which he was very excited about…</p>
+
+<h2 id="secure-communication-and-information-management-in-rural-areas">Secure communication and information management in rural areas</h2>
+
+<p>In this <a href="https://internetfreedomfestival.org/wiki/index.php/Secure_communication_and_information_management_in_rural_areas">session</a> we broke out into groups and tackled specific problems people in that group are facing. In our case we were working on how to bring low cost internet to Gambia, a recent democracy with no rural internet infrastructure.</p>
+
+<p>They’ve got an interesting opportunity to use neighbouring Senegal, which is geographically close, more or less wherever you are in Gambia.</p>
+
+<p>Currently NGOs buy Senegalese SIM cards and bring them into Gambia, but the cost of data is huge, making it prohibitive.</p>
+
+<p>We talked about compressing data using <a href="http://www.opera.com/mobile">Opera Mini</a> and creating a line-of-site microwave link from a fixed-line connection in Senegal, as well as mesh networks, like the <a href="http://www.altermundi.net/">altermundi</a> community we met at <a href="https://www.internetfreedomfestival.org/wiki/index.php/Autonomous_Wireless_and_GSM_Networks">last year’s IFF</a>.</p>
+
+<p><a href="https://twitter.com/fawkesley">Get in touch.</a>
+<a href="https://twitter.com/internetff">IFF on Twitter</a></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/internet-freedom-festival-2017-monday/">
+          The Internet Freedom Festival 2017 (Monday)
+        </a></li>
+        
+        
+        
+        <li><a href="/internet-freedom-festival-2017-tuesday/">
+          The Internet Freedom Festival 2017 (Tuesday)
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/internet-freedom-festival-2017-friday/">
+          The Internet Freedom Festival 2017 (Friday)
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

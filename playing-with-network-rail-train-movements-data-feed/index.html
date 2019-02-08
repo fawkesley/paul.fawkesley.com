@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Playing with Network Rail Train Movements Data Feed</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Playing with Network Rail Train Movements Data Feed" />
+    
+
+    
+      <meta content="On Friday I played with the Network Rail Train Movements
+data feed. This contains signalling messages from across the UK rail network.
+I’ve started working on a more developer-friendly Python API.
+
+About the Train Movements Data Feed
+
+I’ve been interested in the Train Movements
+data feed for a while as it gives near real-time access to train locations
+across the network. There are many points on the network that can report
+location - not just stations - so there’s a reasonable volume of updates.
+
+The particularly neat thing is that this data feed categorises movements
+as things like “arrival” and “departure” and compares the timestamp with the
+expected (timetabled) timestamp. I’ve got a few ideas up my sleeve about what
+this data could be used for, so I spent some time playing with the data.
+
+Accessing Network Rail Data Feeds
+
+You need to request a developer account in order
+to get access to the Network Rail data feeds. For some reason they limit these
+accounts to only 500 developers. After reactivating my account from several
+years ago, I fired up some old code I’d written to get started and was pleased
+to find it still worked.
+
+Making Sense of Train Movements
+
+There are several types of message given by the Train Movements data feed which
+allow you to build up the state of all trains on the network according to this
+state machine. However, for now, I’m just interested in message
+type 3: “Train Movement”. These are the instantaneous location reports from a
+particular location, and they look like
+this:
+
+{
+    "body": {
+        "variation_status": "LATE",
+        "planned_timestamp": "1455883470000",
+        "event_type": "DEPARTURE",
+        "train_terminated": "false",
+        "direction_ind": "UP",
+        "toc_id": "88",
+        "auto_expected": "true",
+        "event_source": "AUTOMATIC",
+        "reporting_stanox": "87701",
+        "gbtt_timestamp": "1455883440000",
+        "platform": " 1",
+        "correction_ind": "false",
+        "original_loc_stanox": "",
+        "planned_event_type": "DEPARTURE",
+        "timetable_variation": "2",
+        "delay_monitoring_point": "true",
+        "line_ind": "F",
+        "next_report_stanox": "87700",
+        "train_id": "892A39MI19",
+        "offroute_ind": "false",
+        "current_train_id": "",
+        "loc_stanox": "87701",
+        "next_report_run_time": "1",
+        "route": "2",
+        "train_file_address": null,
+        "division_code": "88",
+        "actual_timestamp": "1455883560000",
+        "original_loc_timestamp": "",
+        "train_service_code": "24745000"
+    },
+    "header": {
+        "user_id": "",
+        "msg_type": "0003",
+        "msg_queue_timestamp": "1455883630000",
+        "source_dev_id": "",
+        "original_data_source": "SMART",
+        "source_system_id": "TRUST"
+    }
+}
+
+
+
+First impressions are that there are a lot of magic numbers, for example
+"reporting_stanox": "87701". I’m sure rail professionals know what this means
+but it’s completely baffling to me, a mere developer.
+
+The documentation is OK but could do with
+improving. (I did try to sign up for the Wiki in order to help out, but when
+asked for a 50 word
+“bio” I got snarky and they understandably probably hit delete!)
+
+Alas, the documentation isn’t hosted on Github so I can’t just submit issues &amp;
+pull requests: I have to ask for permission to be able to even comment.
+
+Making Sense of Train Movement Messages
+
+There are lots of magic IDs in this data so I set about trying to decode some
+of them. To keep it simple, I decided to decode:
+
+
+  The Train Operating Company (toc_id and division_code, apparently)
+  The arrival or departure station.
+
+
+Train Operating Company
+
+This bit was simple enough - it turns out that "toc_id": "88" is called a
+“Numeric Code” and there’s a table of them here.
+Curiously there are a further two “unique” identifiers used to refer to these
+companies, but I’m not too worried about those at the moment.
+
+I spent some tedious minutes turning the HTML table into a
+JSON file to help my future self and others.
+
+Arrival &amp; Departure Station
+
+This one was a bit trickier. There’s a thing called a STANOX (which I’ve seen
+unshortened as a Station Number) which appears to refer to locations as well as
+other places like Engineering buildings.
+
+In order to map STANOX to locations, there’s something called the
+“Reference Data” (also requiring a developer account). That leads to a 6.5MB
+JSON file called CORPUSExtract.json containing records that look like this:
+
+{
+    "TIPLOC": "LVRPLSH",
+    "UIC": "22460",
+    "NLCDESC16": " ",
+    "STANOX": "36151",
+    "NLC": "224600",
+    "3ALPHA": "LIV",
+    "NLCDESC": "LIVERPOOL LIME STREET"
+},
+
+
+
+Note the 3ALPHA field - that’s the station code you often see on booking
+websites. It also goes by another two or more names, but let’s not talk about
+that.
+
+Many of the entries in the reference data have a STANOX but not a 3ALPHA field,
+and vice versa. Either way, now we’ve got the mapping we need.
+
+I couldn’t find any information about how often the reference data is updated,
+and I didn’t explore whether the webserver reports an etag or last-modified. At
+the moment it’s not clear how you’re supposed to automate keeping the reference
+data up to date.
+
+I don’t know what licence this reference data is but I’ll try and clarify that
+and if possible I’ll check it into Github.
+
+Putting it all together
+
+That was a quick whizz through. I wrote some Python to decode these messages
+and put it on Github (although at the time of writing it’s in a
+branch). This is the output after decoding (and re-serializing as JSON):
+
+{
+    "planned_event_type": "departure",
+    "status": "on_time",
+    "planned_datetime": "2016-02-22T08:48:00",
+    "actual_datetime": "2016-02-22T08:48:00",
+    "planned_timetable_datetime": "2016-02-22T08:48:00",
+    "early_late_description": "on time",
+    "location": {
+        "name": "EBBSFLEET INTERNATIONAL",
+        "stanox_code": "89530",
+        "three_alpha": "EBD"
+    },
+    "location_stanox": "89530",
+    "operating_company": {
+        "name": "Southeastern",
+        "business_code": "HU",
+        "numeric_code": 80,
+        "atoc_code": "SE"
+    },
+    "is_correction": false
+}
+
+
+
+
+At the very least this makes the station and train operating company a little
+more understandable.
+
+What’s Next
+
+First I’d like to spend some time releasing the code I’ve built as an actual
+Python library so that more code can be built on top of it, without coupling
+to its implementation. Then I’ve got some real projects I’d like to try out,
+but more on those in the future.
+
+Interested? Do get in touch, my email is paul at this domain.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2016-02-22T00:00:00+00:00" content="2016-02-22T00:00:00+00:00">February 2016</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Playing with Network Rail Train Movements Data Feed</h1>
+
+<p><em>On Friday I played with the Network Rail <a href="http://nrodwiki.rockshore.net/index.php/Train_Movements">Train Movements</a>
+data feed. This contains signalling messages from across the UK rail network.
+I’ve started working on a more developer-friendly Python API.</em></p>
+
+<h2 id="about-the-train-movements-data-feed">About the Train Movements Data Feed</h2>
+
+<p>I’ve been interested in the <a href="http://nrodwiki.rockshore.net/index.php/Train_Movements">Train Movements</a>
+data feed for a while as it gives near real-time access to train locations
+across the network. There are many points on the network that can report
+location - not just stations - so there’s a reasonable volume of updates.</p>
+
+<p>The particularly neat thing is that this data feed categorises movements
+as things like “arrival” and “departure” and compares the timestamp with the
+expected (timetabled) timestamp. I’ve got a few ideas up my sleeve about what
+this data could be used for, so I spent some time playing with the data.</p>
+
+<h2 id="accessing-network-rail-data-feeds">Accessing Network Rail Data Feeds</h2>
+
+<p>You need to <a href="https://datafeeds.networkrail.co.uk/">request a developer account</a> in order
+to get access to the Network Rail data feeds. For some reason they limit these
+accounts to only 500 developers. After reactivating my account from several
+years ago, I fired up some old code I’d written to get started and was pleased
+to find it still worked.</p>
+
+<h2 id="making-sense-of-train-movements">Making Sense of Train Movements</h2>
+
+<p>There are several types of message given by the Train Movements data feed which
+allow you to build up the state of all trains on the network according to <a href="http://nrodwiki.rockshore.net/index.php/TRUST_Message_Process">this
+state machine</a>. However, for now, I’m just interested in message
+type 3: “Train Movement”. These are the instantaneous location reports from a
+particular location, and they look like
+this:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"body"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"variation_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LATE"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"planned_timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1455883470000"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DEPARTURE"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"train_terminated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"direction_ind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"toc_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"88"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"auto_expected"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"event_source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AUTOMATIC"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"reporting_stanox"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87701"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"gbtt_timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1455883440000"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"platform"</span><span class="p">:</span><span class="w"> </span><span class="s2">" 1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"correction_ind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"original_loc_stanox"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"planned_event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DEPARTURE"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"timetable_variation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"delay_monitoring_point"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"line_ind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"F"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"next_report_stanox"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87700"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"train_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"892A39MI19"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"offroute_ind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"current_train_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"loc_stanox"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87701"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"next_report_run_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"route"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"train_file_address"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"division_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"88"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"actual_timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1455883560000"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"original_loc_timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"train_service_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24745000"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"msg_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0003"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"msg_queue_timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1455883630000"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"source_dev_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"original_data_source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SMART"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"source_system_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TRUST"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>First impressions are that there are a lot of magic numbers, for example
+<code class="highlighter-rouge">"reporting_stanox": "87701"</code>. I’m sure rail professionals know what this means
+but it’s completely baffling to me, a mere developer.</p>
+
+<p>The <a href="http://nrodwiki.rockshore.net/index.php/Train_Movements">documentation</a> is <em>OK</em> but could do with
+improving. <em>(I did try to sign up for the Wiki in order to help out, but when
+asked for a 50 word
+“bio” I got snarky and they understandably probably hit delete!)</em></p>
+
+<p>Alas, the documentation isn’t hosted on Github so I can’t just submit issues &amp;
+pull requests: I have to ask for permission to be able to even comment.</p>
+
+<h2 id="making-sense-of-train-movement-messages">Making Sense of Train Movement Messages</h2>
+
+<p>There are lots of magic IDs in this data so I set about trying to decode some
+of them. To keep it simple, I decided to decode:</p>
+
+<ul>
+  <li>The Train Operating Company (<code class="highlighter-rouge">toc_id</code> and <code class="highlighter-rouge">division_code</code>, apparently)</li>
+  <li>The arrival or departure station.</li>
+</ul>
+
+<h3 id="train-operating-company">Train Operating Company</h3>
+
+<p>This bit was simple enough - it turns out that <code class="highlighter-rouge">"toc_id": "88"</code> is called a
+“Numeric Code” and there’s a <a href="http://nrodwiki.rockshore.net/index.php/TOC_Codes">table of them here</a>.
+Curiously there are a further two “unique” identifiers used to refer to these
+companies, but I’m not too worried about those at the moment.</p>
+
+<p>I spent some tedious minutes turning the HTML table into a
+<a href="https://github.com/paulfurley/network-rail-data-feeds-python/blob/master/db/operating_companies.json">JSON file</a> to help my future self and others.</p>
+
+<h3 id="arrival--departure-station">Arrival &amp; Departure Station</h3>
+
+<p>This one was a bit trickier. There’s a thing called a STANOX (which I’ve seen
+unshortened as a Station Number) which appears to refer to locations as well as
+other places like Engineering buildings.</p>
+
+<p>In order to map STANOX to locations, there’s something called the
+“Reference Data” (also requiring a developer account). That leads to a 6.5MB
+JSON file called <code class="highlighter-rouge">CORPUSExtract.json</code> containing records that look like this:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"TIPLOC"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LVRPLSH"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"UIC"</span><span class="p">:</span><span class="w"> </span><span class="s2">"22460"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"NLCDESC16"</span><span class="p">:</span><span class="w"> </span><span class="s2">" "</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"STANOX"</span><span class="p">:</span><span class="w"> </span><span class="s2">"36151"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"NLC"</span><span class="p">:</span><span class="w"> </span><span class="s2">"224600"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"3ALPHA"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LIV"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"NLCDESC"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LIVERPOOL LIME STREET"</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Note the <code class="highlighter-rouge">3ALPHA</code> field - that’s the station code you often see on booking
+websites. It also goes by another two or more names, but let’s not talk about
+that.</p>
+
+<p>Many of the entries in the reference data have a STANOX but not a 3ALPHA field,
+and vice versa. Either way, now we’ve got the mapping we need.</p>
+
+<p>I couldn’t find any information about how often the reference data is updated,
+and I didn’t explore whether the webserver reports an etag or last-modified. At
+the moment it’s not clear how you’re supposed to automate keeping the reference
+data up to date.</p>
+
+<p><em>I don’t know what licence this reference data is but I’ll try and clarify that
+and if possible I’ll check it into Github.</em></p>
+
+<h3 id="putting-it-all-together">Putting it all together</h3>
+
+<p>That was a quick whizz through. I wrote some Python to decode these messages
+and put it on <a href="https://github.com/paulfurley/network-rail-data-feeds-python">Github</a> (although at the time of writing it’s in a
+branch). This is the output after decoding (and re-serializing as JSON):</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"planned_event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"departure"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"on_time"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"planned_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-02-22T08:48:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"actual_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-02-22T08:48:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"planned_timetable_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-02-22T08:48:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"early_late_description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"on time"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EBBSFLEET INTERNATIONAL"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"stanox_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"89530"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"three_alpha"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EBD"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"location_stanox"</span><span class="p">:</span><span class="w"> </span><span class="s2">"89530"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"operating_company"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Southeastern"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"business_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HU"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"numeric_code"</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"atoc_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SE"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"is_correction"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+</div>
+
+<p>At the very least this makes the station and train operating company a little
+more understandable.</p>
+
+<h2 id="whats-next">What’s Next</h2>
+
+<p>First I’d like to spend some time releasing the code I’ve built as an actual
+Python library so that more code can be built on top of it, without coupling
+to its implementation. Then I’ve got some real projects I’d like to try out,
+but more on those in the future.</p>
+
+<p><em>Interested? Do get in touch, my email is paul at this domain.</em></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/raspberry-pi-project-ideas/">
+          Raspberry Pi project ideas
+        </a></li>
+        
+        
+        
+        <li><a href="/chilli-plant-stop-motion-video-linux/">
+          Chilli Cam: Stop Motion Video using old Netbook
+        </a></li>
+        
+        
+        
+        <li><a href="/screen-scraping-utility-bills/">
+          Screen Scrape Your Utility Bills
+        </a></li>
+        
+        
+        
+        <li><a href="/improving-freecycle-with-sms-alerts/">
+          Improving Freecycle with SMS Alerts
+        </a></li>
+        
+        
+        
+        <li><a href="/hack-the-hive-connecting-a-beehive-to-the-internet/">
+          Hack the Hive: Connecting a Beehive to the Internet
+        </a></li>
+        
+        
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

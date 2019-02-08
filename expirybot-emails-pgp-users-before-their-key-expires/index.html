@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Expirybot emails PGP users before their key expires</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Expirybot emails PGP users before their key expires" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/expirybot-email.png" />
+    
+
+    
+      <meta content="A month ago I started a side project to try and make the world a little easier for PGP users. This is how I started small.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2017-07-24T00:00:00+00:00" content="2017-07-24T00:00:00+00:00">July 2017</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Expirybot emails PGP users before their key expires</h1>
+
+<p>A month ago I started a side project to try and make the world a little easier for PGP users. This is how I started small.</p>
+
+<!--more-->
+
+<p><img src="/img/expirybot-email.png" alt="Screenshot of an email reminder" /></p>
+
+<p>It’s easy to moan about PGP, and occasionally people declare it ‘dead’. But many groups like the Internet Freedom community continue to depend on PGP to safely carry out their work.</p>
+
+<p>After many years of using and thinking about PGP I decided to open my ears, listen out for problems and see if there was anything I could do.</p>
+
+<h2 id="pgp-keys-expire-and-people-dont-realise">PGP keys expire and people don’t realise</h2>
+
+<p>I spend a bit of time in online communities where people get support using PGP. Something that comes up consistently is key expiry.</p>
+
+<p>When you generate a PGP key, your software normally sets an expiry date in the future. This is a good idea as it means that if you lose the private key, the public key won’t linger forever. When the date approaches, you can simply extend the expiry and continue to use the key.</p>
+
+<p>Depending what software you use, the default expiry might be several years away. People forget, their key expires and the first thing they know about it is when someone else tells them.</p>
+
+<p>This worsens the overall PGP user experience for everyone: the other person probably got a cryptic message while trying to email you, and now you feel silly and worried that you’ve caused this inconvenience.</p>
+
+<p>This has happened to me, and I assumed it might happen to others too.</p>
+
+<h2 id="i-quickly-tested-an-idea">I quickly tested an idea</h2>
+
+<p>I had an idea that I could email people just before their key expired. Before building something serious, I wanted to know how many people this actually happens to and how they’d react to a random email from a stranger.</p>
+
+<p>I run a PGP keyserver - part of the public network of interconnected servers - so in theory I’ve got all the published keys.</p>
+
+<p><img src="/img/pauls-pgp-keyserver.png" alt="Screenshot of a search result from my PGP keyserver" /></p>
+
+<p>I hacked up a script to pull every key from my keyserver, parse the expiry date, and output a list of people whose keys were in expiring in 3 days from now.</p>
+
+<p>Then I used mail merge to send a personal email to 100 of those people, explaining the situation and how to extend the key.</p>
+
+<p>Not being a natural hustler, I found this terrifying, sending out a hundred emails to people I don’t know. What if they hate me?!</p>
+
+<h2 id="its-a-problem-worth-solving">It’s a problem worth solving</h2>
+
+<p>Within a few minutes, I had a new Twitter follower. I followed back and got a hearty thanks for the reminder. An email reply arrived from a stranger with a short thank you message.</p>
+
+<blockquote>
+  <p>Helpful is an Understatement :-) Thank You for the Helpful Reminder.</p>
+</blockquote>
+
+<p>This seemed like a promising start so I gave myself permission to build something automatic. A month later, I’m running a niche but significant service: I’ve sent thousands of emails, had dozens of nice exchanges and gained a load of insight from real users.</p>
+
+<p>It’s been a lovely month!</p>
+
+<p>Thoughts? <a href="https://twitter.com/fawkesley">@fawkesley</a> <a href="mailto:paul@paulfurley.com">paul@paulfurley.com</a></p>
+
+
+
+</article>
+
+
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

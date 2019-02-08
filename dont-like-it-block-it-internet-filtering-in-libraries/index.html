@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Don't Like It? Block it! Internet filtering in libraries</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Don't Like It? Block it! Internet filtering in libraries" />
+    
+
+    
+      <meta content="
+
+Here’s a long-overdue write up of an interesting thing I stumbled across back in 2013.
+
+It started with a tweet from Liverpool City Council (since deleted) announcing they would be blocking the websites of payday loans companies in the libraries and other city buildings.
+
+I hadn’t considered that councils would block specific websites in their libraries.
+
+To me this immediately raised concerns. While I personally feel payday loans companies are vile, they are legal businesses. I wanted to know more.
+There was an article in Liverpool Express (since deleted but I found an archive copy) with a few questions and answers to a councillor.
+
+
+But payday loan companies are lawful –why should people be prevented from seeing their websites?
+
+
+
+"They may be legal – although their activities are to be investigated – but I would argue that the way they operate is certainly not ethical and that is why their sites should be blocked."
+
+
+Right, so the council will block what it considers to be “unethical”. I wonder what that means?
+
+Who gets to decide? What else is blocked?
+
+To be clear, I believe the council was acting in good faith. I just don’t think they were taking the right approach.
+
+Enter Freedom of Information
+
+Having been hanging around with mySociety folks for a while, I’d learned about Freedom of Information, and I used their excellent service to make my very first freedom of information request.
+
+
+
+I wanted to know:
+
+
+  what’s blocked?
+  how is it blocked technically?
+  who chooses what’s blocked?
+
+
+After some back and forth, a very helpful man in the council provided me some of what I’d asked for.
+
+There were 30 blocked categories
+
+The blocked categories were:
+
+
+  Alcohol
+  Anonymizers
+  Anonymizing Utilities
+  Browser Exploits
+  Discrimination
+  Drugs
+  Extreme
+  Game / Cartoon Violence
+  Gruesome Content
+  Historical Revisionism
+  Illegal UK
+  Malicious Downloads
+  Malicious Sites
+  Nudity
+  P2P / File Sharing
+  Phishing
+  Pornography
+  Potential Criminal Activities
+  Potential Hacking / Computer Crime
+  Potential Illegal Software
+  Profanity
+  PUPs
+  Residential IP Addresses
+  School Cheating Info
+  Sexual Materials
+  Spam URLs
+  Spyware / Adware / Keyloggers
+  Tobacco
+  Violence
+  Weapons
+
+
+That’s quite a list!
+
+Straight away looking at this list I’m thinking of problems:
+
+
+  Alcohol, Drugs: Does this mean websites selling alcohol and drugs? How about information about them? How about support groups for alcohol and drug abuse?
+  Nudity: Wow, that’s broad. Does that include websites about anatomy, then?
+  Violence: What about violence? Promoting it? Condemning it? Reporting on it? I see a lot of violence in the news, is that allowed?
+  Illegal UK: Whaaaat? Does that means sites that are illegal in the UK? (I’m not even sure what this would cover), or sites that are about illegal things in the UK - like drink driving, for example?
+  Residential IP Addresses: Blocking these is just crappy: I run a personal website off my home internet connection, what’s the problem with that? This undermines a core principle of the neutrality of the internet.
+
+
+A blocked category relies on someone, or something classifying that site. This is typically outsourced to the company that provides the filtering software, who would typically automate most of the classification process. In other words, a computer makes most of the decisions.
+
+It’s concerning for me how much power we give to these third parties and their proprietary computer systems to control what information we’re allowed to look at.
+
+There were 1,187 blocked URLs.
+
+Most of these were pretty boring - there were a lot of payday loans companies, as promised.
+
+I’ve picked out a few that stood out for me:
+
+
+  brusselsbedandbreakfast.be
+  gaydar.co.uk
+  liverpoolungagged.com
+  merseywindows.co.uk
+  wirralmetals.com
+  profchucklebuttychronic.blogspot.co.uk
+
+
+Bear in mind that I don’t know when or why these sites were blocked: the council did not provide that information.
+
+You can explore the full list in the spreadsheet provided by the council.
+
+One Year Later
+
+The first request was of limited value because I couldn’t date any of the block requests, and I couldn’t get any of the reasoning behind the blocks. They could have been decades old, which doesn’t give much clue about the context of why they were blocked.
+
+I figured that if I placed another request in a year I would at least be able to see what sites had been added or removed in that time.
+
+30 blocked categories, down with Consumer Protection!
+
+This time there were 30 blocked categories, but they’d changed a little.
+
+Unblocked since 2013:
+
+
+  Alcohol
+  Violence
+
+
+Blocked since 2013:
+
+
+  Consumer Protection
+  Parked Domain
+
+
+I can’t imagine why Consumer Protection would be blocked - weird.
+
+538 blocked websites
+
+Encouragingly, this time the number of blocked websites had halved.
+
+All of the sites I picked out above were now unblocked.
+
+I’ve picked out a few new blocks since 2014 that I thought were interesting:
+
+
+  awe.co.uk - this is the MOD Atomic Weapons Establishment
+  defenseindustrydaily.com
+  facebook.com
+  google.com/images
+  www.youtube.com
+
+
+Again, the full list is in the 2014 spreadsheet provided by the council.
+
+It’s pretty weird for a local council to be blocking the website of a department of the Ministry of Defence.
+
+Hopefully this post highlights some of the moral questions raised when censoring the internet.
+
+Contact me on twitter.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2017-03-17T00:00:00+00:00" content="2017-03-17T00:00:00+00:00">March 2017</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Don't Like It? Block it! Internet filtering in libraries</h1>
+
+<p><img src="/img/liverpool-express-payday-loans-companies.png" alt="Liverpool Express: payday loans companies blocked" class="img-responsive" /></p>
+
+<p>Here’s a long-overdue write up of an interesting thing I stumbled across back in 2013.</p>
+
+<p>It started with a tweet from Liverpool City Council (since deleted) announcing they would be blocking the websites of payday loans companies in the libraries and other city buildings.</p>
+
+<p>I hadn’t considered that councils would block specific websites in their libraries.</p>
+
+<p>To me this immediately raised concerns. While I personally feel payday loans companies are vile, they are legal businesses. I wanted to know more.
+There was an <a href="http://web.archive.org/web/20130803194645/http://www.liverpoolexpress.co.uk/2013/08/01/payday-loan-websites-blocked/">article in Liverpool Express</a> (since deleted but I found an archive copy) with a few questions and answers to a councillor.</p>
+
+<blockquote>
+But payday loan companies are lawful –why should people be prevented from seeing their websites?
+</blockquote>
+
+<blockquote>
+"They may be legal – although their activities are to be investigated – but I would argue that the way they operate is certainly not ethical and that is why their sites should be blocked."
+</blockquote>
+
+<p>Right, so the council will block what it considers to be “unethical”. I wonder what that means?</p>
+
+<p>Who gets to decide? What else is blocked?</p>
+
+<p><em>To be clear, I believe the council was acting in good faith. I just don’t think they were taking the right approach.</em></p>
+
+<h2 id="enter-freedom-of-information">Enter Freedom of Information</h2>
+
+<p>Having been hanging around with <a href="https://www.mysociety.org/">mySociety</a> folks for a while, I’d learned about Freedom of Information, and I used their excellent service to make my very first <a href="https://www.whatdotheyknow.com/request/filtering_system_and_blocked_web">freedom of information request</a>.</p>
+
+<p><img src="/img/what-do-they-know.png" alt="Get answers from the government and public sector" class="img-responsive" /></p>
+
+<p>I wanted to know:</p>
+
+<ul>
+  <li>what’s blocked?</li>
+  <li>how is it blocked technically?</li>
+  <li>who chooses what’s blocked?</li>
+</ul>
+
+<p>After some back and forth, a very helpful man in the council provided me some of what I’d asked for.</p>
+
+<h2 id="there-were-30-blocked-categories">There were 30 blocked categories</h2>
+
+<p>The blocked categories were:</p>
+
+<ul>
+  <li>Alcohol</li>
+  <li>Anonymizers</li>
+  <li>Anonymizing Utilities</li>
+  <li>Browser Exploits</li>
+  <li>Discrimination</li>
+  <li>Drugs</li>
+  <li>Extreme</li>
+  <li>Game / Cartoon Violence</li>
+  <li>Gruesome Content</li>
+  <li>Historical Revisionism</li>
+  <li>Illegal UK</li>
+  <li>Malicious Downloads</li>
+  <li>Malicious Sites</li>
+  <li>Nudity</li>
+  <li>P2P / File Sharing</li>
+  <li>Phishing</li>
+  <li>Pornography</li>
+  <li>Potential Criminal Activities</li>
+  <li>Potential Hacking / Computer Crime</li>
+  <li>Potential Illegal Software</li>
+  <li>Profanity</li>
+  <li>PUPs</li>
+  <li>Residential IP Addresses</li>
+  <li>School Cheating Info</li>
+  <li>Sexual Materials</li>
+  <li>Spam URLs</li>
+  <li>Spyware / Adware / Keyloggers</li>
+  <li>Tobacco</li>
+  <li>Violence</li>
+  <li>Weapons</li>
+</ul>
+
+<p>That’s quite a list!</p>
+
+<p>Straight away looking at this list I’m thinking of problems:</p>
+
+<ul>
+  <li>Alcohol, Drugs: Does this mean websites <em>selling</em> alcohol and drugs? How about information about them? How about support groups for alcohol and drug abuse?</li>
+  <li>Nudity: Wow, that’s broad. Does that include websites about anatomy, then?</li>
+  <li>Violence: What about violence? Promoting it? Condemning it? Reporting on it? I see a lot of violence in the news, is that allowed?</li>
+  <li>Illegal UK: Whaaaat? Does that means sites that <em>are</em> illegal in the UK? (I’m not even sure what this would cover), or sites that are <em>about</em> illegal things in the UK - like drink driving, for example?</li>
+  <li>Residential IP Addresses: Blocking these is just crappy: I run a personal website off my home internet connection, what’s the problem with that? This undermines a core principle of the neutrality of the internet.</li>
+</ul>
+
+<p>A blocked category relies on someone, or something classifying that site. This is typically outsourced to the company that provides the filtering software, who would typically automate most of the classification process. In other words, a computer makes most of the decisions.</p>
+
+<p>It’s concerning for me how much power we give to these third parties and their proprietary computer systems to control what information we’re allowed to look at.</p>
+
+<h2 id="there-were-1187-blocked-urls">There were 1,187 blocked URLs.</h2>
+
+<p>Most of these were pretty boring - there were a lot of payday loans companies, as promised.</p>
+
+<p>I’ve picked out a few that stood out for me:</p>
+
+<ul>
+  <li><a href="http://brusselsbedandbreakfast.be/">brusselsbedandbreakfast.be</a></li>
+  <li><a href="http://gaydar.co.uk">gaydar.co.uk</a></li>
+  <li><a href="http://liverpoolungagged.blogspot.co.uk/">liverpoolungagged.com</a></li>
+  <li><a href="http://merseywindows.co.uk/">merseywindows.co.uk</a></li>
+  <li><a href="http://www.wirralmetals.com/">wirralmetals.com</a></li>
+  <li><a href="http://profchucklebuttychronic.blogspot.co.uk/">profchucklebuttychronic.blogspot.co.uk</a></li>
+</ul>
+
+<p><em>Bear in mind that I don’t know when or why these sites were blocked: the council did not provide that information.</em></p>
+
+<p>You can explore the full list in the <a href="https://www.whatdotheyknow.com/request/171481/response/422836/attach/2/269825%20Furley%20att1%20220813.xls">spreadsheet</a> provided by the council.</p>
+
+<h2 id="one-year-later">One Year Later</h2>
+
+<p>The first request was of limited value because I couldn’t date any of the block requests, and I couldn’t get any of the reasoning behind the blocks. They could have been decades old, which doesn’t give much clue about the context of why they were blocked.</p>
+
+<p>I figured that if I placed <a href="https://www.whatdotheyknow.com/request/categories_and_specific_websites?unfold=1">another request</a> in a year I would at least be able to see what sites had been added or removed in that time.</p>
+
+<h2 id="30-blocked-categories-down-with-consumer-protection">30 blocked categories, down with Consumer Protection!</h2>
+
+<p>This time there were 30 blocked categories, but they’d changed a little.</p>
+
+<p>Unblocked since 2013:</p>
+
+<ul>
+  <li>Alcohol</li>
+  <li>Violence</li>
+</ul>
+
+<p>Blocked since 2013:</p>
+
+<ul>
+  <li>Consumer Protection</li>
+  <li>Parked Domain</li>
+</ul>
+
+<p>I can’t imagine why Consumer Protection would be blocked - weird.</p>
+
+<h2 id="538-blocked-websites">538 blocked websites</h2>
+
+<p>Encouragingly, this time the number of blocked websites had halved.</p>
+
+<p>All of the sites I picked out above were now unblocked.</p>
+
+<p>I’ve picked out a few new blocks since 2014 that I thought were interesting:</p>
+
+<ul>
+  <li><a href="http://awe.co.uk">awe.co.uk</a> - this is the MOD <a href="https://en.wikipedia.org/wiki/Atomic_Weapons_Establishment">Atomic Weapons Establishment</a></li>
+  <li><a href="defenseindustrydaily.com">defenseindustrydaily.com</a></li>
+  <li>facebook.com</li>
+  <li>google.com/images</li>
+  <li>www.youtube.com</li>
+</ul>
+
+<p>Again, the full list is in the <a href="https://www.whatdotheyknow.com/request/232900/response/586666/attach/2/Copy%20of%20URLs.xlsx">2014 spreadsheet</a> provided by the council.</p>
+
+<p>It’s pretty weird for a local council to be blocking the website of a department of the Ministry of Defence.</p>
+
+<p>Hopefully this post highlights some of the moral questions raised when censoring the internet.</p>
+
+<p><a href="https://twitter.com/fawkesley">Contact me on twitter.</a></p>
+
+
+
+</article>
+
+
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>The Difference Between GPG, GnuPG, PGP and OpenPGP</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="The Difference Between GPG, GnuPG, PGP and OpenPGP" />
+    
+
+    
+      <meta content="This seems to come up a lot - is it a PGP key or a GPG key, and what’s OpenPGP?
+
+Don’t worry, it’s simple, and best explained with a brief timeline:
+
+Pretty Good Privacy (PGP)
+
+Pretty Good Privacy is proprietary software and was originally written by Phil Zimmerman in 1991. After several changes of hands, it’s now owed by Symantec Corp. They also own the registered trademark for “PGP”, “Pretty Good” and “Pretty Good Privacy”.
+
+OpenPGP
+
+After PGP took off in popularity, others wanted to write software that was compatible with the PGP format.
+
+In 1997 PGP Inc proposed to the IETF a standard called OpenPGP and allowed various uses of the name “OpenPGP”. This was accepted and the IETF formed the OpenPGP Working Group.
+
+The OpenPGP protocol is currently formalised in the (obsolete) RFC 2440 and new RFC 4880.
+
+GNU Privacy Guard (GnuPG / GPG)
+
+GNU Privacy Guard, also known as GnuPG and GPG, is the Free Software Foundation’s implementation of the OpenPGP protocol, written almost entirely by Werner Koch.
+
+As it is entirely Free Software (licensed under GNU Public Licence v3), you are granted the freedom to inspect and modify the source code (see my mirror
+here). Furthermore, accordingly, some versions do not include proprietary “encumbered” algorithms such as IDEA.
+
+What to call my key?
+
+Lots of people call their key-pair a “PGP Key” but given that “PGP” is trade-marked, that doesn’t seem right. And if it was generated with GnuPG or some other OpenPGP implementation, that seems daft.
+
+“GPG key” is popular too, but unless a key is specific to GnuPG, that seems wrong.
+
+So in my opinion, it’s probably right to call it an “OpenPGP Key”, but I’m not sure everyone will agree with me on that one!
+
+Other OpenPGP implementations
+
+There are lots of OpenPGP implementations and the one I’m currently 2nd-most excited about is openpgpjs for Javascript. Doing grown-up encryption in the browser excites me as someone’s got a chance of building something pretty. And seriously, I think that’s important if we want encryption to be used by people less geeky than me.
+
+The one I’m most excited about is my very own EncryptIt for Python, focusing (predictably) on testing and clarity. It’s early days and it’s by no means the most complete, but I’m taking it deliberately slow to keep the quality high.
+
+Interested in learning how to use GPG? See my GPG For Humans series.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2015-03-31T00:00:00+00:00" content="2015-03-31T00:00:00+00:00">March 2015</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">The Difference Between GPG, GnuPG, PGP and OpenPGP</h1>
+
+<p>This seems to come up a <em>lot</em> - is it a PGP key or a GPG key, and what’s OpenPGP?</p>
+
+<p>Don’t worry, it’s simple, and best explained with a brief timeline:</p>
+
+<h2 id="pretty-good-privacy-pgp">Pretty Good Privacy (PGP)</h2>
+
+<p>Pretty Good Privacy is <em>proprietary software</em> and was originally written by <a href="https://en.wikipedia.org/wiki/Phil_Zimmermann">Phil Zimmerman</a> in 1991. After several changes of hands, it’s now owed by Symantec Corp. They also own the registered trademark for “PGP”, “Pretty Good” and “Pretty Good Privacy”.</p>
+
+<h2 id="openpgp">OpenPGP</h2>
+
+<p>After PGP took off in popularity, others wanted to write software that was compatible with the PGP format.</p>
+
+<p>In 1997 PGP Inc proposed to the IETF a standard called OpenPGP and allowed various uses of the name “OpenPGP”. This was accepted and the IETF formed the OpenPGP Working Group.</p>
+
+<p>The OpenPGP protocol is currently formalised in the (obsolete) <a href="https://tools.ietf.org/html/rfc2440">RFC 2440</a> and new <a href="https://tools.ietf.org/html/rfc4880">RFC 4880</a>.</p>
+
+<h2 id="gnu-privacy-guard-gnupg--gpg">GNU Privacy Guard (GnuPG / GPG)</h2>
+
+<p><a href="https://gnupg.org">GNU Privacy Guard</a>, also known as GnuPG and GPG, is the <a href="https://fsf.org">Free Software Foundation</a>’s implementation of the OpenPGP protocol, written almost entirely by <a href="https://en.wikipedia.org/wiki/Werner_Koch">Werner Koch</a>.</p>
+
+<p>As it is entirely Free Software (licensed under GNU Public Licence v3), you are granted the freedom to inspect and modify the source code <a href="https://github.com/paulfurley/gnupg-mirror/">(see my mirror
+here)</a>. Furthermore, accordingly, some versions do not include proprietary “encumbered” algorithms such as IDEA.</p>
+
+<h2 id="what-to-call-my-key">What to call my key?</h2>
+
+<p>Lots of people call their key-pair a “PGP Key” but given that “PGP” is trade-marked, that doesn’t seem right. And if it was generated with GnuPG or some other OpenPGP implementation, that seems daft.</p>
+
+<p>“GPG key” is popular too, but unless a key is specific to GnuPG, that seems wrong.</p>
+
+<p>So in my opinion, it’s probably right to call it an “OpenPGP Key”, but I’m not sure everyone will agree with me on that one!</p>
+
+<h2 id="other-openpgp-implementations">Other OpenPGP implementations</h2>
+
+<p>There are lots of OpenPGP implementations and the one I’m currently 2nd-most excited about is <a href="https://github.com/openpgpjs/openpgpjs">openpgpjs</a> for Javascript. Doing grown-up encryption in the browser excites me as someone’s got a <em>chance</em> of building something <em>pretty</em>. And seriously, I think that’s important if we want encryption to be used by people less geeky than me.</p>
+
+<p>The one I’m most excited about is my very own <a href="https://github.com/paulfurley/encryptit">EncryptIt</a> for Python, focusing (predictably) on testing and clarity. It’s early days and it’s by no means the most complete, but I’m taking it deliberately slow to keep the quality high.</p>
+
+<p><strong>Interested in learning how to use GPG? See my <a href="https://paulfurley.com/gpg-for-humans-why-care-about-cryptography/">GPG For Humans</a> series.</strong></p>
+
+
+
+</article>
+
+
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

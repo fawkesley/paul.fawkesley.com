@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>GPG For Humans, Part 4: Preparing an Offline Machine</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="GPG For Humans, Part 4: Preparing an Offline Machine" />
+    
+
+    
+      <meta content="Last time we talked about the importance of protecting your primary secret key as, if stolen, an attacker could take over your entire GPG identity.
+
+An effective way to protect your key is a combination of techniques:
+
+
+  make sure that it never touches a network
+  store the key encrypted with a strong passphrase
+
+
+Of course, this isn’t foolproof, but it significantly ups the game. An attacker would now have to both steal the key - probably by physically breaking in to your property - and also decrypt it.
+
+Memory Sticks are Cheap
+
+We’re going to be using a LiveCD and three USB memory sticks for our offline machine. To aid your future self, I recommend that you find a marker pen and label them.
+
+Mine are labelled like this:
+
+
+  LIVE CD
+  GPG KEYS (ONLY CONNECT TO OFFLINE LIVE CD)
+  TRANSFER
+
+
+Time for some Diceware
+
+Since you’ve learned all about Diceware, it’s time to roll some die and create a new passphrase.
+
+This offline passphrase: will protect your GPG KEYS memory stick, and must only ever be typed into an offline Live CD.
+
+You’re probably going to need to write down a backup and hide it in a different location from the memory stick.
+
+1. A LiveCD Always Forgets
+
+A Live “CD” is a GNU/Linux distribution which boots directly from a CD or USB stick and keeps everything in random-access memory (RAM) - that is, nothing is ever written to permanent storage.
+
+That’s great for a number of reasons:
+
+
+  each boot is a fresh start, making it difficult for an attacker to install keyloggers or malware
+  there are (ideally) no permanent storage media for secret keys to leak onto
+
+
+I used the “Startup Disk Creator” application in Ubuntu to build an Ubuntu 14.04LTS Desktop bootable USB stick.
+
+Warning: You must disable writeable “reserved space” on the USB stick - in my application I had to select an option called “Discarded on shutdown, unless you save them elsewhere”.
+
+If your USB stick has a read-only hardware switch, it’s a good idea to enable it after creating your LiveCD.
+
+2. GPG Keys
+
+The purpose of this memory stick is to store an export of your primary key and all subkeys, as well as a copy of your gpg.conf.
+
+This memory stick holds the keys to the kingdom, so it’s a great idea to encrypt the underlying partition before you write anything to it. You can do this by booting into your LiveCD and opening its “Disk Utility” application. From there you can erase the USB stick and create a new LUKS encrypted partition.
+
+You’ll be prompted for a passphrase. Now’s the time to use your offline passphrase. Remember, you should only type this into a LiveCD that’s not connected to a network.
+
+3. Transfer
+
+This memory stick is going to move things between your online and offline machines. A few examples include:
+
+
+  Other people’s public keys that you want to certify (sign) will be copied to your offline machine, certified, then transferred back online to be sent to the owner.
+  Your “every day” keyring, comprising only your subkeys, will be copied to your online machine.
+
+
+It’s up to you whether you encrypt this memory stick, but if you do, don’t use the offline passphrase as that would indirectly expose that passphrase to your online machine.
+
+Transfer is a Weak Link
+
+Beware: because it moves between your online and offline machines, this memory stick is a serious candidate for attack.
+
+For example, a determined attacker with control of your online machine could install malicious software onto the memory stick that exploits a weakness in the offline machine, for example in its file manager (nautilus). The software could be programmed to extract GPG keys and copy them onto the memory stick in a hidden location. Then when the transfer memory stick moves between machines it could exfiltrate your secret key.
+
+To reduce this risk, you could use a memory stick with a read-only switch which is always enabled when connected to the offline machine. This would prevent malicious software running on the offline machine from writing secret keys to the memory stick, but also limits the transfer to one direction. Your mileage may vary, and I’d appreciate your views on this one.
+
+Pragmatically, you probably need two-way transfer, so just exercise caution with how you use this memory stick - don’t ever run software from it, for example.
+
+Creating Your Offline Machine
+
+Old laptops make great offline machines, especially if you can remove all permanent storage such as hard drives and SD cards.
+
+![Offline laptop][3]
+
+Removing permanent storage reduces the number of channels through which your secret key could be exfiltrated (malicious software could copy your keys onto the hard drive in the hope that you’ll later boot the laptop online where it could be retrieved through hacking).
+
+So, with old laptop in hand, here’s how to get your new secure machine ready for primetime.
+
+Preparing the laptop
+
+
+  Switch off and remove hard drive from offline machine.
+  Disconnect and disable any network devices - preferably physically and also in BIOS.
+  Enable booting from USB in the BIOS, if required.
+  Insert LIVE CD memory stick and power up.
+  Marvel at the idea that anything you do here will be lost when you power off!
+
+
+Preparing GPG KEYS memory stick
+
+
+  Insert GPG KEYS memory into offline LiveCD laptop
+  Run Disk Utility
+  Format the memory stick and create a LUKS parition, using the offline passphrase.
+  Eject and remove GPG KEYS memory stick
+  Re-insert and verify that you are prompted for a passphrase, and your offline passphrase unlocks it
+
+
+Preparing gpg.conf
+
+Because every boot is a fresh start, you’ll need to keep a copy of your gpg.conf file so that GPG is sanely configured (see previous post).
+
+As your GPG config file may be an avenue for attack, I recommend keeping it on your GPG KEYS memory stick.
+
+
+  Start up your offline LiveCD and unlock your GPG KEYS memory stick.
+  Open a terminal and type gpg to generate a default ~/.gnupg/gpg.conf file
+  Edit ~/.gnupg/gpg.conf according to the https://paulfurley.com/gpg-for-humans-public-key-crypto-primer/. This file is currently in memory, and will be lost on reboot
+  Copy the newly edited ~/.gnupg/gpg.conf to your GPG KEYS memory stick, eg /media/ubuntu/GPG_KEYS/gpg.conf
+
+
+Daily Use
+
+When you want to use GPG on the laptop, you’ll need to restore your GPG configuration and keys as the machine will be totally fresh. You can do this by following these steps:
+
+
+  Unplug everything, disable network devices, remove all disks and memory sticks.
+  Insert LIVE CD memory stick and power on.
+  Insert GPG KEYS memory stick and unlock with secure passphrase
+  Copy /media/ubuntu/GPG_KEYS/gpg.conf to ~/.gnupg/ directory
+  Import your GPG keys, eg gpg --import /media/ubuntu/GPG_KEYS/0x309F635DAD1B5517.full_backup.asc
+  Unmount and eject your GPG KEYS memory stick.
+  Do some GPG stuff.
+  Power off to wipe the laptop’s memory.
+
+
+To minimise the risk of data leaking, you need to bear in mind a few simple rules. You might even want to print these and stick them to your laptop.
+
+
+  Your GPG KEYS memory stick must only be inserted into your freshly-booted, offline LiveCD.
+  Ditto for your secure passphrase.
+  Unmount and remove GPG KEYS as soon as you’ve imported your configuration and keys.
+  Always power off (not suspend) the laptop as soon as you’ve finished what you’re doing.
+
+
+Bringing it all together
+
+It’s been a long time coming, but that’s the background covered.
+
+Next time we’ll actually create a set of GPG keys using the offline machine, storing them securely on a dedicated memory stick.
+
+Homework
+
+
+  Find somewhere safe to hide your GPG KEYS memory stick.
+  Seal your passphrase in an envelope and hide it somewhere - in a different location from GPG KEYS !
+  Help me out with a potential ebook - see below.
+
+
+Ebook
+
+I’m considering writing an Ebook on GPG - can you help? I’d like to pin down what areas to focus on so your feedback would amazing. I’ll make sure you get a free copy.
+
+Contribute and get occasional updates on a GPG ebook.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2015-02-03T00:00:00+00:00" content="2015-02-03T00:00:00+00:00">February 2015</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">GPG For Humans, Part 4: Preparing an Offline Machine</h1>
+
+<p>Last time we talked about the importance of protecting your primary secret key as, if stolen, an attacker could take over your entire GPG identity.</p>
+
+<p>An effective way to protect your key is a combination of techniques:</p>
+
+<ul>
+  <li><strong>make sure that it never touches a network</strong></li>
+  <li><strong>store the key encrypted with a strong passphrase</strong></li>
+</ul>
+
+<p>Of course, this isn’t foolproof, but it significantly ups the game. An attacker would now have to both steal the key - probably by physically breaking in to your property - and also decrypt it.</p>
+
+<h1 id="memory-sticks-are-cheap">Memory Sticks are Cheap</h1>
+
+<p>We’re going to be using a LiveCD and three USB memory sticks for our offline machine. To aid your future self, I recommend that you find a marker pen and label them.</p>
+
+<p>Mine are labelled like this:</p>
+
+<ol>
+  <li>LIVE CD</li>
+  <li>GPG KEYS (ONLY CONNECT TO OFFLINE LIVE CD)</li>
+  <li>TRANSFER</li>
+</ol>
+
+<h1 id="time-for-some-diceware">Time for some Diceware</h1>
+
+<p>Since you’ve learned all about <a href="http://diceware.com">Diceware</a>, it’s time to roll some die and create a new passphrase.</p>
+
+<p>This <strong>offline passphrase</strong>: will protect your <code class="highlighter-rouge">GPG KEYS</code> memory stick, and must only <em>ever</em> be typed into an offline Live CD.</p>
+
+<p>You’re probably going to need to write down a backup and hide it in a different location from the memory stick.</p>
+
+<h1 id="1-a-livecd-always-forgets">1. A LiveCD Always Forgets</h1>
+
+<p>A Live “CD” is a GNU/Linux distribution which boots directly from a CD or USB stick and keeps everything in random-access memory (RAM) - that is, nothing is ever written to permanent storage.</p>
+
+<p>That’s great for a number of reasons:</p>
+
+<ul>
+  <li>each boot is a fresh start, making it difficult for an attacker to install keyloggers or malware</li>
+  <li>there are (ideally) no permanent storage media for secret keys to leak onto</li>
+</ul>
+
+<p>I used the “Startup Disk Creator” application in Ubuntu to build an <a href="http://www.ubuntu.com/download/desktop">Ubuntu</a> 14.04LTS Desktop bootable USB stick.</p>
+
+<p><strong>Warning: You must disable writeable “reserved space” on the USB stick</strong> - in my application I had to select an option called “Discarded on shutdown, unless you save them elsewhere”.</p>
+
+<p>If your USB stick has a read-only hardware switch, it’s a good idea to enable it after creating your LiveCD.</p>
+
+<h1 id="2-gpg-keys">2. GPG Keys</h1>
+
+<p>The purpose of this memory stick is to store an export of your primary key and all subkeys, as well as a copy of your <code class="highlighter-rouge">gpg.conf</code>.</p>
+
+<p>This memory stick holds the keys to the kingdom, so it’s a great idea to encrypt the underlying partition before you write anything to it. You can do this by booting into your LiveCD and opening its “Disk Utility” application. From there you can erase the USB stick and create a new LUKS encrypted partition.</p>
+
+<p>You’ll be prompted for a passphrase. Now’s the time to use your <strong>offline passphrase</strong>. Remember, you should only type this into a LiveCD that’s not connected to a network.</p>
+
+<h1 id="3-transfer">3. Transfer</h1>
+
+<p>This memory stick is going to move things between your online and offline machines. A few examples include:</p>
+
+<ul>
+  <li>Other people’s public keys that you want to certify (sign) will be copied to your offline machine, certified, then transferred back online to be sent to the owner.</li>
+  <li>Your “every day” keyring, comprising only your subkeys, will be copied to your online machine.</li>
+</ul>
+
+<p>It’s up to you whether you encrypt this memory stick, but if you do, <strong>don’t use the offline passphrase</strong> as that would indirectly expose that passphrase to your online machine.</p>
+
+<h1 id="transfer-is-a-weak-link">Transfer is a Weak Link</h1>
+
+<p>Beware: because it moves between your online and offline machines, this memory stick is a serious candidate for attack.</p>
+
+<p>For example, a determined attacker with control of your online machine could install malicious software onto the memory stick that exploits a weakness in the offline machine, for example in its file manager (nautilus). The software could be programmed to extract GPG keys and copy them onto the memory stick in a hidden location. Then when the transfer memory stick moves between machines it could exfiltrate your secret key.</p>
+
+<p>To reduce this risk, you could use a memory stick with a read-only switch which is always enabled when connected to the offline machine. This would prevent malicious software running on the offline machine from writing secret keys to the memory stick, but also limits the transfer to one direction. Your mileage may vary, and I’d appreciate your views on this one.</p>
+
+<p>Pragmatically, you probably need two-way transfer, so just exercise caution with how you use this memory stick - don’t ever run software from it, for example.</p>
+
+<h1 id="creating-your-offline-machine">Creating Your Offline Machine</h1>
+
+<p>Old laptops make great offline machines, especially if you can remove all permanent storage such as hard drives and SD cards.</p>
+
+<p>![Offline laptop][3]</p>
+
+<p>Removing permanent storage reduces the number of channels through which your secret key could be exfiltrated (malicious software could copy your keys onto the hard drive in the hope that you’ll later boot the laptop online where it could be retrieved through hacking).</p>
+
+<p>So, with old laptop in hand, here’s how to get your new secure machine ready for primetime.</p>
+
+<h2 id="preparing-the-laptop">Preparing the laptop</h2>
+
+<ol>
+  <li>Switch off and remove hard drive from offline machine.</li>
+  <li>Disconnect and disable any network devices - preferably physically and also in BIOS.</li>
+  <li>Enable booting from USB in the BIOS, if required.</li>
+  <li>Insert <code class="highlighter-rouge">LIVE CD</code> memory stick and power up.</li>
+  <li>Marvel at the idea that anything you do here will be lost when you power off!</li>
+</ol>
+
+<h2 id="preparing-gpg-keys-memory-stick">Preparing GPG KEYS memory stick</h2>
+
+<ul>
+  <li>Insert <code class="highlighter-rouge">GPG KEYS</code> memory into offline LiveCD laptop</li>
+  <li>Run Disk Utility</li>
+  <li>Format the memory stick and create a LUKS parition, using the offline passphrase.</li>
+  <li>Eject and remove <code class="highlighter-rouge">GPG KEYS</code> memory stick</li>
+  <li>Re-insert and verify that you are prompted for a passphrase, and your offline passphrase unlocks it</li>
+</ul>
+
+<h2 id="preparing-gpgconf">Preparing gpg.conf</h2>
+
+<p>Because every boot is a fresh start, you’ll need to keep a copy of your <code class="highlighter-rouge">gpg.conf</code> file so that GPG is sanely configured (see previous post).</p>
+
+<p>As your GPG config file may be an avenue for attack, I recommend keeping it on your <code class="highlighter-rouge">GPG KEYS</code> memory stick.</p>
+
+<ul>
+  <li>Start up your offline LiveCD and unlock your <code class="highlighter-rouge">GPG KEYS</code> memory stick.</li>
+  <li>Open a terminal and type <code class="highlighter-rouge">gpg</code> to generate a default <code class="highlighter-rouge">~/.gnupg/gpg.conf</code> file</li>
+  <li>Edit <code class="highlighter-rouge">~/.gnupg/gpg.conf</code> according to the <a href="homework section in part 2">https://paulfurley.com/gpg-for-humans-public-key-crypto-primer/</a>. <strong>This file is currently in memory, and will be lost on reboot</strong></li>
+  <li>Copy the newly edited <code class="highlighter-rouge">~/.gnupg/gpg.conf</code> to your <code class="highlighter-rouge">GPG KEYS</code> memory stick, eg <code class="highlighter-rouge">/media/ubuntu/GPG_KEYS/gpg.conf</code></li>
+</ul>
+
+<h1 id="daily-use">Daily Use</h1>
+
+<p>When you want to use GPG on the laptop, you’ll need to restore your GPG configuration and keys as the machine will be totally fresh. You can do this by following these steps:</p>
+
+<ol>
+  <li>Unplug everything, disable network devices, remove all disks and memory sticks.</li>
+  <li>Insert <code class="highlighter-rouge">LIVE CD</code> memory stick and power on.</li>
+  <li>Insert <code class="highlighter-rouge">GPG KEYS</code> memory stick and unlock with secure passphrase</li>
+  <li>Copy <code class="highlighter-rouge">/media/ubuntu/GPG_KEYS/gpg.conf</code> to <code class="highlighter-rouge">~/.gnupg/</code> directory</li>
+  <li>Import your GPG keys, eg <code class="highlighter-rouge">gpg --import /media/ubuntu/GPG_KEYS/0x309F635DAD1B5517.full_backup.asc</code></li>
+  <li>Unmount and eject your <code class="highlighter-rouge">GPG KEYS</code> memory stick.</li>
+  <li>Do some GPG stuff.</li>
+  <li><strong>Power off</strong> to wipe the laptop’s memory.</li>
+</ol>
+
+<p>To minimise the risk of data leaking, you need to bear in mind a few simple rules. You might even want to print these and stick them to your laptop.</p>
+
+<ol>
+  <li>Your <code class="highlighter-rouge">GPG KEYS</code> memory stick must only be inserted into your freshly-booted, offline LiveCD.</li>
+  <li>Ditto for your secure passphrase.</li>
+  <li>Unmount and remove <code class="highlighter-rouge">GPG KEYS</code> as soon as you’ve imported your configuration and keys.</li>
+  <li>Always power off (not suspend) the laptop as soon as you’ve finished what you’re doing.</li>
+</ol>
+
+<h1 id="bringing-it-all-together">Bringing it all together</h1>
+
+<p>It’s been a long time coming, but that’s the background covered.</p>
+
+<p>Next time we’ll actually create a set of GPG keys using the offline machine, storing them securely on a dedicated memory stick.</p>
+
+<h1 id="homework">Homework</h1>
+
+<ul>
+  <li>Find somewhere safe to hide your <code class="highlighter-rouge">GPG KEYS</code> memory stick.</li>
+  <li>Seal your passphrase in an envelope and hide it somewhere - in a different location from <code class="highlighter-rouge">GPG KEYS</code> !</li>
+  <li>Help me out with a potential ebook - see below.</li>
+</ul>
+
+<h1 id="ebook">Ebook</h1>
+
+<p>I’m considering writing an Ebook on GPG - can you help? I’d like to pin down what areas to focus on so your feedback would amazing. I’ll make sure you get a free copy.</p>
+
+<p><a href="http://eepurl.com/bbooor">Contribute and get occasional updates on a GPG ebook.</a></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/gpg-for-humans-why-care-about-cryptography/">
+          GPG For Humans, Part 1: Why Care About Cryptography?
+        </a></li>
+        
+        
+        
+        <li><a href="/gpg-for-humans-public-key-crypto-primer/">
+          GPG For Humans, Part 2: Public Key Crypto Primer
+        </a></li>
+        
+        
+        
+        <li><a href="/gpg-for-humans-protecting-your-primary-key/">
+          GPG For Humans, Part 3: Protecting your Primary Key
+        </a></li>
+        
+        
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

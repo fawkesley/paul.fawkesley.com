@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Screen Scrape Your Utility Bills</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Screen Scrape Your Utility Bills" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/screen-scrape-your-utility-bills-thumbnail.png" />
+    
+
+    
+      <meta content="At the heart of my last project MinuteMate was the ability to programatically retrieve billing information from my Vodafone online account.
+
+
+
+The motivation for doing this was an unexpected £90 bill I received from Vodafone and the discovery that the company had no mechanism to prevent or warn about such an occurrence.
+
+The system allowed me - and I hoped others - to receive alerts when my usage surpassed my monthly “free” allowance.
+
+In my ideal world Vodafone - in fact all utility companies - would provide APIs to programmatically query your usage. Instead, largely we have to rely on the (awful) web interface and (not bad) mobile apps to check usage.
+
+I decided to open source the web scraping component of the system so anyone can use and expand upon it. Please feel free to wrap it in an API! I’ve released it as a command-line tool called *vodafone-scraper* which includes basic alert functionality with thresholds.
+
+You can see the code and examples at https://github.com/paulfurley/vodafone-scraper or just install and run: $ pip install vodafone-scraper
+
+Not a coder? Interested in scraping a utility website? Tell me about it!
+
+Horrors of Vodafone Online
+
+I’m no stranger to web scraping as I work in the Data Services team at ScraperWiki - we see a lot of weird and wonderful sites.
+
+Vodafone online, however, deserves an award for nastiness. Their site - written in ASP.NET - authentication mechanism involves a whole load of Javascript wrangling with numerous separate HTTP requests &amp; lots of cookies. Just look - if you are - at the network activity generated *just to log in*!
+
+
+
+Furthermore each page of the site takes between 5 - 100 seconds to load (yes, I’ve actually had to allow a *two minute* timeout to get it working).
+
+When I’m trying to liberate a Javascript-heavy site like this, there’s a tradeoff between two different approaches:
+
+
+  
+    Spend a lot of upfront time reverse engineering the site in order to understand exactly the sequence of Javascript requests &amp; cookie setting/getting, then use a low level library like python-requests to emulate them in a different language (ie Python).
+  
+  
+    Use Selenium to perform full browser automation and *actually* access the site the Firefox as if I were a real user.
+  
+
+
+In this case, the upfront time and effort required to reverse engineer and emulate the site’s Javascript just wasn’t worth the extra system overheads required with Selenium.
+
+If I were doing these requests on behalf of thousands of users simultaneously, however, the tradeoff would be different - the overhead of running many full browsers could lead to significant computing costs. An obvious downside, however is that a subtle change to the website could send the scraper back to square 1.
+
+Future of Javascript Scraping
+
+Clearly we should expect to see more Javascript-heavy sites in the future. It feels sad to me that this means it’s getting harder to access sites at a low level - it’s disappointing that we must implement an entire programming language to retrieve the content of a web-page.
+
+The solution, I suspect, lies in minimal headless browser technology such as PhantomJS. As I understand it, PhantomJS implements just enough browser functionality so as to run the Javascript, without the overhead of full DOM rendering, CSS, layout and so on.
+
+
+
+The last time I tried to use PhantomJS, it unfortunately didn’t “just work” and I didn’t have the time try harder. However, I plan to have another go as I see this as an important future scraping and web-automation tool.
+
+Are you interested in scraping utility sites or other Javascript sites?
+Get in touch.
+
+I offer web scraping as a professional service. Find out more.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2013-11-29T00:00:00+00:00" content="2013-11-29T00:00:00+00:00">November 2013</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Screen Scrape Your Utility Bills</h1>
+
+<p>At the heart of my last project MinuteMate was the ability to programatically retrieve billing information from my Vodafone online account.</p>
+
+<p><img src="/img/vodafone-online-login-screen.png" alt="Vodafone online login screen" class="img-responsive" /></p>
+
+<p>The motivation for doing this was an unexpected £90 bill I received from Vodafone and the discovery that the company had no mechanism to prevent or warn about such an occurrence.</p>
+
+<p>The system allowed me - and I hoped others - to receive alerts when my usage surpassed my monthly “free” allowance.</p>
+
+<p>In my ideal world Vodafone - in fact all utility companies - would provide APIs to programmatically query your usage. Instead, largely we have to rely on the (awful) web interface and (not bad) mobile apps to check usage.</p>
+
+<p>I decided to open source the web scraping component of the system so anyone can use and expand upon it. Please feel free to wrap it in an API! I’ve released it as a command-line tool called *vodafone-scraper* which includes basic alert functionality with thresholds.</p>
+
+<p>You can see the code and examples at <a title="Vodafone Scraper" href="https://github.com/paulfurley/vodafone-scraper" target="_blank">https://github.com/paulfurley/vodafone-scraper</a> or just install and run: $ pip install vodafone-scraper</p>
+
+<p><em>Not a coder? Interested in scraping a utility website? Tell me about it!</em></p>
+
+<h2 id="horrors-of-vodafone-online">Horrors of Vodafone Online</h2>
+
+<p>I’m no stranger to web scraping as I work in the Data Services team at <a title="ScraperWiki" href="https://scraperwiki.com" target="_blank">ScraperWiki</a> - we see a lot of weird and wonderful sites.</p>
+
+<p>Vodafone online, however, deserves an award for nastiness. Their site - written in ASP.NET - authentication mechanism involves a whole load of Javascript wrangling with numerous separate HTTP requests &amp; lots of cookies. Just look - if you are - at the network activity generated *just to log in*!</p>
+
+<p><img src="/img/vodafone-online-network-tab-screenshot.png" alt="Vodafone online network tab screenshot" class="img-responsive" /></p>
+
+<p>Furthermore each page of the site takes between 5 - 100 seconds to load (yes, I’ve actually had to allow a *two minute* timeout to get it working).</p>
+
+<p>When I’m trying to liberate a Javascript-heavy site like this, there’s a tradeoff between two different approaches:</p>
+
+<ol>
+  <li>
+    <p>Spend a lot of upfront time reverse engineering the site in order to understand exactly the sequence of Javascript requests &amp; cookie setting/getting, then use a low level library like python-requests to emulate them in a different language (ie Python).</p>
+  </li>
+  <li>
+    <p>Use Selenium to perform full browser automation and *actually* access the site the Firefox as if I were a real user.</p>
+  </li>
+</ol>
+
+<p>In this case, the upfront time and effort required to reverse engineer and emulate the site’s Javascript just wasn’t worth the extra system overheads required with Selenium.</p>
+
+<p>If I were doing these requests on behalf of thousands of users simultaneously, however, the tradeoff would be different - the overhead of running many full browsers could lead to significant computing costs. An obvious downside, however is that a subtle change to the website could send the scraper back to square 1.</p>
+
+<h2 id="future-of-javascript-scraping">Future of Javascript Scraping</h2>
+
+<p>Clearly we should expect to see more Javascript-heavy sites in the future. It feels sad to me that this means it’s getting harder to access sites at a low level - it’s disappointing that we must implement an entire programming language to retrieve the content of a web-page.</p>
+
+<p>The solution, I suspect, lies in minimal headless browser technology such as PhantomJS. As I understand it, PhantomJS implements just enough browser functionality so as to run the Javascript, without the overhead of full DOM rendering, CSS, layout and so on.</p>
+
+<p><img src="/img/phantom-js-home-page.png" alt="PhantomJS home page" class="img-responsive" /></p>
+
+<p>The last time I tried to use PhantomJS, it unfortunately didn’t “just work” and I didn’t have the time try harder. However, I plan to have another go as I see this as an important future scraping and web-automation tool.</p>
+
+<p>Are you interested in scraping utility sites or other Javascript sites?
+<a href="http://paulfurley.com/contact/" title="Contact">Get in touch.</a></p>
+
+<p><strong>I offer web scraping as a professional service. <a href="/reliable-accurate-web-scraping-uk-based/" title="Reliable and Accurate Web Scraping (UK Based)">Find out more.</a></strong></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/raspberry-pi-project-ideas/">
+          Raspberry Pi project ideas
+        </a></li>
+        
+        
+        
+        <li><a href="/chilli-plant-stop-motion-video-linux/">
+          Chilli Cam: Stop Motion Video using old Netbook
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/improving-freecycle-with-sms-alerts/">
+          Improving Freecycle with SMS Alerts
+        </a></li>
+        
+        
+        
+        <li><a href="/hack-the-hive-connecting-a-beehive-to-the-internet/">
+          Hack the Hive: Connecting a Beehive to the Internet
+        </a></li>
+        
+        
+        
+        <li><a href="/playing-with-network-rail-train-movements-data-feed/">
+          Playing with Network Rail Train Movements Data Feed
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

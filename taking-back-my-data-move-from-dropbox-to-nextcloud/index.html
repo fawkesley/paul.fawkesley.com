@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Taking Back My Data, Part 1: Move from Dropbox to Nextcloud</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Taking Back My Data, Part 1: Move from Dropbox to Nextcloud" />
+    
+
+    
+      <meta content="This post documents how I moved from Dropbox to self-hosting a “private cloud”
+using Nextcloud on a Raspberry Pi in my home.
+
+
+
+
+  Update[2016-12-08]: Added sections on automatically banning IP addresses and sending abuse report emails. Added paragraph about generating custom Diffie Hellman parameters.
+
+
+See all updates and edits to this page.
+
+Objective: Kick Dropbox
+
+Today I achieved step one of my master plan to take back ownership of my data. In this blog post I’ll describe how I switched from using Dropbox to my own “cloud”, physically located inside my home.
+
+Right now, I’ve taken back my files, for example photos, scanned documents, money stuff and business stuff.
+
+Next I want to take back:
+
+
+  calendar - I’ve got over ten years of calendar stored in Google and it freaks me out
+  contacts - Again, Google knows everything.
+  email - Much harder, but the holy grail. Worth it? Not sure.
+
+
+This blog post is both to document how I did it and make it easier for the next person.
+
+The software and hardware setup looks like this:
+
+
+  Raspberry Pi (the 4-core one with 1GB memory)
+  Rasbian Lite (based on Debian jessie)
+  Nextcloud 10 (a fork of Owncloud)
+  Nginx
+  PostgreSQL
+
+
+Install and Harden Raspberry Pi
+
+I downloaded Raspbian Lite 2016-11-25 and transferred it onto an SD card with the dd command.
+
+I connected the Pi to my router, powered it up and found the IP address in the router. I logged in with SSH and
+started configuring it.
+
+ssh pi@192.168.0.191
+
+
+
+First I set the hostname to pi-loft-2 and rebooted.
+
+sudo sed -i 's/raspberrypi/pi-loft-2/g' /etc/hostname /etc/hosts
+sudo reboot
+
+
+
+Next I downloaded a script I often use called “Ubuntu Trusty First Five Minutes”. This is based on a blog post and it carries out some basic hardening.
+
+wget 'https://github.com/paulfurley/ubuntu-trusty-first-five-minutes/archive/master.zip'
+
+unzip master.zip &amp;&amp; cd ubuntu-trusty-first-five-minutes-master/
+
+# EDIT AND UNDERSTAND BOOTSTAP.SH BEFORE YOU RUN IT
+
+./ubuntu-trusty-first-five-minutes-master/bootstrap.sh
+
+
+
+Install ZeroTier One
+
+ZeroTier One is a massively useful decentralized VPN service I use for connecting my devices and getting around NAT and so on. I installed that, joined my private network from the command line, then granted access to the device from the ZeroTier One web interface.
+
+curl -s https://install.zerotier.com/ | bash  # this is really bad practice, btw
+
+sudo zerotier-cli join &lt;my network id&gt;
+
+
+
+Set up hosts and SSH config
+
+For convenience, I added these lines to my ~/.ssh/config:
+
+# ~/.ssh/config
+
+Host pi-loft-2
+    User paulfurley
+
+
+
+And to /etc/hosts (note that this is a ZeroTier One “local” address, not a real one):
+
+# /etc/hosts
+21.136.137.224  pi-loft-2
+
+
+
+With the power of ZeroTier One, I can now do ssh pi-loft-2 from anywhere in the world!
+
+Configure Encrypted External Hard Drive
+
+I use cryptsetup to mount an encrypted drive at /media/externalhd.
+
+sudo apt-get install cryptsetup
+
+
+
+Note: I aready had an external hard drive formateed as an encrypted LUKS volume. I’m going to skip over how to create the disk because it’s destructive, and can’t remember the exact commands. If you want an encrypted disk, have a read about the cryptsetup luksFormat command, then come back here.
+
+I use a mount script to help me remember how to do this. There are two options: you can either store the key as a file on the Raspberry Pi (insecure, but protects against casual theft of the hard drive), or you’ll have to enter it each time the Pi boots.
+
+Configure cloud.paulfurley.com in DNS
+
+I went over to my domain registrar, namecheap.com, and created an A record for cloud.paulfurley.com to point at my (static) home IP address.
+
+Unlike most UK ISPs, Andrews &amp; Arnold give you a static IP address by default. Don’t forget to ask your ISP to set this up for you.
+
+Configure port forwarding on home router
+
+I logged into my home router and allocated a static IP 192.168.0.191 to the new Raspberry Pi.
+
+I configured port forwarding for port 80 and 443 (HTTP and HTTPS) through to that IP address.
+
+Now anyone connecting to http[s]://cloud.paulfurley.com will hit my home router, which will pass them straight through to the Raspberry Pi, pi-loft-2.
+
+Install Nginx
+
+I installed the Nginx 1.6.2 from the normal Debian jessie respository:
+
+sudo apt-get install nginx
+
+
+
+and disabled the default configuration:
+
+sudo rm /etc/nginx/sites-enabled/default
+
+
+
+Get an SSL/TLS Certificate with Let’s Encrypt
+
+I needed a TLS certificate for cloud.paulfurley.com to secure connections to NextCloud. I used Let’s Encrypt with the client called certbot, and a minimal default Nginx configuration to get things rolling.
+
+Add jessie-backports and install certbot:
+
+echo "deb http://ftp.debian.org/debian jessie-backports main" |sudo tee /etc/apt/sources.list.d/jessie-backports.list
+sudo apt-get update
+sudo apt-get install -t jessie-backports -y certbot
+
+
+
+I enabled a minimal Nginx configuration that works with the certbot webroot strategy:
+
+wget -O /etc/nginx/sites-available/letsencrypt-bootstrap https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/nginx/sites-available/letsencrypt-bootstrap
+sudo ln -s /etc/nginx/sites-available/letsencrypt-bootstrap /etc/nginx/sites-enabled/letsencrypt-bootstrap
+sudo service nginx reload
+
+
+
+I ran certbot in dry-run mode:
+
+sudo mkdir -p /etc/letsencrypt/fake-webroot
+sudo certbot --dry-run certonly --webroot -w /etc/letsencrypt/fake-webroot -d cloud.paulfurley.com
+
+
+
+… that worked, so I ran it again without --dry-run and got a new certificate located at:
+
+/etc/letsencrypt/live/cloud.paulfurley.com/*.pem
+
+
+
+Then I disabled the Nginx configuration (we’ll handle renewals later):
+
+sudo rm /etc/nginx/sites-enabled/letsencrypt-bootstrap
+sudo service nginx reload
+
+
+
+Install and Configure PHP 7.0 and modules
+
+I wanted to use the modern PHP 7.0, but jessie only had version 5.6.
+
+I added the stretch distribution to apt:
+
+echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib non-free rpi" | sudo tee &gt; /etc/apt/sources.list.d/stretch.list
+
+
+
+… but in order to prevent everything upgrading to (less stable) stretch packages, I pinned everything to jessie by adding this to /etc/apt/preferences.d/pin-to-jessie.pref:
+
+Package: *
+Pin: release n=jessie
+Pin-Priority: 600
+
+
+
+Then updated the cache:
+
+sudo apt-get update
+
+
+
+I installed the PHP prerequisites from the installation manual (note the use of -t stretch)
+
+sudo apt-get install -t stretch php7.0-cli php7.0-gd php7.0-xml php7.0-mbstring php7.0-zip php7.0-pgsql php7.0-curl php7.0-bz2 php7.0-intl php7.0-mcrypt php7.0-fpm
+
+
+
+Note: there were some other, optional(?) packages that I didn’t install.
+
+Configure PHP-FPM environment variables
+
+I don’t know why this is necessary, but the manual said to do it.
+
+Uncomment the environment variables lines in /etc/php/7.0/fpm/pool.d/www.conf, as per the Nextcloud docs
+
+env[HOSTNAME] = $HOSTNAME
+env[PATH] = /usr/local/bin:/usr/bin:/bin
+env[TMP] = /tmp
+env[TMPDIR] = /tmp
+env[TEMP] = /tmp
+
+
+
+Install and Configure PostgreSQL Database
+
+I installed PostgreSQL 9.6:
+
+sudo apt-get install -t jessie postgresql-9.6
+
+
+
+And created a database and user:
+
+sudo su - postgres
+createdb nextcloud
+
+PASSWORD=$(openssl rand -base64 15)
+echo "PASSWORD: $PASSWORD"
+
+echo "CREATE USER nextcloud WITH PASSWORD '${PASSWORD}';" | psql nextcloud
+echo "GRANT ALL PRIVILEGES ON DATABASE \"nextcloud\" TO nextcloud;" | psql nextcloud
+
+
+
+Keep a note of this database password! You’ll need to configure Nextcloud with it.
+
+Download and Verify NextCloud
+
+I downloaded the latest Nextcloud server, version 10.0.1:
+
+cd /tmps
+wget 'https://download.nextcloud.com/server/releases/nextcloud-10.0.1.zip'
+
+
+
+Verify its PGP signature
+
+I got the signing PGP key and the checksums file and verified the install:
+
+wget https://download.nextcloud.com/server/releases/nextcloud-10.0.1.zip.asc
+wget https://nextcloud.com/nextcloud.asc
+gpg --import nextcloud.asc
+gpg --verify nextcloud-10.0.1.zip.asc nextcloud-10.0.1.zip
+
+
+
+I saw:
+
+gpg: Good signature from "Nextcloud Security &lt;security@nextcloud.com&gt;"
+
+
+
+(And also a warning that the key is not certified with a trusted signature. That means I haven’t independently verified that the signing key I downloaded, nextcloud.asc, is actually Nextcloud’s key - it could have been replaced with a bad one. As a half-measure I Googled the key fingerprint 2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A and saw it listed on many sites, giving it at least some credibility.)
+
+Install NextCloud into Nginx webroot
+
+cd /tmp
+unzip nextcloud-10.0.1.zip
+sudo mv /tmp/nextcloud /var/www/html
+sudo chown -R root /var/www/html/nextcloud
+sudo chgrp -R www-data /var/www/html/nextcloud
+
+
+
+I generated a 4096 (large) Diffie-Hellman parameter to use with SSL. I did it on my fast laptop and transferred it to the pi, lest I’d been there all day:
+
+sudo openssl dhparam -out /tmp/dhparam.pem 4096
+scp /tmp/dhparam.pem pi-loft-2:~/etc/nginx/ssl/dhparam.pem 4096
+
+
+
+I installed and enabled a nextcloud Nginx configuration file:
+
+If you’re still waiting for the Diffie Hellman parameters file to be generated, you can temporarily comment out the line starting ssl_dhparam and it’ll start without that.
+
+wget -O /etc/nginx/sites-available/nextcloud https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/nginx/sites-available/nextcloud
+sudo ln -s /etc/nginx/sites-available/nextcloud /etc/nginx/sites-enabled/nextcloud
+sudo service nginx restart
+sudo service php7.0-fpm restart
+
+
+
+Configure Nextcloud
+
+I added cloud.paulfurley.com to the trusted_domains setting in /var/www/nextcloud/config/config.php:
+
+  array (
+    0 =&gt; '192.168.0.191',
+    1 =&gt; 'cloud.paulfurley.com',
+  ),
+
+
+
+And fixed overwrite.cli.url:
+
+  'overwrite.cli.url' =&gt; 'https://cloud.paulfurley.com/nextcloud',
+
+
+
+And specified logging to syslog, rather than a separate file:
+
+  'log_type' =&gt; 'syslog',
+
+
+
+I gave Nextcloud (or specifically, the www-data user) permission to write its own configuration:
+
+sudo chmod -R 750 /var/www/nextcloud/{config,apps}
+
+
+
+Note: I initially didn’t allow this, but ran into problems where the server would return HTTP 503 for WebDAV requests. Making the config writeable fixed this. Hmm.
+
+I made the Nextcloud data directory on the external hard drive:
+
+sudo mkdir /media/externalhd/nextcloud
+sudo chown www-data /media/externalhd/nextcloud
+
+
+
+Use Nextcloud’s own configuration screen
+
+I visited https:/cloud.paulfurley.com/nextcloud/ and created an admin user. I entered the PostgreSQL database name, user and password, and was away.
+
+I then used Nextcloud to create a normal (non-admin) user. I will keep the admin user for special occasions.
+
+Configure outbound email with sSMTP
+
+I wanted the server to be able to email me with alerts and stuff. I configured
+[mailgun][mailgun] for cloud.paulfurley.com and used sSMTP to relay emails
+through it:
+
+sudo apt-get install ssmtp mailutils
+
+
+
+And add some config files:
+
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+
+
+
+Then edit both files with your own domain and API key.
+
+Configure fail2ban
+
+fail2ban works by parsing log files for authentication failure messages. When it sees repeated failures, it takes some action. Typically that involves adding a firewall rule to block the offending IP address.
+
+With nextcloud configured to log to syslog, a failed authentication looks like this:
+
+Dec  7 17:57:09 pi-loft-2 ownCloud[31042]: {core} Login failed: 'paul' (Remote IP: '31.105.224.167')
+
+
+
+I wrote a filter to scan syslog for login failure messages.
+
+wget -O /etc/fail2ban/filter.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
+
+
+
+I adapted an action to parse the log file and whois information for the offending IP and send me that by email:
+
+wget -O /etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
+
+
+
+I created a jail to activate the filter:
+
+wget -O /etc/fail2ban/jail.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf
+
+
+
+Don’t forget to edit these with your own details.
+
+Test the fail2ban jail
+
+From a remote server, I hit a few different endpoints with bad credentials:
+
+$ curl --user paul:badpassword https://cloud.paulfurley.com/nextcloud/index.php
+
+
+
+$ curl --user paul:badpassword https://cloud.paulfurley.com/nextcloud/remote.php/dav/files/paul
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns"&gt;
+  &lt;s:exception&gt;Sabre\DAV\Exception\NotAuthenticated&lt;/s:exception&gt;
+  &lt;s:message&gt;Username or password was incorrect, Username or password was incorrect&lt;/s:message&gt;
+&lt;/d:error&gt;
+
+
+
+While watching the logs:
+
+tail -f /var/log/fail2ban.log /var/log/syslog
+
+
+
+Happily, this appeared in the logs, and my remote server could no longer talk to cloud.paulfurley.com at all:
+
+Dec  8 14:04:44 pi-loft-2 ownCloud[10257]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+Dec  8 14:05:15 pi-loft-2 ownCloud[31042]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+Dec  8 14:05:46 pi-loft-2 ownCloud[11301]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+
+==&gt; /var/log/fail2ban.log &lt;==
+2016-12-08 14:05:47,189 fail2ban.actions[11783]: WARNING [nextcloud] Ban 46.101.3.6
+
+==&gt; /var/log/syslog &lt;==
+Dec  8 14:05:47 pi-loft-2 sSMTP[12087]: Creating SSL connection to host
+Dec  8 14:05:47 pi-loft-2 sSMTP[12087]: SSL connection using RSA_AES_128_CBC_SHA1
+Dec  8 14:05:49 pi-loft-2 sSMTP[12087]: Sent mail for postmaster@cloud.paulfurley.com (221 See you later. Yours truly, Mailgun) uid=0 username=root outbytes=6178
+
+
+
+Shortly after, I received an email - it’s working!
+
+Subject: [Fail2Ban] default: banned 46.101.3.6 from
+  pi-loft-2
+To: &lt;cloud-notify@paulfurley.com&gt;
+
+Hi,
+
+The IP 46.101.3.6 has just been banned by Fail2Ban after
+3 attempts against default.
+
+
+Here is more information about 46.101.3.6:
+
+...
+
+
+
+You can look at the status of a jail with fail2ban-client:
+
+$ fail2ban-client status nextcloud
+Status for the jail: nextcloud
+|- filter
+|  |- File list:        /var/log/syslog
+|  |- Currently failed: 1
+|  `- Total failed:     17
+`- action
+   |- Currently banned: 1
+   |  `- IP list:       46.101.3.6
+   `- Total banned:     1
+
+
+
+And unban clients too:
+
+fail2ban-client set nextcloud unbanip 46.101.3.6
+
+
+
+Install Nextcloud iPhone App
+
+I downloaded the iPhone Nextcloud app and logged in using the URL https://cloud.paulfurley.com/nextcloud and the username and password of my new, normal user.
+
+Install Scanner Pro iPhone App
+
+I configured a new “cloud” service of the type WebDAV in Scanner Pro. I used the following URL with the username and password of my new user:
+
+https://cloud.paulfurley.com/nextcloud/remote.php/dav/paul/
+
+
+
+Future Improvements
+
+That was a good minimum viable config, but I’ve still got some things that need
+improving:
+
+
+  Try and move authentication to Nginx (before hitting Nextcloud’s PHP) if possible and investigate TLS client certificates.
+  Configure automatic certificate renewal with Let’s Encrypt.
+  Improve SSL score (currently B due to weak Diffie Hillman parameters, see SSL Labs analysis)
+  Set up more log monitoring &amp; intrusion detection.
+  Move postgresql database from the SD card to the external hard drive.
+  Automatically backup configuration.
+  Automatically backup everything (incrementally) to another, offsite server.
+
+
+
+
+Thoughts?
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2016-12-01T00:00:00+00:00" content="2016-12-01T00:00:00+00:00">December 2016</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Taking Back My Data, Part 1: Move from Dropbox to Nextcloud</h1>
+
+<p><em>This post documents how I moved from Dropbox to self-hosting a “private cloud”
+using Nextcloud on a Raspberry Pi in my home.</em></p>
+
+<p><img src="/img/raspberry-pi-nextcloud-screenshot.png" alt="Nextcloud home screen" class="img-responsive" /></p>
+
+<ul>
+  <li>Update[2016-12-08]: Added sections on automatically banning IP addresses and sending abuse report emails. Added paragraph about generating custom Diffie Hellman parameters.</li>
+</ul>
+
+<p><a href="https://github.com/paulfurley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown">See all updates and edits to this page.</a></p>
+
+<h2 id="objective-kick-dropbox">Objective: Kick Dropbox</h2>
+
+<p>Today I achieved step one of my master plan to take back ownership of my data. In this blog post I’ll describe how I switched from using Dropbox to my own “cloud”, physically located inside my home.</p>
+
+<p>Right now, I’ve taken back my <em>files</em>, for example photos, scanned documents, money stuff and business stuff.</p>
+
+<p>Next I want to take back:</p>
+
+<ul>
+  <li>calendar - I’ve got over ten years of calendar stored in Google and it freaks me out</li>
+  <li>contacts - Again, Google knows everything.</li>
+  <li>email - Much harder, but the holy grail. Worth it? Not sure.</li>
+</ul>
+
+<p>This blog post is both to document how I did it and make it easier for the next person.</p>
+
+<p>The software and hardware setup looks like this:</p>
+
+<ul>
+  <li>Raspberry Pi (the 4-core one with 1GB memory)</li>
+  <li><a href="https://www.raspberrypi.org/downloads/raspbian/">Rasbian Lite</a> (based on Debian jessie)</li>
+  <li><a href="https://nextcloud.com">Nextcloud</a> 10 (a fork of Owncloud)</li>
+  <li>Nginx</li>
+  <li>PostgreSQL</li>
+</ul>
+
+<h2 id="install-and-harden-raspberry-pi">Install and Harden Raspberry Pi</h2>
+
+<p>I downloaded <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian Lite</a> 2016-11-25 and transferred it onto an SD card with the <code class="highlighter-rouge">dd</code> command.</p>
+
+<p>I connected the Pi to my router, powered it up and found the IP address in the router. I logged in with SSH and
+started configuring it.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ssh pi@192.168.0.191
+</code></pre>
+</div>
+
+<p>First I set the hostname to <code class="highlighter-rouge">pi-loft-2</code> and rebooted.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo sed -i 's/raspberrypi/pi-loft-2/g' /etc/hostname /etc/hosts
+sudo reboot
+</code></pre>
+</div>
+
+<p>Next I downloaded a script I often use called “Ubuntu Trusty First Five Minutes”. This is based on a <a href="https://plusbryan.com/my-first-5-minutes-on-a-server-or-essential-security-for-linux-servers">blog post</a> and it carries out some basic hardening.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget 'https://github.com/paulfurley/ubuntu-trusty-first-five-minutes/archive/master.zip'
+
+unzip master.zip &amp;&amp; cd ubuntu-trusty-first-five-minutes-master/
+
+# EDIT AND UNDERSTAND BOOTSTAP.SH BEFORE YOU RUN IT
+
+./ubuntu-trusty-first-five-minutes-master/bootstrap.sh
+</code></pre>
+</div>
+
+<h2 id="install-zerotier-one">Install ZeroTier One</h2>
+
+<p><a href="https://zerotier.com">ZeroTier One</a> is a massively useful decentralized VPN service I use for connecting my devices and getting around NAT and so on. I installed that, joined my private network from the command line, then granted access to the device from the ZeroTier One web interface.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl -s https://install.zerotier.com/ | bash  # this is really bad practice, btw
+
+sudo zerotier-cli join &lt;my network id&gt;
+</code></pre>
+</div>
+
+<h2 id="set-up-hosts-and-ssh-config">Set up hosts and SSH config</h2>
+
+<p>For convenience, I added these lines to my <code class="highlighter-rouge">~/.ssh/config</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># ~/.ssh/config
+
+Host pi-loft-2
+    User paulfurley
+</code></pre>
+</div>
+
+<p>And to <code class="highlighter-rouge">/etc/hosts</code> (note that this is a ZeroTier One “local” address, not a real one):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># /etc/hosts
+21.136.137.224  pi-loft-2
+</code></pre>
+</div>
+
+<p>With the power of ZeroTier One, I can now do <code class="highlighter-rouge">ssh pi-loft-2</code> from anywhere in the world!</p>
+
+<h2 id="configure-encrypted-external-hard-drive">Configure Encrypted External Hard Drive</h2>
+
+<p>I use <a href="https://linux.die.net/man/8/cryptsetup">cryptsetup</a> to mount an encrypted drive at <code class="highlighter-rouge">/media/externalhd</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install cryptsetup
+</code></pre>
+</div>
+
+<p>Note: I aready had an external hard drive formateed as an encrypted LUKS volume. I’m going to skip over how to create the disk because it’s destructive, and can’t remember the exact commands. If you want an encrypted disk, have a read about the <code class="highlighter-rouge">cryptsetup luksFormat</code> command, then come back here.</p>
+
+<p>I use a <a href="https://github.com/paulfurley/nextcloud-config-files/blob/master/root/mount.sh">mount script</a> to help me remember how to do this. There are two options: you can either store the key as a file on the Raspberry Pi (insecure, but protects against casual theft of the hard drive), or you’ll have to enter it each time the Pi boots.</p>
+
+<h2 id="configure-cloudpaulfurleycom-in-dns">Configure cloud.paulfurley.com in DNS</h2>
+
+<p>I went over to my domain registrar, namecheap.com, and created an A record for <code class="highlighter-rouge">cloud.paulfurley.com</code> to point at my (static) home IP address.</p>
+
+<p>Unlike most UK ISPs, <a href="http://aaisp.net">Andrews &amp; Arnold</a> give you a static IP address by default. Don’t forget to ask your ISP to set this up for you.</p>
+
+<h2 id="configure-port-forwarding-on-home-router">Configure port forwarding on home router</h2>
+
+<p>I logged into my home router and allocated a static IP <code class="highlighter-rouge">192.168.0.191</code> to the new Raspberry Pi.</p>
+
+<p>I configured port forwarding for port 80 and 443 (HTTP and HTTPS) through to that IP address.</p>
+
+<p>Now anyone connecting to <code class="highlighter-rouge">http[s]://cloud.paulfurley.com</code> will hit my home router, which will pass them straight through to the Raspberry Pi, <code class="highlighter-rouge">pi-loft-2</code>.</p>
+
+<h2 id="install-nginx">Install Nginx</h2>
+
+<p>I installed the <a href="http://nginx.org/en/CHANGES-1.6">Nginx 1.6.2</a> from the normal Debian jessie respository:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install nginx
+</code></pre>
+</div>
+
+<p>and disabled the default configuration:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo rm /etc/nginx/sites-enabled/default
+</code></pre>
+</div>
+
+<h2 id="get-an-ssltls-certificate-with-lets-encrypt">Get an SSL/TLS Certificate with Let’s Encrypt</h2>
+
+<p>I needed a TLS certificate for <code class="highlighter-rouge">cloud.paulfurley.com</code> to secure connections to NextCloud. I used Let’s Encrypt with the client called <code class="highlighter-rouge">certbot</code>, and a minimal default Nginx configuration to get things rolling.</p>
+
+<p>Add jessie-backports and install certbot:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>echo "deb http://ftp.debian.org/debian jessie-backports main" |sudo tee /etc/apt/sources.list.d/jessie-backports.list
+sudo apt-get update
+sudo apt-get install -t jessie-backports -y certbot
+</code></pre>
+</div>
+
+<p>I enabled a <a href="https://github.com/paulfurley/nextcloud-config-files/blob/master/etc/nginx/sites-available/letsencrypt-bootstrap">minimal Nginx configuration</a> that works with the certbot webroot strategy:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget -O /etc/nginx/sites-available/letsencrypt-bootstrap https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/nginx/sites-available/letsencrypt-bootstrap
+sudo ln -s /etc/nginx/sites-available/letsencrypt-bootstrap /etc/nginx/sites-enabled/letsencrypt-bootstrap
+sudo service nginx reload
+</code></pre>
+</div>
+
+<p>I ran <code class="highlighter-rouge">certbot</code> in dry-run mode:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo mkdir -p /etc/letsencrypt/fake-webroot
+sudo certbot --dry-run certonly --webroot -w /etc/letsencrypt/fake-webroot -d cloud.paulfurley.com
+</code></pre>
+</div>
+
+<p>… that worked, so I ran it again without <code class="highlighter-rouge">--dry-run</code> and got a new certificate located at:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/etc/letsencrypt/live/cloud.paulfurley.com/*.pem
+</code></pre>
+</div>
+
+<p>Then I disabled the Nginx configuration (we’ll handle renewals later):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo rm /etc/nginx/sites-enabled/letsencrypt-bootstrap
+sudo service nginx reload
+</code></pre>
+</div>
+
+<h2 id="install-and-configure-php-70-and-modules">Install and Configure PHP 7.0 and modules</h2>
+
+<p>I wanted to use the modern PHP 7.0, but jessie only had version 5.6.</p>
+
+<p>I added the <code class="highlighter-rouge">stretch</code> distribution to <code class="highlighter-rouge">apt</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib non-free rpi" | sudo tee &gt; /etc/apt/sources.list.d/stretch.list
+</code></pre>
+</div>
+
+<p>… but in order to prevent everything upgrading to (less stable) stretch packages, I pinned everything to jessie by adding this to <code class="highlighter-rouge">/etc/apt/preferences.d/pin-to-jessie.pref</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Package: *
+Pin: release n=jessie
+Pin-Priority: 600
+</code></pre>
+</div>
+
+<p>Then updated the cache:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get update
+</code></pre>
+</div>
+
+<p>I installed the <a href="https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html#prerequisites-label">PHP prerequisites</a> from the installation manual (note the use of <code class="highlighter-rouge">-t stretch</code>)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install -t stretch php7.0-cli php7.0-gd php7.0-xml php7.0-mbstring php7.0-zip php7.0-pgsql php7.0-curl php7.0-bz2 php7.0-intl php7.0-mcrypt php7.0-fpm
+</code></pre>
+</div>
+
+<p>Note: there were some other, optional(?) packages that I didn’t install.</p>
+
+<h3 id="configure-php-fpm-environment-variables">Configure PHP-FPM environment variables</h3>
+
+<p>I don’t know why this is necessary, but the manual said to do it.</p>
+
+<p>Uncomment the environment variables lines in <code class="highlighter-rouge">/etc/php/7.0/fpm/pool.d/www.conf</code>, as per the <a href="https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html#php-fpm-configuration-notes">Nextcloud docs</a></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>env[HOSTNAME] = $HOSTNAME
+env[PATH] = /usr/local/bin:/usr/bin:/bin
+env[TMP] = /tmp
+env[TMPDIR] = /tmp
+env[TEMP] = /tmp
+</code></pre>
+</div>
+
+<h2 id="install-and-configure-postgresql-database">Install and Configure PostgreSQL Database</h2>
+
+<p>I installed PostgreSQL 9.6:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install -t jessie postgresql-9.6
+</code></pre>
+</div>
+
+<p>And created a database and user:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo su - postgres
+createdb nextcloud
+
+PASSWORD=$(openssl rand -base64 15)
+echo "PASSWORD: $PASSWORD"
+
+echo "CREATE USER nextcloud WITH PASSWORD '${PASSWORD}';" | psql nextcloud
+echo "GRANT ALL PRIVILEGES ON DATABASE \"nextcloud\" TO nextcloud;" | psql nextcloud
+</code></pre>
+</div>
+
+<p><strong>Keep a note of this database password!</strong> You’ll need to configure Nextcloud with it.</p>
+
+<h2 id="download-and-verify-nextcloud">Download and Verify NextCloud</h2>
+
+<p>I downloaded the latest Nextcloud server, version 10.0.1:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd /tmps
+wget 'https://download.nextcloud.com/server/releases/nextcloud-10.0.1.zip'
+</code></pre>
+</div>
+
+<h3 id="verify-its-pgp-signature">Verify its PGP signature</h3>
+
+<p>I got the signing PGP key and the checksums file and verified the install:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget https://download.nextcloud.com/server/releases/nextcloud-10.0.1.zip.asc
+wget https://nextcloud.com/nextcloud.asc
+gpg --import nextcloud.asc
+gpg --verify nextcloud-10.0.1.zip.asc nextcloud-10.0.1.zip
+</code></pre>
+</div>
+
+<p>I saw:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>gpg: Good signature from "Nextcloud Security &lt;security@nextcloud.com&gt;"
+</code></pre>
+</div>
+
+<p><em>(And also a warning that the key is not certified with a trusted signature. That means I haven’t independently verified that the signing key I downloaded, <code class="highlighter-rouge">nextcloud.asc</code>, is actually Nextcloud’s key - it could have been replaced with a bad one. As a half-measure I Googled the key fingerprint <a href="https://www.google.co.uk/?gfe_rd=cr&amp;ei=0TpHWPHcHqeg8wewparoBg&amp;gws_rd=ssl#q=2880+6A87+8AE4+23A2+8372++792E+D758+99B9+A724+937A">2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A</a> and saw it listed on many sites, giving it at least some credibility.)</em></p>
+
+<h2 id="install-nextcloud-into-nginx-webroot">Install NextCloud into Nginx webroot</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd /tmp
+unzip nextcloud-10.0.1.zip
+sudo mv /tmp/nextcloud /var/www/html
+sudo chown -R root /var/www/html/nextcloud
+sudo chgrp -R www-data /var/www/html/nextcloud
+</code></pre>
+</div>
+
+<p>I generated a 4096 (large) Diffie-Hellman parameter to use with SSL. I did it on my fast laptop and transferred it to the pi, lest I’d been there all day:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo openssl dhparam -out /tmp/dhparam.pem 4096
+scp /tmp/dhparam.pem pi-loft-2:~/etc/nginx/ssl/dhparam.pem 4096
+</code></pre>
+</div>
+
+<p>I installed and enabled a <a href="https://github.com/paulfurley/nextcloud-config-files/blob/master/etc/nginx/sites-available/nextcloud">nextcloud Nginx configuration file</a>:</p>
+
+<p>If you’re still waiting for the Diffie Hellman parameters file to be generated, you can temporarily comment out the line starting <code class="highlighter-rouge">ssl_dhparam</code> and it’ll start without that.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget -O /etc/nginx/sites-available/nextcloud https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/nginx/sites-available/nextcloud
+sudo ln -s /etc/nginx/sites-available/nextcloud /etc/nginx/sites-enabled/nextcloud
+sudo service nginx restart
+sudo service php7.0-fpm restart
+</code></pre>
+</div>
+
+<h2 id="configure-nextcloud">Configure Nextcloud</h2>
+
+<p>I added <code class="highlighter-rouge">cloud.paulfurley.com</code> to the <code class="highlighter-rouge">trusted_domains</code> setting in <code class="highlighter-rouge">/var/www/nextcloud/config/config.php</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  array (
+    0 =&gt; '192.168.0.191',
+    1 =&gt; 'cloud.paulfurley.com',
+  ),
+</code></pre>
+</div>
+
+<p>And fixed <code class="highlighter-rouge">overwrite.cli.url</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  'overwrite.cli.url' =&gt; 'https://cloud.paulfurley.com/nextcloud',
+</code></pre>
+</div>
+
+<p>And specified logging to syslog, rather than a separate file:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  'log_type' =&gt; 'syslog',
+</code></pre>
+</div>
+
+<p>I gave Nextcloud (or specifically, the <code class="highlighter-rouge">www-data</code> user) permission to write its own configuration:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo chmod -R 750 /var/www/nextcloud/{config,apps}
+</code></pre>
+</div>
+
+<p><em>Note: I initially didn’t allow this, but ran into problems where the server would return HTTP 503 for WebDAV requests. Making the config writeable fixed this. Hmm.</em></p>
+
+<p>I made the Nextcloud data directory on the external hard drive:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo mkdir /media/externalhd/nextcloud
+sudo chown www-data /media/externalhd/nextcloud
+</code></pre>
+</div>
+
+<h3 id="use-nextclouds-own-configuration-screen">Use Nextcloud’s own configuration screen</h3>
+
+<p>I visited <code class="highlighter-rouge">https:/cloud.paulfurley.com/nextcloud/</code> and created an admin user. I entered the PostgreSQL database name, user and password, and was away.</p>
+
+<p>I then used Nextcloud to create a normal (non-admin) user. I will keep the admin user for special occasions.</p>
+
+<h2 id="configure-outbound-email-with-ssmtp">Configure outbound email with sSMTP</h2>
+
+<p>I wanted the server to be able to email me with alerts and stuff. I configured
+[mailgun][mailgun] for <code class="highlighter-rouge">cloud.paulfurley.com</code> and used <code class="highlighter-rouge">sSMTP</code> to relay emails
+through it:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install ssmtp mailutils
+</code></pre>
+</div>
+
+<p>And add some config files:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+</code></pre>
+</div>
+
+<p>Then edit both files with your own domain and API key.</p>
+
+<h2 id="configure-fail2ban">Configure fail2ban</h2>
+
+<p><a href="http://www.fail2ban.org/wiki/index.php/Main_Page">fail2ban</a> works by parsing log files for authentication failure messages. When it sees repeated failures, it takes some action. Typically that involves adding a firewall rule to block the offending IP address.</p>
+
+<p>With nextcloud configured to log to syslog, a failed authentication looks like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Dec  7 17:57:09 pi-loft-2 ownCloud[31042]: {core} Login failed: 'paul' (Remote IP: '31.105.224.167')
+</code></pre>
+</div>
+
+<p>I wrote a <a href="https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf">filter</a> to scan syslog for login failure messages.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget -O /etc/fail2ban/filter.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
+</code></pre>
+</div>
+
+<p>I adapted an <a href="https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf">action</a> to parse the log file and whois information for the offending IP and send me that by email:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget -O /etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
+</code></pre>
+</div>
+
+<p>I created a <a href="https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf">jail</a> to activate the filter:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget -O /etc/fail2ban/jail.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf
+</code></pre>
+</div>
+
+<p>Don’t forget to edit these with your own details.</p>
+
+<h3 id="test-the-fail2ban-jail">Test the fail2ban jail</h3>
+
+<p>From a remote server, I hit a few different endpoints with bad credentials:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ curl --user paul:badpassword https://cloud.paulfurley.com/nextcloud/index.php
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ curl --user paul:badpassword https://cloud.paulfurley.com/nextcloud/remote.php/dav/files/paul
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns"&gt;
+  &lt;s:exception&gt;Sabre\DAV\Exception\NotAuthenticated&lt;/s:exception&gt;
+  &lt;s:message&gt;Username or password was incorrect, Username or password was incorrect&lt;/s:message&gt;
+&lt;/d:error&gt;
+</code></pre>
+</div>
+
+<p>While watching the logs:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>tail -f /var/log/fail2ban.log /var/log/syslog
+</code></pre>
+</div>
+
+<p>Happily, this appeared in the logs, and my remote server could no longer talk to <code class="highlighter-rouge">cloud.paulfurley.com</code> at all:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Dec  8 14:04:44 pi-loft-2 ownCloud[10257]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+Dec  8 14:05:15 pi-loft-2 ownCloud[31042]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+Dec  8 14:05:46 pi-loft-2 ownCloud[11301]: {core} Login failed: 'paul' (Remote IP: '46.101.3.6')
+
+==&gt; /var/log/fail2ban.log &lt;==
+2016-12-08 14:05:47,189 fail2ban.actions[11783]: WARNING [nextcloud] Ban 46.101.3.6
+
+==&gt; /var/log/syslog &lt;==
+Dec  8 14:05:47 pi-loft-2 sSMTP[12087]: Creating SSL connection to host
+Dec  8 14:05:47 pi-loft-2 sSMTP[12087]: SSL connection using RSA_AES_128_CBC_SHA1
+Dec  8 14:05:49 pi-loft-2 sSMTP[12087]: Sent mail for postmaster@cloud.paulfurley.com (221 See you later. Yours truly, Mailgun) uid=0 username=root outbytes=6178
+</code></pre>
+</div>
+
+<p>Shortly after, I received an email - it’s working!</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Subject: [Fail2Ban] default: banned 46.101.3.6 from
+  pi-loft-2
+To: &lt;cloud-notify@paulfurley.com&gt;
+
+Hi,
+
+The IP 46.101.3.6 has just been banned by Fail2Ban after
+3 attempts against default.
+
+
+Here is more information about 46.101.3.6:
+
+...
+</code></pre>
+</div>
+
+<p>You can look at the status of a jail with <code class="highlighter-rouge">fail2ban-client</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ fail2ban-client status nextcloud
+Status for the jail: nextcloud
+|- filter
+|  |- File list:        /var/log/syslog
+|  |- Currently failed: 1
+|  `- Total failed:     17
+`- action
+   |- Currently banned: 1
+   |  `- IP list:       46.101.3.6
+   `- Total banned:     1
+</code></pre>
+</div>
+
+<p>And unban clients too:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>fail2ban-client set nextcloud unbanip 46.101.3.6
+</code></pre>
+</div>
+
+<h2 id="install-nextcloud-iphone-app">Install Nextcloud iPhone App</h2>
+
+<p>I downloaded the iPhone Nextcloud app and logged in using the URL <code class="highlighter-rouge">https://cloud.paulfurley.com/nextcloud</code> and the username and password of my new, normal user.</p>
+
+<h2 id="install-scanner-pro-iphone-app">Install Scanner Pro iPhone App</h2>
+
+<p>I configured a new “cloud” service of the type WebDAV in Scanner Pro. I used the following URL with the username and password of my new user:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>https://cloud.paulfurley.com/nextcloud/remote.php/dav/paul/
+</code></pre>
+</div>
+
+<h2 id="future-improvements">Future Improvements</h2>
+
+<p>That was a good minimum viable config, but I’ve still got some things that need
+improving:</p>
+
+<ul>
+  <li>Try and move authentication to Nginx (before hitting Nextcloud’s PHP) if possible and investigate TLS client certificates.</li>
+  <li>Configure automatic certificate renewal with Let’s Encrypt.</li>
+  <li>Improve SSL score (currently B due to weak Diffie Hillman parameters, see <a href="https://www.ssllabs.com/ssltest/analyze.html?d=cloud.paulfurley.com">SSL Labs analysis</a>)</li>
+  <li>Set up more log monitoring &amp; intrusion detection.</li>
+  <li>Move postgresql database from the SD card to the external hard drive.</li>
+  <li>Automatically backup configuration.</li>
+  <li>Automatically backup <em>everything</em> (incrementally) to another, offsite server.</li>
+</ul>
+
+<p><img src="/img/raspberry-pi-nextcloud-loft.jpg" alt="Raspberry Pi in my loft" class="img-responsive" /></p>
+
+<p><a href="https://twitter.com/fawkesley">Thoughts?</a></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/hardening-my-development-machine/">
+          Hardening my Development Machine
+        </a></li>
+        
+        
+        
+        <li><a href="/thoughts-about-decoupling-pgp-and-email-clients/">
+          Thoughts about decoupling PGP and email clients
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">
+          Randomize your WiFi MAC address on Ubuntu 16.04
+        </a></li>
+        
+        
+        
+        <li><a href="/smart-tvs-in-the-bedroom/">
+          Smart TVs in the bedoom
+        </a></li>
+        
+        
+        
+        <li><a href="/shutting-down-keyserver-email-address-monitoring/">
+          Shutting down keyserver email address monitoring
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

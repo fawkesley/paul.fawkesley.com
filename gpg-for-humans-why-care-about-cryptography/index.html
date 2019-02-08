@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>GPG For Humans, Part 1: Why Care About Cryptography?</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="GPG For Humans, Part 1: Why Care About Cryptography?" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/gpg-for-humans-thumbnail.png" />
+    
+
+    
+      <meta content="Cryptography, or crypto for short, offers myriad benefits far beyond writing secret messages. Crytography is already in massive, widespread use, underpinning many industries such as finance, law and journalism, as well as creative systems like the Bitcoin crypto currency.
+
+Today, many of us are using crypto as a side-effect of systems we are using, but very few are using cryptography directly.
+
+In this post I’m going to highlight some empowering use cases and in the following series I’ll be sharing my journey into re-learning and understanding GPG - the awkward but most widespread crypto package currently in use.
+
+What Can GPG Actually Do?
+
+Conceptually, GPG allows you to do a few different things:
+
+
+  Sign things to prove to other people that they have not been tampered with.
+  Verify things that have been signed by other people.
+  Encrypt and Decrypt things to limit who can access them.
+
+
+Cryptographic Signing
+
+Have you ever downloaded software from the Internet? If so, how did you know that the software package you downloaded was the same as what the developer published? What if their server had been hacked and the software was modified somehow?
+
+Have you ever published any software? Your users might appreciate being able to verify it really came from you.
+
+It struck me how important this was when I first downloaded Tor, or The Onion Router (as an aside, I’d recommend you go and try it out, it’s a fascinating piece of software and it’s cool how Google keeps changing language!).
+
+Originally funded by the US Government, Tor empowers journalists, lawyers, you, me and anyone else to browse the Internet in a way which is difficult to snoop on. This upsets regimes that like to snoop on everyone. I conclude that this makes Tor a likely candidate for someone to want to tamper with.
+
+GPG offers a solution. By signing the package, the Tor developers can tell me exactly what the package looked like when they created it. As long as I can verify their signature (more on that later), I know the software has not been tampered with.
+
+Encryption
+
+So why bother with encryption?
+
+Have you ever written a diary? Taken a private photo? Ever written down a sexual fantasy?
+
+Personally I’m proud to have secrets and I have things I want to hide (see https://en.wikipedia.org/wiki/Nothing_to_hide_argument). In the past, we kept our secrets by storing them in a safe place, often with a lock and key.
+
+I adore the Internet, but alongside its huge benefits, it’s made everything so leaky. It’s really hard to keep secrets when everything is so well connected - and getting ever more connected.
+
+Encryption empowers you to decide what is visible to others. With encryption, you don’t need to trust a company’s Privacy Settings. It doesn’t matter if your email provider’s IT support team peer inside your inbox. With encryption - done properly - you become the guardian of your diary, photos, fantasies, and anything else you choose.
+
+Aims &amp; Audience
+
+My medium-term aim is for more people to be confident using GPG and this means starting with technical users (those who are confident with the command-line).
+
+The long-term aim is to help GPG evolve into something far more user-friendly that’s accessible by the majority.
+
+This will be a series of blog posts. Once complete, they should provide a step-by-step guide to understanding GPG enough to it use confidently.
+
+There is always a trade-off between convenience and security and it’s important to understand those trade-offs. Personally I want my GPG identity to remain mine, and only mine, for many years. Therefore I will be erring on the side of security and advocating strong security practices such as Diceware passphrases, offline laptops and so on.
+
+You do not have to be a crypto expert. You might have used GPG casually, but perhaps don’t currently understand it well enough to use confidently on a daily basis. That’s basically me at the start of this process - I’m learning too.
+
+I’ll collate and follow the best guidance I can find, and relay it in a human-friendly way. You can feed back with corrections and ideas.
+
+Is this a worthwhile project? Let me know.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2014-11-04T00:00:00+00:00" content="2014-11-04T00:00:00+00:00">November 2014</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">GPG For Humans, Part 1: Why Care About Cryptography?</h1>
+
+<p>Cryptography, or crypto for short, offers myriad benefits far beyond writing secret messages. Crytography is already in massive, widespread use, underpinning many industries such as finance, law and journalism, as well as creative systems like the Bitcoin crypto currency.</p>
+
+<p>Today, many of us are using crypto as a <em>side-effect</em> of systems we are using, but very few are using cryptography <em>directly</em>.</p>
+
+<p>In this post I’m going to highlight some empowering use cases and in the following series I’ll be sharing my journey into re-learning and understanding <a href="https://www.gnupg.org/" target="_blank">GPG</a> - the awkward but most widespread crypto package currently in use.</p>
+
+<h2 id="what-can-gpg-actually-do">What Can GPG Actually Do?</h2>
+
+<p>Conceptually, GPG allows you to do a few different things:</p>
+
+<ul>
+  <li><strong>Sign</strong> things to prove to other people that they have not been tampered with.</li>
+  <li><strong>Verify</strong> things that have been signed by other people.</li>
+  <li><strong>Encrypt</strong> and <strong>Decrypt</strong> things to limit who can access them.</li>
+</ul>
+
+<h3 id="cryptographic-signing">Cryptographic Signing</h3>
+
+<p>Have you ever downloaded software from the Internet? If so, how did you know that the software package you downloaded was the same as what the developer published? What if their server had been hacked and the software was modified somehow?</p>
+
+<p>Have you ever published any software? Your users might appreciate being able to verify it really came from <em>you</em>.</p>
+
+<p>It struck me how important this was when I first downloaded <a title="Tor Project" href="https://www.torproject.org/" target="_blank">Tor, or The Onion Router</a> <em>(as an aside, I’d recommend you go and try it out, it’s a fascinating piece of software and it’s cool how Google keeps changing language!)</em>.</p>
+
+<p>Originally funded by the US Government, Tor empowers journalists, lawyers, you, me and anyone else to browse the Internet in a way which is difficult to snoop on. This upsets regimes that like to snoop on everyone. I conclude that this makes Tor a likely candidate for someone to want to tamper with.</p>
+
+<p>GPG offers a solution. By <em>signing</em> the package, the Tor developers can tell me <em>exactly</em> what the package looked like when they created it. As long as I can verify their signature (more on that later), I know the software has not been tampered with.</p>
+
+<h3 id="encryption">Encryption</h3>
+
+<p>So why bother with encryption?</p>
+
+<p>Have you ever written a diary? Taken a private photo? Ever written down a sexual fantasy?</p>
+
+<p>Personally I’m proud to have secrets and I have things I want to hide (see <a href="https://en.wikipedia.org/wiki/Nothing_to_hide_argument" target="_blank">https://en.wikipedia.org/wiki/Nothing_to_hide_argument</a>). In the past, we kept our secrets by storing them in a safe place, often with a lock and key.</p>
+
+<p>I adore the Internet, but alongside its huge benefits, it’s made everything <em>so leaky</em>. It’s <em>really</em> hard to keep secrets when everything is so well connected - and getting ever more connected.</p>
+
+<p>Encryption empowers <em>you</em> to decide what is visible to others. With encryption, you don’t need to trust a company’s Privacy Settings. It doesn’t matter if your email provider’s IT support team peer inside your inbox. With encryption - done properly - you become the guardian of your diary, photos, fantasies, and anything else you choose.</p>
+
+<h2 id="aims--audience">Aims &amp; Audience</h2>
+
+<p>My medium-term aim is for more people to be confident using GPG and this means starting with technical users (those who are confident with the command-line).</p>
+
+<p>The long-term aim is to help GPG evolve into something <em>far</em> more user-friendly that’s accessible by the majority.</p>
+
+<p>This will be a series of blog posts. Once complete, they should provide a step-by-step guide to understanding GPG enough to it use confidently.</p>
+
+<p>There is always a trade-off between convenience and security and it’s important to understand those trade-offs. Personally I want my GPG identity to remain mine, and only mine, for many years. Therefore I will be erring on the side of security and advocating strong security practices such as Diceware passphrases, offline laptops and so on.</p>
+
+<p>You <em>do not</em> have to be a crypto expert. You might have used GPG casually, but perhaps don’t currently understand it well enough to use confidently on a daily basis. That’s basically me at the start of this process - I’m learning too.</p>
+
+<p>I’ll collate and follow the best guidance I can find, and relay it in a human-friendly way. You can feed back with corrections and ideas.</p>
+
+<p><strong>Is this a worthwhile project? <a href="https://paulfurley.com/contact/" title="Contact">Let me know.</a></strong></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        
+        
+        <li><a href="/gpg-for-humans-public-key-crypto-primer/">
+          GPG For Humans, Part 2: Public Key Crypto Primer
+        </a></li>
+        
+        
+        
+        <li><a href="/gpg-for-humans-protecting-your-primary-key/">
+          GPG For Humans, Part 3: Protecting your Primary Key
+        </a></li>
+        
+        
+        
+        <li><a href="/gpg-for-humans-preparing-an-offline-machine/">
+          GPG For Humans, Part 4: Preparing an Offline Machine
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

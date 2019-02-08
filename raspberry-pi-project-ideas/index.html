@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Raspberry Pi project ideas</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Raspberry Pi project ideas" />
+    
+
+    
+      <meta content="I finally got my hands on a Raspberry Pi this Christmas, long overdue I appreciate. I’d done a fair amount of industrial work with the Arduino and got on very well with it. The slightly higher level and versatility of the Raspberry Pi is pretty exciting.
+
+I’ve talked to a lot of people who bought one in the early days, and very few people have actually done anything interesting with them. I’d like to try and break that mould, so I’ve put down a few ideas here.
+
+BrewPi
+
+Ale is good, brewing sounds fun, but given the numerous brewing failures of a good friend in the past, I suspect temperature controlling the brewing process is more important than he realised. The concept here is dead simple: place a brewing vessel inside a fridge, alongside a 100W lightbulb. Use a Raspberry Pi to turn on either the fridge or the light to cool or heat the beer. I’ve recently been tipped off about the Belkin Wemo switchable power outlet which should reduce the hacking time (I don’t fancy spending a week hacking up a 13A switching board). Pretty neat project, especially if I can get some beer out of it.
+
+**Stop-motion video
+**
+
+It’d be fun  to rig up a webcam or even a half decent digital camera via the Pi’s USB and do periodic photographs in order to make a stop motion video. From the apartment I’ve got a great view of the Liverpool 360 wheel and part of the Albert Docks so it could make for quite a spectacular video. Anyone got an old digicam up for grabs?
+
+Motion detection
+
+I had a lot of fun in the past running motion detection algorithms on webcams  in order to try and detect intruders - although I mostly ended up incriminating the milkman, various types of moth and occasional drunk students. This was all through a desktop PC but it would be much cooler to do the video processing on the Pi, making a very portable motion detection module. Coupled with a GPS and GPRS unit it would be a nifty security gadget. It could probably be integrated into car dashboards or bumpers - maybe catching tailgating Range Rovers is the key?
+
+Environmental monitoring
+
+The final interesting project I had in mind was to do with monitoring pollutants, radiation, or some other interesting air quality metric. Again, this would get particularly useful with the addition of a GPS module as it would be dead portable and easy to deploy. Given the low cost of producing such a gadget, it wouldn’t be infeasible to have a whole network of such devices, and analysing the composite data could be informative. I wonder if it would be possible to derive the source of pollutants based on enough measurement locations mixed in with local wind speed and direction data?
+
+I’d be interested to hear your project ideas. The Raspberry Pi does seem wonderfully versatile, it’d be a shame if mine joined the many other Pis gathering dust!
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2013-01-14T00:00:00+00:00" content="2013-01-14T00:00:00+00:00">January 2013</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Raspberry Pi project ideas</h1>
+
+<p>I finally got my hands on a Raspberry Pi this Christmas, long overdue I appreciate. I’d done a fair amount of industrial work with the Arduino and got on very well with it. The slightly higher level and versatility of the Raspberry Pi is pretty exciting.</p>
+
+<p>I’ve talked to a lot of people who bought one in the early days, and very few people have actually done anything interesting with them. I’d like to try and break that mould, so I’ve put down a few ideas here.</p>
+
+<p><a title="BrewPi" href="http://brewpi.com" target="_blank"><strong>BrewPi</strong></a></p>
+
+<p>Ale is good, brewing sounds fun, but given the numerous brewing failures of a good friend in the past, I suspect temperature controlling the brewing process is more important than he realised. The concept here is dead simple: place a brewing vessel inside a fridge, alongside a 100W lightbulb. Use a Raspberry Pi to turn on either the fridge or the light to cool or heat the beer. I’ve recently been tipped off about the <a title="Belkin WeMo" href="http://www.belkin.com/uk/c/WSWH" target="_blank">Belkin Wemo</a> switchable power outlet which should reduce the hacking time (I don’t fancy spending a week hacking up a 13A switching board). Pretty neat project, especially if I can get some beer out of it.</p>
+
+<p>**Stop-motion video
+**</p>
+
+<p>It’d be fun  to rig up a webcam or even a half decent digital camera via the Pi’s USB and do periodic photographs in order to make a stop motion video. From the apartment I’ve got a great view of the Liverpool 360 wheel and part of the Albert Docks so it could make for quite a spectacular video. Anyone got an old digicam up for grabs?</p>
+
+<p><strong>Motion detection</strong></p>
+
+<p>I had a lot of fun in the past running motion detection algorithms on webcams  in order to try and detect intruders - although I mostly ended up incriminating the milkman, various types of moth and occasional drunk students. This was all through a desktop PC but it would be much cooler to do the video processing on the Pi, making a very portable motion detection module. Coupled with a GPS and GPRS unit it would be a nifty security gadget. It could probably be integrated into car dashboards or bumpers - maybe catching tailgating Range Rovers is the key?</p>
+
+<p><strong>Environmental monitoring</strong></p>
+
+<p>The final interesting project I had in mind was to do with monitoring pollutants, radiation, or some other interesting air quality metric. Again, this would get particularly useful with the addition of a GPS module as it would be dead portable and easy to deploy. Given the low cost of producing such a gadget, it wouldn’t be infeasible to have a whole network of such devices, and analysing the composite data could be informative. I wonder if it would be possible to derive the source of pollutants based on enough measurement locations mixed in with local wind speed and direction data?</p>
+
+<p>I’d be interested to hear your project ideas. The Raspberry Pi does seem wonderfully versatile, it’d be a shame if mine joined the many other Pis gathering dust!</p>
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        
+        
+        <li><a href="/chilli-plant-stop-motion-video-linux/">
+          Chilli Cam: Stop Motion Video using old Netbook
+        </a></li>
+        
+        
+        
+        <li><a href="/screen-scraping-utility-bills/">
+          Screen Scrape Your Utility Bills
+        </a></li>
+        
+        
+        
+        <li><a href="/improving-freecycle-with-sms-alerts/">
+          Improving Freecycle with SMS Alerts
+        </a></li>
+        
+        
+        
+        <li><a href="/hack-the-hive-connecting-a-beehive-to-the-internet/">
+          Hack the Hive: Connecting a Beehive to the Internet
+        </a></li>
+        
+        
+        
+        <li><a href="/playing-with-network-rail-train-movements-data-feed/">
+          Playing with Network Rail Train Movements Data Feed
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

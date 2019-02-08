@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Arduino Isn't Just For Hackers</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Arduino Isn't Just For Hackers" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/picocolour-printing-machine.jpg" />
+    
+
+    
+      <meta content="Arduino turned out to be the perfect match for JF Machines Ltd, a manufacturer of industrial digital printing machines. The open source platform offered them supply security, enormous flexibility and simple PC interfacing, all at an incredible price.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2013-07-02T00:00:00+00:00" content="2013-07-02T00:00:00+00:00">July 2013</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Arduino Isn't Just For Hackers</h1>
+
+<p><em><a href="http://www.arduino.cc">Arduino</a> turned out to be the perfect match for <a title="JF Machines Ltd, digital inkjet printing machine manufacturers" href="http://www.jfmachines.co.uk" target="_blank">JF Machines Ltd</a>, a manufacturer of industrial digital printing machines. The open source platform offered them supply security, enormous flexibility and simple PC interfacing, all at an incredible price.</em></p>
+
+<!--more-->
+
+<p>Back in 2009 I worked in JF Machines Ltd - the family firm - producing the user operator software for their new digital printing machine, the PicoColour (if you’re imaging a desktop printer, try 1.5 tonnes of precision-engineered printing press…)</p>
+
+<p><img src="/img/picocolour-printing-machine.jpg" alt="PicoColour digital inkjet printing machine" class="img-responsive" /></p>
+
+<p><em>Picocolour digital inkjet printing machine</em></p>
+
+<p>Like many high-tech manufacturers, JF Machines has historically used both in-house electronics and programmable logic controllers (PLCs). As a quick primer, PLCs are proprietary devices which typically employ a high level language - or even graphical user interface - to describe complex system behaviour. For example, one might use BASIC to set up timers and state machines, then define how the system output responds to input signals.</p>
+
+<p>The PLC is a great sell: simple machine control, little hardware design required and so on, but the flaws soon become apparent.</p>
+
+<p>Firstly they bring about the familiar situation of vendor lock in. Once you’ve committed to a PLC, you go off and design a whole load of other electronics around it. A couple of years down the line, the vendor discontinues the PLC, or worse, goes bust, and you’re in trouble. If you’re lucky they’ve produced an updated “equivalent” but it’s a miracle if it’s a real “drop-in” replacement.</p>
+
+<p>Furthermore, your software - often just block diagrams inside a proprietary software package - has become as useful as the obsolete PLC it’s written for. Simple servicing operations turn into a major hardware and software development exercise,leaving machines in the field vulnerable to failure. Add to this the fact that PLCs can cost thousands of pounds in the first place, and you can see why companies often develop a love-hate relationship with them.</p>
+
+<p>Enter <a title="Arduino" href="http://geni.us/2s6n" target="_new">Arduino</a>. I’d been hacking around with Arduino since my <a title="Cooperative Mobile Robots, MEng project" href="http://paulfurley.com/cooperative-mobile-robots-meng-project/" target="_blank">masters project</a> and it came along at a perfect time for JF Machines. They had just developed their new ink circulation system: a serious affair with 5 separate ink bottles rising and falling to alter  pressure along with precise temperature control. They needed a way to drive the bottle lifting motors, read in alarm signals and switch inputs as well as output various flashing sequences for the benefit of the operator. Although a PLC would have been suitable, Arduino seemed like a great option.</p>
+
+<p>The image below shows the PCB which was developed to accommodate five unmodified Arduino boards.</p>
+
+<p><img src="/img/four-arduinos-in-a-pcb.jpg" alt="Four arduinos connected to a PCB" class="img-responsive" /></p>
+
+<p>As time has gone on, it has become more and more convincing that this approach was a solid one. Here I outline a few of the major benefits of using Arduino in this industrial setting.</p>
+
+<p><strong>Supply security</strong> - even if Arduino stopped supplying boards tomorrow, other manufacturers are making clones, and the hardware design lives on. If Arduino changed their physical design, it wouldn’t be much trouble to make a converter to adapt the new and old sockets - in fact, someone would probably release it was an off-the-shelf project as soon as the announcement was made! In the worst case scenario, JF Machines could manufacture the whole Arduino board from the designs for as long as the a compatible microcontroller remained available.</p>
+
+<p><strong>Flexibility</strong> - since developing the ink system, JF Machines has found a number of new applications for the Arduino. For example, by giving Arduino the ability to override the input to the machine’s main stepper motor, they were able to make the machine reverse after stopping, reducing waste of several metres of expensive inkjet paper. Particularly for short-run jobs, this waste-saving feature is a hugely attractive selling point.</p>
+
+<p><strong>PC connection interface</strong> -inevitably it became desirable for the Arduino to communicate with the outside world. Fortunately, the fantastically straightforward and standardised COM port driver allowed us to interface over USB with about three day of development effort. Having previously developed an SPI comms interface in the past, I can happily say that Arduino’s higher level approach was more appealling as a developer. Once we had effective two-way communications between the printing machine and the PC, we were able to implement new features like batch counting and stopping automatically at the end of a job - another fantastic waste-saving feature.</p>
+
+<p><strong>In-field modifications</strong> - suppose a customer needed slightly different behaviour in their ink system, or a logic defect was discovered that needed correcting. With a PLC, that could have meant an expensive visit from a support engineer armed with a laptop and the PLC application software. But surely Arduino suffers the same problem? Not quite, because the Arduinos can be unplugged from the machine, it’s now preferable to just post a new set of boards to the customer and allow them to do the upgrade themselves. In other words, deliver software updates via the postal system! The old Arduinos can be posted back or, better still, be inherited by a keen young mind, and feed the next generation!</p>
+
+<p><strong>Low cost</strong> - I often hear the opposite argument when discussing Arduino with the hobby and hacker scene. I agree that for integrating into a consumer product, the Arduino’s off-the-shelf price is fairly expensive (although good luck designing and making a small batch yourself for cheaper…). However when integrated in a five-figure industrial printing machine, the cost comes close to zero, especially when considering the PLC alternative and the support benefits. If JF Machines were ever to mass-produce their machines, reducing the price of the Arduino would be fairly low on the list of priorities!</p>
+
+<p>Of course, these benefits weren’t completely without pain. Although I developed all the code for the first version, it has since become necessary (and desirable) for JF Machines to learn to do it themselves for when I’m not available. Fortunately it’s been a pleasant experience as the fantastic little IDE takes away much of the pain of C and C++ development.</p>
+
+<p>Furthermore, source code control is likely to become an issue, and this is not an area that JF Machines has any experience in. It’s tempting to “over-fork” software to allow customer-specific mods, but - as with hardware - managing those separate code branches quickly becomes challenging. However, this isn’t a new issue - it was just as relevant when developing PLC “programs”. These are often in a proprietary, possibly binary format. The benefit of  using C in Arduino is that at least the language is standardised, non-proprietary, and well suited for source control.</p>
+
+<p><img src="/img/five-arduinos-inside-the-ink-cabinet.jpg" alt="Five arduinos inside the ink cabinet" class="img-responsive" /></p>
+
+<p><em>5 Arduinos inside the ink cabinet</em></p>
+
+<p><strong>Verdict</strong></p>
+
+<p>For JF Machines, Arduino was a great fit. Although it has required them to gain new software development and organisation skills, it has brought enormous benefits. In their application - high tech, low volume - the Arduino is a fantastically cheap and flexible solution. It has enabled them to create tangible new features as well as reducing their support cost and effort.</p>
+
+<p><strong>Arduino, 1 nil!</strong></p>
+
+<p>I’d like to hear your thoughts - why not give me a shout on <a title="Paul Fawkesley on Twitter" href="https://twitter.com/fawkesley" target="_blank">Twitter</a> or <a title="Contact" href="http://paulfurley.com/contact/" target="_blank">drop me an email</a>?</p>
+
+<p><strong>UPDATE:</strong> Join the (extensive) discussion at <a href="http://redd.it/1hhk3f">Reddit</a> and <a href="http://hackaday.com/2013/07/08/this-is-run-by-an-arduino/">Hack A Day</a> - many thanks for all the interest!</p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/arduino-due-coretex-m3-robots-with-radios/">
+          Arduino Due, Cortex-M3 and robots with radios
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/how-open-wifi-can-make-a-city-smarter/">
+          How Open Wifi Can Make a City Smarter
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

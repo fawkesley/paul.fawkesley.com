@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Sabbatical, week&nbsp;3</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Sabbatical, week&nbsp;3" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/virustotal-detection-results.png" />
+    
+
+    
+      <meta content="This week I’ve laid some good groundwork for Expirybot and had fun playing part-time security researcher.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2017-12-15T00:00:00+00:00" content="2017-12-15T00:00:00+00:00">December 2017</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Sabbatical, week&nbsp;3</h1>
+
+<p><em>This week I’ve laid some good groundwork for Expirybot and had fun playing part-time security researcher.</em></p>
+
+<!--more-->
+
+<p><img src="/img/virustotal-detection-results.png" alt="virustotal showing virus detected" class="img-responsive" /></p>
+
+<p>Alright, I’m cheating a bit, week 2 is missing, but for some reason I’ve been struggling to write up that week. I’ll try and retro-post it later, for completeness.</p>
+
+<p>This week has <em>flown</em> by but it’s been interesting and productive, with most of the week spent on Expirybot and security research.</p>
+
+<h2 id="finished-migrating-my-pgp-keyserver-to-debian">Finished migrating my PGP keyserver to debian</h2>
+
+<p>I didn’t really want to have to do this, but unfortunately sks version 1.1.6 isn’t available on Ubuntu. Since I was stuck on 1.1.5 I got dropped from <a href="https://sks-keyservers.net/status/">the public pool</a>, meaning my server no longer received requests directly from members of the public. That didn’t directly break Expirybot, since I’m still receiving updates from my keyserver peers, but there’s other types of PGP improvement research which <em>does</em> depend in getting raw traffic.</p>
+
+<p>I took the opportunity to move off Digital Ocean and get a new server inside the EU - with <a href="https://www.hetzner.com/virtual-server?country=gb">Hetzner</a>, at an incredibly affordable 7 ish EUR per month for a 2GB machine. I managed to rebuild sks 1.1.6 and migrate keyserver.paulfurley.com without breaking too much. Shortly after, I’m back in the pool and once again receiving ~1% of global PGP keyserver queries.</p>
+
+<h2 id="pgp-signed-expirybots-outgoing-emails">PGP-signed Expirybot’s outgoing emails</h2>
+
+<p>This was harder than I expected, but I got quite a bit of independent feedback that my <a href="https://www.paulfurley.com/expirybot">PGP expiry emails</a> should be PGP-signed.</p>
+
+<p>I spent the first part of the week building this, and a new web service for handling unsubscribes (necessary for signing the emails).</p>
+
+<p>I’m now in a <em>much</em> better place for building new features for Expirybot, which I also started to test on people - more below. I spent a few hours on Friday <a href="https://www.paulfurley.com/signing-automated-expirybot-emails-with-gpg/">writing up how I sign the emails</a>.</p>
+
+<h2 id="wrote-a-scraper-for-auction-data-then-went-to-the-auction">Wrote a scraper for auction data, then went to the auction</h2>
+
+<p>This is a bit off-the wall, but I’m quite interested that there are <a href="http://www.suttonkersh.co.uk/properties/listview/?FormSearchText=&amp;FormSearchTextField=&amp;geolat=&amp;geolon=&amp;georad=&amp;section=sale&amp;transType=1&amp;searchSales=Search&amp;priceMin=0&amp;propType=&amp;priceMax=75000&amp;beds=&amp;location=">houses for sale in Liverpool for less than £50K</a>, and some of them are in areas that I believe have an excellent future.</p>
+
+<p>I’ve never been to an auction, and it wouldn’t be right to go unprepared, so I built <a href="https://github.com/paulfurley/sutton-kersh-property-auction-scraper/tree/master">a scraper to analyse the listings</a> before I went.</p>
+
+<p>The auction was pretty exciting for two or three lots, then it got boring and I went home.</p>
+
+<p>Nope, I’m not going to become a landlord just yet, but I am thinking about how to do it in a way that’s not morally bankrupt, doesn’t push up prices, and doesn’t make it harder for people to buy houses.</p>
+
+<p>I had a good email exchange with the nice folks from <a href="http://www.generationrent.org/">Generation Rent</a> asking for guidance on what they consider being an ethical landlord. I’d much prefer to <em>build</em> houses as an investment… now there’s a worthwhile enterprise … but that’s completely out of reach for me. For now I’m more interested in <a href="https://www.abundanceinvestment.com/">investing in green energy.</a></p>
+
+<h2 id="investigated-ee-apparently-leaking-my-phone-number-to-a-website">Investigated EE apparently leaking my phone number to a website</h2>
+
+<p>I had a fascinating, spooky experience on the internet that made me realise how internet security must feel for… lots of people.</p>
+
+<p>_Somehow, _it looks like I clicked on a link on a website, and this alone <strong>subscribed me to a premium rate SMS service</strong>. I’m pretty outraged that this can happen, mostly because I’m concerned it means my phone number was transmitted to some Azerbaijan (literally) company’s website without my consent.</p>
+
+<p>I’ve got some very intelligent input from some contacts (thank you folks!) and I’m planning a full write up on this, but for now, here’s the work in progress:</p>
+
+<ul>
+  <li>Me asking on <a href="https://security.stackexchange.com/questions/175486/how-did-my-phone-provider-leak-my-msisdn-to-an-advertising-website">security.stackexchange.com</a> (no answers yet)</li>
+  <li>Me asking on <a href="https://community.ee.co.uk/t5/4G-and-mobile-data/Why-do-you-leak-my-phone-number-to-websites-when-browsing-on/m-p/650170/highlight/false#M119468">community.ee.co.uk</a> (seems to be getting some traction now)</li>
+  <li>Interesting paper: ‘<a href="https://www.mulliner.org/collin/academic/publications/mobile_web_privacy_icin10_mulliner.pdf">Privacy Leaks in Mobile Phone Internet Access’</a></li>
+  <li>Another: ‘<a href="http://www.icir.org/vern/papers/header-enrichment-hotmiddle15.pdf">Header Enrichment or ISP Enrichment? Emerging Privacy Threats in Mobile Networks’</a></li>
+</ul>
+
+<h2 id="reported-a-probable-security-breach-at-the-gym-group">Reported a probable security breach at the Gym Group</h2>
+
+<p>I’ve enjoyed playing part time security researcher this week!</p>
+
+<p>I use unique email addresses for everything in order that I can figure out who spams me, and block that email address. I’ve got between 5 and 10 addresses now which have been compromised so I bounce them, much to my satisfaction.</p>
+
+<p>This week I received an email to the unique address I used to use for the Gym Group, which I left years ago. It was a classic malware email, a friendly note asking for the status of the attached invoice:</p>
+
+<p><img src="/img/screenshot-of-malicious-email.png" alt="Screenshot of an email containing a dangerous attachment" class="img-responsive" /></p>
+
+<p>And, of course, it’s <a href="https://www.virustotal.com/#/file/d40a85793b528e171de6753a5f87ec6a86ab924c89dce33b69d43de4c47559ab/detection">carrying some virus (virustotal.com).</a></p>
+
+<p>I reported this to the Gym Group - slowly - and pointed out it’s a pretty good sign they’ve breached their customer database. I wonder if they’ll investigate and <a href="https://ico.org.uk/for-organisations/guide-to-pecr/communications-networks-and-services/security-breaches/">report this to the Information Commissioner’s Office</a>?</p>
+
+<p>If you’re reading this, Gym Group, top tip: take security disclosures seriously - you didn’t make it easy!</p>
+
+<h2 id="asked-for-feedback-on-new-expirybot-features">Asked for feedback on new Expirybot features</h2>
+
+<p>Over the last 6 months, as Expirybot has been sending people helpful reminders about their PGP key, some people have generously been filling out a little survey, helping me understand what they use PGP for and so on.</p>
+
+<p>That data in itself has been really helpful, and in addition many of those people agreed to be contacted again.</p>
+
+<p>I’ve been thinking of new things my Expirybot project could do, but unlike the current reminders, which are unsolicited, I wanted to get upfront permission to do more.</p>
+
+<p>I emailed 50 of my respondents explaining that I’m working on six features, and would they like to sign up and give me feedback. To my delight, a few people have already replied saying yes, and I’ve got some good, granular feedback on which features people are interested in. Awesome!</p>
+
+<p>Here’s the list - if you’ve got any feedback, let me know!</p>
+
+<ul>
+  <li>Email people earlier - like 30, 14, 7 days</li>
+  <li>Notify people when a potentially suspicious new key is added with your email address</li>
+  <li>Provide ICAL calendar feeds for keys</li>
+  <li>Notify people their key’s cipher preferences (eg SHA1) are no longer considered secure</li>
+  <li>Inform people their (unsafe) short ID is being queried in the keyservers, and helping them correct it</li>
+  <li>A command-line tool (GPG wrapper) to generate, rotate / extend your primary key and subkeys automatically</li>
+  <li>A teams tool for monitoring all the keys for an organisation e.g. @yourdomain.com</li>
+</ul>
+
+<p><a href="https://twitter.com/fawkesley">Thoughts? Get in touch.</a></p>
+
+
+
+</article>
+
+
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

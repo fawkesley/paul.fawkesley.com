@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Randomize your WiFi MAC address on Ubuntu 16.04</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Randomize your WiFi MAC address on Ubuntu 16.04" />
+    
+      <meta name="twitter:card" content="summary">
+      <meta property="og:image" content="https://www.paulfurley.com/img/terminal-window-nmcli-commands.png" />
+    
+
+    
+      <meta content="Your device’s MAC address can be used to track you across the WiFi networks you connect to. That data can be shared and sold, and often identifies you as an individual. It’s possible to limit this tracking by using pseudo-random MAC addresses.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2017-12-03T00:00:00+00:00" content="2017-12-03T00:00:00+00:00">December 2017</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Randomize your WiFi MAC address on Ubuntu 16.04</h1>
+
+<p><em>Your device’s MAC address can be used to track you across the WiFi networks you connect to. That data can be shared and sold, and often identifies you as an individual. It’s possible to limit this tracking by using pseudo-random MAC addresses.</em></p>
+
+<!--more-->
+
+<p><img src="/img/captive-portal-our-hotel.gif" alt="A captive portal screen for a hotel allowing you to log in with social media for an hour of free WiFi" class="img-responsive" /></p>
+
+<p><em>Image courtesy of <a href="http://cloudessa.com/products/cloudessa-aaa-and-captive-portal-cloud-service/">Cloudessa</a></em></p>
+
+<p>Every network device like a WiFi or Ethernet card has a unique identifier called a MAC address, for example <code class="highlighter-rouge">b4:b6:76:31:8c:ff</code>. It’s how networking works: any time you connect to a WiFi network, the router uses that address to send and receive packets to your machine and distinguish it from other devices in the area.</p>
+
+<p>The snag with this design is that your unique, unchanging MAC address is just perfect for tracking you. Logged into Starbucks WiFi? Noted. London Underground? Logged.</p>
+
+<p>If you’ve ever put your real name into one of those Craptive Portals on a WiFi network you’ve now tied your identity to that MAC address. Didn’t read the terms and conditions? You might assume that free airport WiFi is subsidised by flogging ‘customer analytics’ (your personal information) to hotels, restaurant chains and whomever else wants to know about you.</p>
+
+<p>I don’t subscribe to being tracked and sold by mega-corps, so I spent a few hours hacking a solution.</p>
+
+<h2 id="mac-addresses-dont-need-to-stay-the-same">MAC addresses don’t need to stay the same</h2>
+
+<p>Fortunately, it’s possible to spoof your MAC address to a random one without fundamentally breaking networking.</p>
+
+<p>I wanted to randomize my MAC address, but with three particular caveats:</p>
+
+<ol>
+  <li>The MAC should be <strong>different across different networks.</strong> This means Starbucks WiFi sees a different MAC from London Underground, preventing linking my identity across different providers.</li>
+  <li>The MAC should <strong>change regularly</strong> to prevent a network knowing that I’m the same person who walked past 75 times over the last year.</li>
+  <li>The MAC <strong>stays the same throughout each working day</strong>. When the MAC address changes, most networks will kick you off, and those with Craptive Portals will usually make you sign in again - annoying.</li>
+</ol>
+
+<h2 id="manipulating-networkmanager">Manipulating NetworkManager</h2>
+
+<p>My first attempt of using the <code class="highlighter-rouge">macchanger</code> tool was unsuccessful as NetworkManager would override the MAC address according to its own configuration.</p>
+
+<p>I learned that NetworkManager 1.4.1+ can do MAC address randomization right out the box. If you’re using Ubuntu 17.04 upwards, you can get most of the way with <a href="https://gist.github.com/paulfurley/978d4e2e0cceb41d67d017a668106c53/">this config file</a>. You can’t quite achieve all three of my requirements (you must choose <em>random</em> or <em>stable</em> but it seems you can’t do <em>stable-for-one-day</em>).</p>
+
+<p>Since I’m sticking with Ubuntu 16.04 which ships with NetworkManager 1.2, I couldn’t make use of the new functionality. Supposedly there is some randomization support but I failed to actually make it work, so I scripted up a solution instead.</p>
+
+<p>Fortunately NetworkManager 1.2 does allow for spoofing your MAC address. You can see this in the ‘Edit connections’ dialog for a given network:</p>
+
+<p><img src="/img/network-manager-cloned-mac-address.png" alt="Screenshot of NetworkManager's edit connection dialog, showing a text entry for a cloned mac address" class="img-responsive" /></p>
+
+<p>NetworkManager also supports hooks - any script placed in <code class="highlighter-rouge">/etc/NetworkManager/dispatcher.d/pre-up.d/</code> is run before a connection is brought up.</p>
+
+<h2 id="assigning-pseudo-random-mac-addresses">Assigning pseudo-random MAC addresses</h2>
+
+<p>To recap, I wanted to generate random MAC addresses based on the <em>network</em> and the <em>date</em>. We can use the NetworkManager command line, nmcli, to show a full list of networks:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; nmcli connection
+NAME                 UUID                                  TYPE             DEVICE
+Gladstone Guest      618545ca-d81a-11e7-a2a4-271245e11a45  802-11-wireless  wlp1s0
+DoESDinky            6e47c080-d81a-11e7-9921-87bc56777256  802-11-wireless  --
+PublicWiFi           79282c10-d81a-11e7-87cb-6341829c2a54  802-11-wireless  --
+virgintrainswifi     7d0c57de-d81a-11e7-9bae-5be89b161d22  802-11-wireless  --
+</code></pre>
+</div>
+
+<p>Since each network has a unique identifier, to achieve my scheme I just concatenated the UUID with today’s date and hashed the result:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>
+# eg 618545ca-d81a-11e7-a2a4-271245e11a45-2017-12-03
+
+&gt; echo -n "${UUID}-$(date +%F)" | md5sum
+
+53594de990e92f9b914a723208f22b3f  -
+
+</code></pre>
+</div>
+
+<p>That produced bytes which can be substituted in for the last octets of the MAC address.</p>
+
+<p>Note that the first byte <code class="highlighter-rouge">02</code> signifies the address is <a href="https://en.wikipedia.org/wiki/MAC_address#Universal_vs._local">locally administered</a>. Real, burned-in MAC addresses start with 3 bytes designing their manufacturer, for example <code class="highlighter-rouge">b4:b6:76</code> for Intel.</p>
+
+<p>It’s possible that some routers may reject locally administered MACs but I haven’t encountered that yet.</p>
+
+<p>On every connection up, the script calls <code class="highlighter-rouge">nmcli</code> to set the spoofed MAC address for every connection:</p>
+
+<p><img src="/img/terminal-window-nmcli-commands.png" alt="A terminal window show a number of nmcli command line calls" class="img-responsive" /></p>
+
+<p>As a final check, if I look at <code class="highlighter-rouge">ifconfig</code> I can see that the <code class="highlighter-rouge">HWaddr</code> is the spoofed one, not my real MAC address:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; ifconfig
+wlp1s0    Link encap:Ethernet  HWaddr b4:b6:76:45:64:4d
+          inet addr:192.168.0.86  Bcast:192.168.0.255  Mask:255.255.255.0
+          inet6 addr: fe80::648c:aff2:9a9d:764/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12107812 errors:0 dropped:2 overruns:0 frame:0
+          TX packets:18332141 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:11627977017 (11.6 GB)  TX bytes:20700627733 (20.7 GB)
+</code></pre>
+</div>
+
+<p>The full script is <a href="https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f">available on Github</a>.</p>
+
+<script src="https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f.js"></script>
+
+<p>Enjoy!</p>
+
+<p><em>Update: <a href="https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f/revisions#diff-824d510864d58c07df01102a8f53faef">Use locally administered MAC addresses</a> to avoid clashing with real Intel ones. Thanks <a href="https://twitter.com/fink_/status/937305600005943296">@_fink</a></em></p>
+
+<p><a href="https://twitter.com/fawkesley">Thoughts? Get in touch.</a></p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/hardening-my-development-machine/">
+          Hardening my Development Machine
+        </a></li>
+        
+        
+        
+        <li><a href="/thoughts-about-decoupling-pgp-and-email-clients/">
+          Thoughts about decoupling PGP and email clients
+        </a></li>
+        
+        
+        
+        <li><a href="/taking-back-my-data-move-from-dropbox-to-nextcloud/">
+          Taking Back My Data, Part 1: Move from Dropbox to Nextcloud
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/smart-tvs-in-the-bedroom/">
+          Smart TVs in the bedoom
+        </a></li>
+        
+        
+        
+        <li><a href="/shutting-down-keyserver-email-address-monitoring/">
+          Shutting down keyserver email address monitoring
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+

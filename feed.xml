@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.3.0">Jekyll</generator><link href="https://www.paulfurley.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.paulfurley.com/" rel="alternate" type="text/html" /><updated>2019-02-08T09:52:50+00:00</updated><id>https://www.paulfurley.com/</id><title type="html">Paul Fawkesley, Engineer</title><entry><title type="html">Shutting down keyserver email address monitoring</title><link href="https://www.paulfurley.com/shutting-down-keyserver-email-address-monitoring/" rel="alternate" type="text/html" title="Shutting down keyserver email address monitoring" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>https://www.paulfurley.com/shutting-down-keyserver-email-address-monitoring</id><content type="html" xml:base="https://www.paulfurley.com/shutting-down-keyserver-email-address-monitoring/">&lt;h2 id=&quot;short-version&quot;&gt;Short version&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/idrysdale&quot;&gt;Ian&lt;/a&gt; and I run two free services to help PGP users:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Expirybot&lt;/strong&gt; — sends emails 3 days before keys expire with simple instructions on how to extend the key.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Monitor&lt;/strong&gt; — realtime(ish) alerts when a new key is uploaded to the public keyservers with your email address.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Expirybot will continue and thrive!&lt;/p&gt;
+
+&lt;p&gt;Monitor is shutting down. We currently monitor thousands of email addresses, but for lots of reasons it’s been difficult and stressful to run and maintain.&lt;/p&gt;
+
+&lt;p&gt;Ian and I are now working full time on Fluidkeys, &lt;a href=&quot;https://www.fluidkeys.com/fluidkeys-v1-preview/&quot;&gt;making PGP simple for engineering teams.&lt;/a&gt; If you’d like to keep up with our work on Fluidkeys please either sign up to release announcements at &lt;a href=&quot;https://www.fluidkeys.com&quot;&gt;www.fluidkeys.com&lt;/a&gt; or &lt;a href=&quot;https://eepurl.com/gffcu9&quot;&gt;give us occasional feedback on our Fluidkeys work.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Thanks!&lt;/p&gt;
+
+&lt;p&gt;Paul&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;background-monitoring-the-keyserver-network-for-your-email-address&quot;&gt;Background: Monitoring the keyserver network for your email address&lt;/h2&gt;
+
+&lt;p&gt;This was a side project I set up in 2018 based on feedback from people who had already received an expiry reminder from Expirybot.&lt;/p&gt;
+
+&lt;p&gt;The idea was simple: you sign up your email address, I verify it, then I regularly search my keyserver for your email address. I record the key fingerprints I see each time, and email you if a new one appears.&lt;/p&gt;
+
+&lt;h2 id=&quot;monitor-was-trickier-to-run-than-i-anticipated&quot;&gt;Monitor was trickier to run than I anticipated&lt;/h2&gt;
+
+&lt;p&gt;In the year I’ve been running Monitor, it’s been quite tricky to keep running and I’ve had a number of outages. Some of these were my fault and others were issues with the keyserver network.&lt;/p&gt;
+
+&lt;p&gt;Outages in this service aren’t the end of the world: you might get an alert a few days late, but I’ve hit increasingly awkward problems which prevent the service working reliably.&lt;/p&gt;
+
+&lt;p&gt;If you’re curious, here’s a rough idea of some of the problems I’ve encountered:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;In June 2018 a &lt;a href=&quot;https://bitbucket.org/skskeyserver/sks-keyserver/issues/60/denial-of-service-via-large-uid-packets&quot;&gt;researcher found and accidentally unleashed a denial of service&lt;/a&gt; on a number of keyservers. For many (including mine) this caused gigabytes of DB transaction logs to quickly fill the disk and corrupt SKS’ database.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;After restoring SKS and improving its transaction log handling, the legacy of the malicious key lived on, causing my whole server to hang for around a minute several times an hour while trying and failing to reconcile with other servers.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;These SKS hangs had a knock-on effect to my web app, causing it in turn to hang and return gateway timeout errors.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Several people who signed up have very short email addresses (fair!) which, when searched in SKS, would cause it to hang and timeout.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;To try and support short email addresses, I switched from SKS to &lt;a href=&quot;https://hockeypuck.github.io/&quot;&gt;Hockeypuck.&lt;/a&gt; The documentation was lacking but I &lt;em&gt;did&lt;/em&gt; manage to get it syncing with the network (thanks &lt;a href=&quot;https://lists.nongnu.org/archive/html/sks-devel/2018-08/msg00024.html&quot;&gt;Fabian&lt;/a&gt;!) and working with short email addresses.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;After a few months, Hockeypuck’s postgresql database unfortunatelly filled the disk again, bringing down Monitor with it. It seems I should’ve regularly been running VACCUUM…&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After that, I gave up, deleted Hockeypuck and disabled Monitor :(&lt;/p&gt;
+
+&lt;p&gt;It’s weighed on my mind that Monitor doesn’t run reliably and it’s distracted me from Fluidkeys.&lt;/p&gt;
+
+&lt;h2 id=&quot;monitor-with-fluidkeys&quot;&gt;Monitor with Fluidkeys?&lt;/h2&gt;
+
+&lt;p&gt;If you’re interested in monitoring your team’s email addresses in the keyservers as part of a Fluidkeys subscription, we’d be delighted to help: email &lt;a href=&quot;mailto:hello@fluidkeys.com&quot;&gt;hello@fluidkeys.com&lt;/a&gt; and we’ll work out how.&lt;/p&gt;
+
+&lt;p&gt;If you’re just interested in what we’re doing with Fluidkeys, sign up to our release announcements at &lt;a href=&quot;https://www.fluidkeys.com&quot;&gt;www.fluidkeys.com&lt;/a&gt;. If you’d like to be more involved, we’d love if you could &lt;a href=&quot;https://eepurl.com/gffcu9&quot;&gt;give us occasional feedback.&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;expirybot-will-live-on&quot;&gt;Expirybot will live on&lt;/h2&gt;
+
+&lt;p&gt;Ian and I are going to continue to run and maintain Expirybot. It’s simpler than Monitor and it seems to be having a positive impact for lots of people too.&lt;/p&gt;
+
+&lt;p&gt;I’ll follow up soon with a post about some nice changes we’re making there too.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-ill-handle-your-data&quot;&gt;How I’ll handle your data&lt;/h2&gt;
+
+&lt;p&gt;If you signed up to monitor your email address, I’ll delete your email addresses from the monitoring service by the end of February 2019. I’ll also ensure email addresses are purged from log files and backups.&lt;/p&gt;
+
+&lt;p&gt;If you signed up to monitor your email address &lt;em&gt;and consented for me to contact you for feedback&lt;/em&gt;, I will add your primary email address to a new Mailchimp list called “People willing to give feedback on Fluidkeys” which only Ian and I can access. I’ll send you an email via that list to confirm.&lt;/p&gt;
+
+&lt;p&gt;If you signed up to monitor your email but &lt;em&gt;didn’t&lt;/em&gt; consent for me to ask you for feedback, I’ll simply delete all your monitored email addresses and you won’t hear from me again after February.&lt;/p&gt;
+
+&lt;p&gt;It’s &lt;em&gt;really&lt;/em&gt; helpful getting honest critique: if you want to help our mission to simplify strong encryption, &lt;a href=&quot;https://eepurl.com/gffcu9&quot;&gt;please let us occasionally ask you for feedback&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thanks,&lt;/p&gt;
+
+&lt;p&gt;Paul&lt;/p&gt;</content><author><name>Paul Fawkesley</name></author><category term="security" /><summary type="html">Short version Ian and I run two free services to help PGP users: Expirybot — sends emails 3 days before keys expire with simple instructions on how to extend the key. Monitor — realtime(ish) alerts when a new key is uploaded to the public keyservers with your email address. Expirybot will continue and thrive! Monitor is shutting down. We currently monitor thousands of email addresses, but for lots of reasons it’s been difficult and stressful to run and maintain. Ian and I are now working full time on Fluidkeys, making PGP simple for engineering teams. If you’d like to keep up with our work on Fluidkeys please either sign up to release announcements at www.fluidkeys.com or give us occasional feedback on our Fluidkeys work. Thanks! Paul</summary></entry><entry><title type="html">Smart TVs in the bedoom</title><link href="https://www.paulfurley.com/smart-tvs-in-the-bedroom/" rel="alternate" type="text/html" title="Smart TVs in the bedoom" /><published>2018-07-02T00:00:00+00:00</published><updated>2018-07-02T00:00:00+00:00</updated><id>https://www.paulfurley.com/smart-tvs-in-the-bedroom</id><content type="html" xml:base="https://www.paulfurley.com/smart-tvs-in-the-bedroom/">&lt;p&gt;&lt;em&gt;Here’s a follow-up of why putting camera-enabled smart TVs in the bedroom might be a bad idea&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;At &lt;a href=&quot;https://lpoolmakefest.org/portfolio/ignite/&quot;&gt;Liverpool Makefest&lt;/a&gt; on Saturday I gave a talk about keeping smart homes private. I talked about how we’re inviting smart devices into our homes. We’re giving them an intimate status, allowing smart TVs with cameras and microphones into our bedrooms.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tv-built-into-bed.png&quot; alt=&quot;Television built into a bed frame&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In a follow up email, someone said they’d mentioned the issue of TV being able to access the living room or bedroom, but their friends didn’t believe them. So here’s a quick explainer on how smart TVs work and how things go wrong.&lt;/p&gt;
+
+&lt;h2 id=&quot;smart-tvs-are-complex-computers&quot;&gt;Smart TVs are complex computers&lt;/h2&gt;
+
+&lt;p&gt;Modern smart TVs are complex computers. Just like your computer or phone, they run a full operating system, often based on Android. We connect them to the internet and install applications like Netflix, iPlayer and Skype.&lt;/p&gt;
+
+&lt;p&gt;That’s great, but the complexity of being a full-blown computer means there are many ways for things to go wrong.&lt;/p&gt;
+
+&lt;p&gt;We’ve all been drilled that keeping computers secure starts with regular security updates and being careful with what things we download and open. The same is exactly true for smart devices.&lt;/p&gt;
+
+&lt;h2 id=&quot;manufacturers-dont-keep-devices-updated&quot;&gt;Manufacturers don’t keep devices updated&lt;/h2&gt;
+
+&lt;p&gt;The trouble is that manufacturers don’t keep making security updates.&lt;/p&gt;
+
+&lt;p&gt;You might expect your TV to last 10 years, but the manufacturer doesn’t. They’ll release updates for as little time as they can get away with, since it’s expensive to maintain “obsolete” devices. (There &lt;em&gt;are&lt;/em&gt; exceptions, and you should give those companies your money)&lt;/p&gt;
+
+&lt;p&gt;Over time, researchers and hackers find issues in the software running on smart TVs. Sometimes they’re in the underlying Android operating system (affecting &lt;em&gt;all&lt;/em&gt; devices) and sometimes they’re in the manufacturer-specific code used to customize the TV.&lt;/p&gt;
+
+&lt;p&gt;Occasionally these software bugs are so serious that they allow someone to take control of the TV — just like a computer virus — giving access to the camera, microphone and internet connection.&lt;/p&gt;
+
+&lt;p&gt;This type of serious security bug is precisely why it’s important to install security updates — to fix the bug and prevent it from being exploited. When manufacturers stop supporting a device, they’re leaving your device vulnerable to the next big software bug.&lt;/p&gt;
+
+&lt;h2 id=&quot;devices-are-often-poorly-designed&quot;&gt;Devices are often poorly designed&lt;/h2&gt;
+
+&lt;p&gt;Another way smart TVs go wrong is when they’re just poorly engineered.&lt;/p&gt;
+
+&lt;p&gt;In my talk I referred to a creepy &lt;a href=&quot;https://www.techrepublic.com/article/iot-connected-teddy-bear-leaks-millions-of-kids-conversations-exposed-database-to-blame/&quot;&gt;internet-connected teddy bear that leaked 2.2 million voice recordings&lt;/a&gt; between children and parents. This was due to a string of bewilderingly incompetent technical decisions.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/iot-teddy-bear-cloud-pets.jpg&quot; alt=&quot;CloudPets internet-connected teddy bears&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In 2016 &lt;a href=&quot;https://www.bbc.co.uk/news/technology-35642749&quot;&gt;Troy Hunt found a vulnerability in the Nissan LEAF car&lt;/a&gt; which allowed anyone on the internet to take over the air conditioning and heating systems of the vehicle.&lt;/p&gt;
+
+&lt;p&gt;The point of these examples is to highlight that manufacturers are making &lt;em&gt;basic&lt;/em&gt; security mistakes — they simply aren’t prioritising security, and aren’t protecting your privacy.&lt;/p&gt;
+
+&lt;h2 id=&quot;devices-dont-always-work-as-designed&quot;&gt;Devices don’t always work as designed&lt;/h2&gt;
+
+&lt;p&gt;Finally, devices just don’t always do what we expect them to do.&lt;/p&gt;
+
+&lt;p&gt;In May this year, a couple received a phone call from a colleague urging them to unplug their Amazon Alexa devices (always-on microphones which respond to voice-commands).&lt;/p&gt;
+
+&lt;p&gt;Somehow, the colleague on the phone had just received a voice recording of the couple’s private conversation. It turned out the ever-present microphone &lt;a href=&quot;https://www.simplemost.com/amazons-alexa-accidentally-recorded-this-couples-private-conversation-and-sent-it-to-someone/&quot;&gt;had made a series of misinterpretations&lt;/a&gt; leading to the accidental exposure. According to Amazon:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Echo woke up due to a word in background conversation sounding like ‘Alexa.’ Then, the subsequent conversation was heard as a ‘send message’ request,
+At which point, Alexa said out loud ‘To whom?’ At which point, the background conversation was interpreted as a name in the customers contact list. Alexa then asked out loud, ‘[contact name], right?’ Alexa then interpreted background conversation as ‘right’. As unlikely as this string of events is, we are evaluating options to make this case even less likely.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;smart-devices-are-a-perfect-storm&quot;&gt;Smart devices are a perfect storm&lt;/h2&gt;
+
+&lt;p&gt;Smart TVs now have cameras and microphones, and we invite them into our personal spaces.&lt;/p&gt;
+
+&lt;p&gt;But they’re just little computers. Computers have bugs, allowing them to be taken over by others.&lt;/p&gt;
+
+&lt;p&gt;Many manufacturers put profit over safety, failing to build devices securely and failing to keep on top of bugs.&lt;/p&gt;
+
+&lt;p&gt;It’s a perfect storm.&lt;/p&gt;
+
+&lt;p&gt;Please think carefully whether you want these things in your bedroom.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/fawkesley&quot;&gt;Thoughts? Get in touch.&lt;/a&gt;&lt;/p&gt;</content><author><name>Paul Fawkesley</name></author><category term="security" /><summary type="html">Here’s a follow-up of why putting camera-enabled smart TVs in the bedroom might be a bad idea</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://www.paulfurley.com/tv-built-into-bed.png" /></entry><entry><title type="html">Interesting reads, 2 July 2018</title><link href="https://www.paulfurley.com/interesting-reads-2018-07-02/" rel="alternate" type="text/html" title="Interesting reads, 2 July 2018" /><published>2018-07-02T00:00:00+00:00</published><updated>2018-07-02T00:00:00+00:00</updated><id>https://www.paulfurley.com/interesting-reads-2018-07-02</id><content type="html" xml:base="https://www.paulfurley.com/interesting-reads-2018-07-02/">&lt;p&gt;&lt;em&gt;Interesting things I read on the Internet this week&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.gnu.org/licenses/gpl-faq#DoesUsingTheGPLForAProgramMakeItGNUSoftware&quot;&gt;Frequently Asked Questions about the GNU Licenses&lt;/a&gt; — My favourite line: &lt;em&gt;“If you hope some day to look back on your career and feel that it has contributed to the growth of a good and free society, you need to make your software free.&lt;/em&gt;”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.troyhunt.com/were-baking-have-i-been-pwned-into-firefox-and-1password/&quot;&gt;We’re Baking Have I Been Pwned into Firefox and 1Password&lt;/a&gt; — Lovely to see Troy’s useful service reaching more people.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://mobile.nytimes.com/2018/06/23/technology/smart-home-devices-domestic-abuse.html&quot;&gt;Thermostats, Locks and Lights: Digital Tools of Domestic Abuse&lt;/a&gt; — Smart devices are starting to be used against victims of domestic abuse.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://thehustle.co/why-nobody-ever-wins-the-mall-car-giveaway&quot;&gt;Why nobody ever wins the car at the mall&lt;/a&gt; — Eye-opening dig into the personal data abuses of fake competitions. Glad we live in the GDPR-protected EU.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://blog.danslimmon.com/2012/11/02/car-alarms-and-smoke-alarms-the-tradeoff-between-sensitivity-and-specificity/&quot;&gt;Car alarms and smoke alarms: the tradeoff between sensitivity and specificity&lt;/a&gt; — Interesting technical piece about false positives and negaives.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://ifixit.org/blog/10229/macbook-pro-keyboard/&quot;&gt;Apple Engineers Its Own Downfall With the Macbook Pro Keyboard&lt;/a&gt; — I hadn’t realised just how bad the manufacturing decisions are — they keyboard is glued to the battery, making it incredibly expensive to replace.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://ifixit.org/blog/9641/hp-elitebook-a-friend-to-the-user/&quot;&gt;HP EliteBook: A Friend to the User&lt;/a&gt; — In contrast, here’s a laptop that’s rated 10/10 for ease of repair.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://www.lowtechmagazine.com/2012/12/how-to-make-everything-ourselves-open-modular-hardware.html&quot;&gt;How to Make Everything Ourselves: Open Modular Hardware&lt;/a&gt; — I love the concept of open source, modular building systems.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://www.planetbiometrics.com/article-details/i/7252/desc/home-office-publishes-biometrics-strategy/&quot;&gt;Home Office publishes biometrics strategy 28 June 2018 20:36 GMT&lt;/a&gt; — &lt;em&gt;“Starting with fingerprints, the Home Office Biometrics programme is integrating various databases onto a single platform.”&lt;/em&gt; What we &lt;em&gt;do not want&lt;/em&gt; is a single megadatabase of biometrics, that’s terrifying.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://monzo.com/blog/2018/06/28/ticketmaster-breach/&quot;&gt;Protecting customers from the Ticketmaster breach: Monzo’s story&lt;/a&gt; This story makes Monzo look extremely look, and Ticketmaster extremely bad.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Interesting things I read on the Internet this week</summary></entry><entry><title type="html">Interesting reads, 25 June 2018</title><link href="https://www.paulfurley.com/interesting-reads-2018-06-25/" rel="alternate" type="text/html" title="Interesting reads, 25 June 2018" /><published>2018-06-25T00:00:00+00:00</published><updated>2018-06-25T00:00:00+00:00</updated><id>https://www.paulfurley.com/interesting-reads-2018-06-25</id><content type="html" xml:base="https://www.paulfurley.com/interesting-reads-2018-06-25/">&lt;p&gt;&lt;em&gt;Interesting things I read on the Internet this week&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/&quot;&gt;Face recognition with OpenCV, Python, and deep learning&lt;/a&gt; — It’s getting easier and easier.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://torrentfreak.com/youtubes-piracy-filter-blocks-mit-courses-blender-videos-and-more-180618/&quot;&gt;YouTube’s Blocks MIT Courses, Blender Videos, and More (Updated)&lt;/a&gt; — What happens when you automate censorship at scale.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.independent.co.uk/news/business/amazon-recognition-shareholders-jeff-bezos-letter-privacy-surveillance-facial-recognition-a8405221.html&quot;&gt;Amazon shareholders want Jeff Bezos to stop selling a controversial facial recognition tool&lt;/a&gt; — Go shareholders.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.bleepingcomputer.com/news/apple/macos-breaks-your-opsec-by-caching-data-from-encrypted-hard-drives/&quot;&gt;macOS Breaks Your OpSec by Caching Data From Encrypted Hard Drives&lt;/a&gt; — This is a horrible blunder, and apparently it’s been like this for years.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.npr.org/2018/06/22/605007387/supreme-court-rules-police-need-warrant-to-get-location-information-from-cell-to?t=1529684968994&quot;&gt;In Major Privacy Win, Supreme Court Rules Police Need Warrant To Track Your Cellphone&lt;/a&gt; — In the US: that’s right, they didn’t need one before…&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://pspdfkit.com/blog/2018/how-to-use-slack-and-not-go-crazy/&quot;&gt;How to Use Slack and Not Go Crazy&lt;/a&gt; — These folks have developed some fantastic full-remote working practices.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://techcrunch.com/2018/06/21/twitter-smytes-customers/?guccounter=1&quot;&gt;Twitter ‘smytes’ customers&lt;/a&gt; — Appalling behaviour by Twitter: acquiring a business then shutting it down with zero notice, screwing all the customers.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://irc.com/&quot;&gt;We grew up with IRC. Let’s take it further.&lt;/a&gt; — Curious, Andrew from London Trust Media Holdings (Private Interenet Access) has acquired another classic internet institution.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://auphonic.com/blog/2018/06/01/codec2-podcast-on-floppy-disk/&quot;&gt;Codec2: a whole Podcast on a Floppy Disk&lt;/a&gt; — Neat, a voice compression codec using the WaveNet neural network.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Interesting things I read on the Internet this week</summary></entry><entry><title type="html">Interesting reads, 18 June 2018</title><link href="https://www.paulfurley.com/interesting-reads-2018-06-18/" rel="alternate" type="text/html" title="Interesting reads, 18 June 2018" /><published>2018-06-18T00:00:00+00:00</published><updated>2018-06-18T00:00:00+00:00</updated><id>https://www.paulfurley.com/interesting-reads-2018-06-18</id><content type="html" xml:base="https://www.paulfurley.com/interesting-reads-2018-06-18/">&lt;p&gt;&lt;em&gt;Interesting things I read on the Internet this week&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://shkspr.mobi/blog/2018/06/how-i-became-leonardo-da-vinci-on-the-blockchain/&quot;&gt;How I became Leonardo da Vinci on the Blockchain&lt;/a&gt; — Verisart are presumably better at raising venture capital than understanding the problem of art fraud.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://standardnotes.org/&quot;&gt;Standard Notes — A Simple And Private Notes App&lt;/a&gt; — I really like these folks, their philosophy and their business model. Thanks to &lt;a href=&quot;https://flourish.org&quot;&gt;Francis&lt;/a&gt; for the tip.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://medium.com/@wireapp/why-did-continental-order-its-mobile-workforce-to-stop-using-whatsapp-520981f36fc&quot;&gt;Why did Continental order its mobile workforce to stop using WhatsApp?&lt;/a&gt; — The answer: they don’t know how WhatsApp handles your contacts, which contain very personal information.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.theverge.com/2018/6/12/17454736/apple-app-store-developers-contacts-list&quot;&gt;Apple quietly banned developers from selling and sharing users’ contacts&lt;/a&gt; — I really hope they’re working on some clever API changes too.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://bitbucket.org/skskeyserver/sks-keyserver/issues/57/anyone-can-make-any-pgp-key-unimportable&quot;&gt;skskeyserver / sks-keyserver / issues / #57 : Anyone can make any PGP key unimportable — Bitbucket&lt;/a&gt; — A researcher crafted and pushed a seriously broken PGP key. It propagated and is still causing problems for keyservers, including my own. We need to figure out how to make &lt;a href=&quot;https://bitbucket.org/skskeyserver/sks-keyserver/wiki/Home&quot;&gt;sks&lt;/a&gt; more accessible to a wider developer community since it’s so widely depended upon. &lt;a href=&quot;https://hockeypuck.github.io/&quot;&gt;Hockeypuck&lt;/a&gt; looks good.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://paleotronic.com/2018/06/15/confessions-of-a-disk-cracker-the-secrets-of-4am/&quot;&gt;Confessions of a Disk Cracker: the secrets of 4am.&lt;/a&gt; — Cool, cracking old software for future preservation. &lt;em&gt;“I’ve had several authors find their own software and thank me for preserving it.”&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.bleepingcomputer.com/news/legal/dark-web-drug-vendor-pleads-guilty-after-feds-traced-his-bitcoin-transactions/&quot;&gt;Dark Web Drug Vendor Pleads Guilty After Feds Traced His Bitcoin Transactions&lt;/a&gt; — I somehow expected drug dealers to be less incompetent than this. Always great reading the official scoop of how folks like this get caught.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/&quot;&gt;Fibonacci Hashing: The Optimization that the World Forgot (or: a Better Alternative to Integer Modulo)&lt;/a&gt; — This went a bit over my head, but was awesome nonetheless, especially Vi Hart’s explainer video.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Interesting things I read on the Internet this week</summary></entry><entry><title type="html">Interesting reads, 11 June 2018</title><link href="https://www.paulfurley.com/interesting-reads-2018-06-11/" rel="alternate" type="text/html" title="Interesting reads, 11 June 2018" /><published>2018-06-11T00:00:00+00:00</published><updated>2018-06-11T00:00:00+00:00</updated><id>https://www.paulfurley.com/interesting-reads-2018-06-11</id><content type="html" xml:base="https://www.paulfurley.com/interesting-reads-2018-06-11/">&lt;p&gt;&lt;em&gt;Interesting things I read on the Internet this week&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://archive.is/pPWAE&quot;&gt;Behind the Messy, Expensive Split Between Facebook and WhatsApp’s Founders&lt;/a&gt; — Forsaking $1.3 billion by resigning from Facebook is what I’d call putting your money where your mouth is. Massive kudos to Brian Acton and Jan Koum for their principled resignations.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=17235832&quot;&gt;Ask HN: Are you working on interesting technical problems?&lt;/a&gt; — Lots and lots of shared experience in this Hacker News thread.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.bbc.co.uk/news/technology-44368813&quot;&gt;Microsoft sinks data centre off Orkney&lt;/a&gt; — Cute, not just good for cooling but also corrosion: &lt;em&gt;“Additionally because there are no people, we can take all the oxygen and most of the water vapour out of the atmosphere which reduces corrosion, which is a significant problem in data centres.”&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Interesting things I read on the Internet this week</summary></entry><entry><title type="html">Interesting reads, 4 June 2018</title><link href="https://www.paulfurley.com/interesting-reads-2018-06-04/" rel="alternate" type="text/html" title="Interesting reads, 4 June 2018" /><published>2018-06-04T00:00:00+00:00</published><updated>2018-06-04T00:00:00+00:00</updated><id>https://www.paulfurley.com/interesting-reads-2018-06-04</id><content type="html" xml:base="https://www.paulfurley.com/interesting-reads-2018-06-04/">&lt;p&gt;&lt;em&gt;Interesting things I read on the Internet this week&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.wi-fi.org/discover-wi-fi/wi-fi-easymesh&quot;&gt;Wi-Fi EasyMesh&lt;/a&gt; — Wi-Fi Alliance have released a specification for mesh networks. Mesh networks (where routers bounce traffic around themselves) are interesting because they’re tricky to censor and surveil since they can mix up people’s traffic and connect people directly to locally hosted services. In theory they can also be more efficient and resilient to failure too.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://shkspr.mobi/blog/2018/05/things-for-which-cryptographic-signing-would-be-useful/&quot;&gt;Things For Which Cryptographic Signing Would Be Useful&lt;/a&gt; — You can often replace the word “blockchain” with “cryptography” (or even “public database”). Some nice examples of where old fashioned cryptographic signing would be useful.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://www.cityam.com/286321/snoopers-charter-puts-uk-firms-track-gdpr-headache-post&quot;&gt;The Snooper’s Charter puts UK firms on track for a GDPR headache post-Brexit&lt;/a&gt; — After Brexit, we’ll need to continually convince the EU that the UK is GDPR-compatible. Our privacy-trampling &lt;a href=&quot;https://en.wikipedia.org/wiki/Investigatory_Powers_Act_2016&quot;&gt;Investigatory Powers Act — the Snooper’s Charter&lt;/a&gt; — undermines our case, so something will have to give. Lol.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://adguard.com/en/blog/goodbye-amazon/&quot;&gt;Goodbye, Amazon&lt;/a&gt; — Amazon’s AppStore censors AdGuard for Android, a system-wide ad-blocker. I hadn’t realised Amazon was an advertising company, too.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.theatlantic.com/technology/archive/2018/05/electric-scooters-are-the-cargo-shorts-of-transportation/561440/?single_page=true&quot;&gt;Unfortunately, the Electric Scooters Are Fantastic&lt;/a&gt; — An electric scooter sceptic is converted after actually trying one. Oh my, I think I’m close to buying one.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://trac.torproject.org/projects/tor/wiki/org/meetings/2018Rome/Notes/FusionProject&quot;&gt;Fusion Project overview&lt;/a&gt; — The Tor browser is getting integrated into Firefox’s Private Browsing mode (more or less). I guess this will massively increase traffic to the Tor network. Incidentally, some friends and I operate &lt;a href=&quot;https://atlas.torproject.org/#search/165FEA8476A02296DD8C6281CD02AC80319F8ACA&quot;&gt;a tor relay&lt;/a&gt; which we &lt;a href=&quot;https://opencollective.com/trill&quot;&gt;fund through OpenCollective.&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.economist.com/technology-quarterly/2018-05-02/justice&quot;&gt;I know what you’ll do next summer&lt;/a&gt; — A detailed Economist special report on the future of technology and law enforcement. The &lt;a href=&quot;http://infographics.economist.com/2018/TQ/Economist_TQ_Justice.pdf&quot;&gt;graphic novel&lt;/a&gt; is well worth a look. I’m more sceptical about predictive policing, but a good read nonetheless.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.kialo.com/&quot;&gt;Empowering Reason&lt;/a&gt; — Great concept, an online app designed to facilitate rational debate. I’m really happy to see people working on this sort of tool.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Interesting things I read on the Internet this week</summary></entry><entry><title type="html">Interesting reads, 28 May 2018</title><link href="https://www.paulfurley.com/interesting-reads-2018-05-28/" rel="alternate" type="text/html" title="Interesting reads, 28 May 2018" /><published>2018-05-28T00:00:00+00:00</published><updated>2018-05-28T00:00:00+00:00</updated><id>https://www.paulfurley.com/interesting-reads-2018-05-28</id><content type="html" xml:base="https://www.paulfurley.com/interesting-reads-2018-05-28/">&lt;p&gt;&lt;em&gt;Interesting things I read on the Internet this week&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.reddit.com/r/tifu/comments/8kvias/tifu_by_getting_google_to_ban_our_entire_company/&quot;&gt;Getting Google to ban our entire company while on the toilet&lt;/a&gt; — If this is true, the activity of &lt;em&gt;one&lt;/em&gt; team member can bring down a whole organisation’s G-Suite account. That’s the terrifying thing about outsourcing your … everything.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.theatlantic.com/technology/archive/2018/05/charging-electric-scooters-is-a-cutthroat-business/560747/?single_page=true&quot;&gt;Electric Scooter Charger Culture Is Out of Control&lt;/a&gt; — Love the way Bird have gamified finding, charging and returning their rental scooters. Skipping the need for centralised infrastructure is smart.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://play.google.com/store/apps/details?id=co.siempo.phone&quot;&gt;Siempo Beta - The Phone for Humans&lt;/a&gt; — I’ve been trying out this custom Android home screen which aims to reduce distractions and simplify the phone. It has definitely reduced my compulsive checking of certain apps, so positive reviews so far.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://www.pathsensitive.com/2018/02/making-bugs-impossible-illustrating.html?m=1&quot;&gt;My favorite principle for code quality&lt;/a&gt; — I really like how James Koppel thinks so deeply about the design of software.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://ourdataourselves.tacticaltech.org/posts/40-applying-for-a-visa/&quot;&gt;Applying for a Visa&lt;/a&gt; — An eerie view into the unaccountable data-collecting-and-sharing mess that is applying for a foreign visa. If you haven’t encountered Tactical Tech before, take a look at their great work.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.ccn.com/bitcoin-gold-hit-by-double-spend-attack-exchanges-lose-millions/&quot;&gt;Bitcoin Gold Hit by Double Spend Attack, Exchanges Lose Millions&lt;/a&gt; — This is the theoretical 51% attack put into practice. One organisation was able to get the majority of the mining power, and rewrite history.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.kiro7.com/www.kiro7.com/news/local/woman-says-her-amazon-device-recorded-private-conversation-sent-it-out-to-random-contact/755507974&quot;&gt;Woman says her Amazon device recorded private conversation, sent it out to random contact&lt;/a&gt; — Another great reason to put someone else’s internet-connected microphone in your home. You couldn’t make this up.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://azeria-labs.com/the-importance-of-deep-work-the-30-hour-method-for-learning-a-new-skill/&quot;&gt;The Importance of Deep Work &amp;amp; The 30-Hour Method for Learning a New Skill&lt;/a&gt; — Important thoughts about &lt;em&gt;how to think&lt;/em&gt;. This is striking in a distraction filled world: &lt;em&gt;“The rule of thumb is that it takes approximately 25 minutes of focus without distraction to reach a state of flow.”&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Interesting things I read on the Internet this week</summary></entry><entry><title type="html">How The Light Gets In 2018</title><link href="https://www.paulfurley.com/how-the-light-gets-in-2018/" rel="alternate" type="text/html" title="How The Light Gets In 2018" /><published>2018-05-28T00:00:00+00:00</published><updated>2018-05-28T00:00:00+00:00</updated><id>https://www.paulfurley.com/how-the-light-gets-in-2018</id><content type="html" xml:base="https://www.paulfurley.com/how-the-light-gets-in-2018/">&lt;p&gt;&lt;em&gt;Notes on philosophy from a field in Hay on Wye&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;We went to &lt;a href=&quot;https://howthelightgetsin.org/hay/&quot;&gt;How the Light Gets In&lt;/a&gt;, a lovely philosophy festival that co-locates with the Hay Literary Festival.&lt;/p&gt;
+
+&lt;p&gt;Here are my notes-to-self.&lt;/p&gt;
+
+&lt;h2 id=&quot;friday&quot;&gt;Friday&lt;/h2&gt;
+
+&lt;h3 id=&quot;sarah-corbett-talks-to-jonathon-porritt&quot;&gt;&lt;a href=&quot;https://www.hayfestival.com/p-13719-sarah-corbett-talks-to-jonathon-porritt.aspx&quot;&gt;Sarah Corbett talks to Jonathon Porritt&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sarah is a scouser from Everton!&lt;/li&gt;
+  &lt;li&gt;Because injustice makes us angry we direct that at people which is wrong&lt;/li&gt;
+  &lt;li&gt;Much more effective to treat people as humans and not enemies&lt;/li&gt;
+  &lt;li&gt;“Crafter thought” questions&lt;/li&gt;
+  &lt;li&gt;With us or against us is unhelpful&lt;/li&gt;
+  &lt;li&gt;Women’s March: no call to action so trump had nothing to answer for&lt;/li&gt;
+  &lt;li&gt;Often protest is transactional: make this, it goes out, done. Better to make long general protest (slow protest)&lt;/li&gt;
+  &lt;li&gt;Starting with yourself is helpful. Here’s how I’m working on this change, how are you doing it?&lt;/li&gt;
+  &lt;li&gt;I’m an angry person that knows I need to channel my anger.&lt;/li&gt;
+  &lt;li&gt;We’re feeling people that think (feeling leads everything)&lt;/li&gt;
+  &lt;li&gt;Yellow handwritten envelope very compelling to open!&lt;/li&gt;
+  &lt;li&gt;Small positive gifts from constituents very powerful to MPs!&lt;/li&gt;
+  &lt;li&gt;TEDx talk, activism needs introverts&lt;/li&gt;
+  &lt;li&gt;Politicians worry when theres solidarity from unaffected people, so use a mix&lt;/li&gt;
+  &lt;li&gt;Craftivism isn’t a movement, it’s a tool for change&lt;/li&gt;
+  &lt;li&gt;Audience member in evildoing company: it was much more effective and hearing from quiet, thoughtful, ethical people.&lt;/li&gt;
+  &lt;li&gt;Keep asking, how can &lt;em&gt;we&lt;/em&gt; make a world that looks like &lt;em&gt;this&lt;/em&gt;, it’s much easier for people to visualise a futures rather than look at negatives&lt;/li&gt;
+  &lt;li&gt;Learning a little bit about the other person and linking it to their circumstances&lt;/li&gt;
+  &lt;li&gt;Crafts can be very cathartic for people&lt;/li&gt;
+  &lt;li&gt;Anti war March: ok, that failed, but look at Syria, politicians were massively affected by it afterwards&lt;/li&gt;
+  &lt;li&gt;Focus on what’s realistic, your circle of influence, what you can get changed. Something accountable and specific&lt;/li&gt;
+  &lt;li&gt;We bought &lt;a href=&quot;https://www.goodreads.com/book/show/34211871-how-to-be-a-craftivist&quot;&gt;the book&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;roving-crows&quot;&gt;&lt;a href=&quot;http://rovingcrows.com/&quot;&gt;Roving crows&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Were awesome.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-correspondents&quot;&gt;&lt;a href=&quot;https://www.thecorrespondents.co.uk/&quot;&gt;The Correspondents&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Wow, wow, wow.&lt;/p&gt;
+
+&lt;h2 id=&quot;saturday&quot;&gt;Saturday&lt;/h2&gt;
+
+&lt;h3 id=&quot;capitalism-poverty-and-progress&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/capitalism-poverty-and-progress-2050&quot;&gt;Capitalism, poverty and progress&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Might unrestricted capitalism work better for the poor than any alternative? Author of Bourgeois Equality Deirdre McCloskey makes the case that from 1840s Manchester to modern India the market thrives when free.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-secrets-of-consciousness&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/the-secrets-of-consciousness-2051&quot;&gt;The secrets of consciousness&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Susan Blackmore, Philip Goff, Nicholas Humphrey. Barry C. Smith hosts.&lt;/p&gt;
+
+&lt;p&gt;Consciousness is a deep puzzle. There was hope that neuroscience might find some answers. But we still have no explanation for where brain activity ends and experience begins. Is it a mistake to think we can explain consciousness by examining the brain? Should we look elsewhere to our evolutionary roots perhaps? Or might neuroscience provide answers after all?&lt;/p&gt;
+
+&lt;p&gt;Panpsychist Philip Goff joins Consciousness Regained author Nicholas Humphrey, and psychologist Susan Blackmore to untangle mind and matter.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-accidental-anarchist&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/the-accidental-anarchist-2062&quot;&gt;The Accidental anarchist&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Diplomat turned anarchist Carne Ross charts his journey from establishment-insider to anti-elite renegade, asking: could we trade our democracy for life without government?&lt;/p&gt;
+
+&lt;h3 id=&quot;capitalism&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/capitalism-2066&quot;&gt;Capitalism&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Stephen D. King, Deirdre McCloskey, Guy Standing. Roger Bolton hosts.&lt;/p&gt;
+
+&lt;p&gt;Capitalism has not had a good decade. With inequalities in wealth, lack of growth, and static or falling living standards many are calling for dramatic change. Can radical alternatives avoid the failures that have dogged them in the past? Or is the decline in global poverty and the rapid expansion of China and India evidence that capitalism is the solution not the disease?&lt;/p&gt;
+
+&lt;h3 id=&quot;spiegel-circus&quot;&gt;Spiegel circus&lt;/h3&gt;
+
+&lt;h3 id=&quot;sam-and-the-womp&quot;&gt;Sam and the womp&lt;/h3&gt;
+
+&lt;h2 id=&quot;sunday&quot;&gt;Sunday&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-science-of-psychedelics&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/the-science-of-psychedelics-2126&quot;&gt;The Science of psychedelics&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Is Britain’s attitude to drugs harming mental health patients? Imperial College psychiatrist and former government drugs adviser David Nutt argues for an evidence based revolution in drugs policy.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-long-strange-trip&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/a-long-strange-trip-2144&quot;&gt;A long strange trip&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Aside from being illegal, LSD has not had a good press - associated with bad trips and psychological breakdown. Now there is a new craze for LSD amongst Silicon Valley whizz kids and management gurus, with scientists claiming anti-depressive benefits. Might we have been too quick to ban psychedelics and could they be a means to deepen experience and enhance our lives? Or is this all dangerous hippy nonsense?&lt;/p&gt;
+
+&lt;p&gt;Pharmacologist and former Home Office drugs advisor David Nutt, drugs reformist and director of the Beckley Foundation Amanda Feilding and founder of the Psychedelic Society Stephen Reid want to change how we see LSD.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Interesting analogy between psychadelics and enlightenmennt through meditation — one’s like taking a helicopter to the top of Everest, as opposed to climbing. Is the view the same?&lt;/li&gt;
+  &lt;li&gt;Stephen Reid also co-founded UK Uncut&lt;/li&gt;
+  &lt;li&gt;The psychadelic society runs &lt;a href=&quot;https://psychedelicsociety.org.uk/&quot;&gt;experience retreats&lt;/a&gt; to Holland for people try mushrooms in a safe and productive environment.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;making-sense-of-reality&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/making-sense-of-reality-2161&quot;&gt;Making sense of reality&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Andy Clark, Rufus Duits, Joanna Kavenna, John McWhorter. James Ladyman hosts.&lt;/p&gt;
+
+&lt;p&gt;We think we see the world the way it is. But how we think changes what we see, and more radically every organism sees the world in its own unique way. Is this because perception does not simply reflect reality but plays a part in its creation? But if so what is reality and what are the limits on how it can be perceived?&lt;/p&gt;
+
+&lt;p&gt;A Field Guide to Reality author Joanna Kavenna, metaphysician and cognitive scientist Andy Clark, author of The Language Hoax John McWhorter, and philosopher Rufus Duits push the limits of perception.&lt;/p&gt;
+
+&lt;h3 id=&quot;money-for-nothing&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/money-for-nothing-2164&quot;&gt;Money for nothing&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Deirdre McCloskey, Guy Standing.&lt;/p&gt;
+
+&lt;p&gt;Head to Head: Universal Basic Income?&lt;/p&gt;
+
+&lt;p&gt;Once dismissed as a utopian fantasy, the idea of a basic universal income has now hit the mainstream. With new technologies, support from across the political spectrum, and advocates from Hawking to Zuckerberg, it’s no surprise people have begun to take the prospect seriously.&lt;/p&gt;
+
+&lt;p&gt;For tonight’s head-to-head we ask “Universal Basic Income: is it time?”&lt;/p&gt;
+
+&lt;p&gt;In this combative one-on-one debate, author of Basic Income: And How We Can Make It Happen Guy standing goes head to head with leading libertarian economist Deirdre Mcloskey.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Look up &lt;a href=&quot;https://basicincome.org/&quot;&gt;Basic Income Earth Network (BIEN)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;monster-ceilidh-band&quot;&gt;Monster ceilidh band&lt;/h3&gt;
+
+&lt;h2 id=&quot;monday&quot;&gt;Monday&lt;/h2&gt;
+
+&lt;h3 id=&quot;whats-wrong-with-the-left&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/whats-wrong-with-the-left-2201&quot;&gt;What’s wrong with the left?&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Peter Tatchell&lt;/p&gt;
+
+&lt;p&gt;Has the left lost its way? Human rights activist Peter Tatchell argues for a return to human rights and social justice to unite the left and reclaim power.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Left needs to be constructive, optimistic and positive&lt;/li&gt;
+  &lt;li&gt;Simply opposing the deficit is not enough, we need a practical suggestion&lt;/li&gt;
+  &lt;li&gt;Must create a left alliance, break mentality “we are the only progressives”&lt;/li&gt;
+  &lt;li&gt;Proportional representation.&lt;/li&gt;
+  &lt;li&gt;In UK no government has had majority since 1931&lt;/li&gt;
+  &lt;li&gt;Progressive alliances, lib dems step down for greens and vice versa&lt;/li&gt;
+  &lt;li&gt;Labour leadership believes they are the only progressive party&lt;/li&gt;
+  &lt;li&gt;Labour fought to oust Green and lib dems, stupid&lt;/li&gt;
+  &lt;li&gt;Greens stood down in 30 seats to help labour win those seats (labour did nothing in return)&lt;/li&gt;
+  &lt;li&gt;It’s vital to defend internal party dissent and debate&lt;/li&gt;
+  &lt;li&gt;Being forgiving, recognising people make mistakes&lt;/li&gt;
+  &lt;li&gt;Left needs an actual agenda, not just “more public spending”&lt;/li&gt;
+  &lt;li&gt;Key issue whole left is dodging is economic democracy. Today we basically live in an economic dictatorship (shareholders, directors have all the votes). Example, 1/3rd employee and consumer directors on all boards&lt;/li&gt;
+  &lt;li&gt;Pension funds should be directed by employee owned trusts&lt;/li&gt;
+  &lt;li&gt;Be politically and morally consistent - left always defend free speech for the left… but not the right!!&lt;/li&gt;
+  &lt;li&gt;Left needs to challenge all tyrannies, not just some&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;the-darkest-dictator-orwell-vs-huxley&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/the-darkest-dictator-orwell-vs-huxley-2205&quot;&gt;The Darkest Dictator: Orwell vs Huxley&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Jon Barnes, Robert Colls, &lt;a href=&quot;http://www.janneteller.dk/?English&quot;&gt;Janne Teller&lt;/a&gt;. Shahidha Bari hosts.&lt;/p&gt;
+
+&lt;p&gt;Orwell’s 1984 offered a terrifying vision of totalitarian rule. But Huxley, in a letter to Orwell about Brave New World, claimed the future of society isn’t “flogging people into obedience” but making them “love their servitude”. Are we most at risk of dictatorship when we are most content? Or are the real dangers always force and oppression?&lt;/p&gt;
+
+&lt;p&gt;Award winning novelist Janne Teller, George Orwell: English Rebel author Robert Colls and art historian Julian Stallabrass pitch the dangers of complacency against those of oppression.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Read Jon’s book: &lt;a href=&quot;https://www.goodreads.com/book/show/34053661-democracy-squared&quot;&gt;Democracy Squared: A Digital Revolution That’s About to Democratise Democracy &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;There’s no-one to march against when it’s the whole system&lt;/li&gt;
+  &lt;li&gt;Janne Teller campaigns against mass surveillance&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;love-machines&quot;&gt;&lt;a href=&quot;https://howthelightgetsin.org/hay/events/love-machines-2220&quot;&gt;Love Machines&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.gold.ac.uk/computing/staff/k-devlin/&quot;&gt;Kate Devlin&lt;/a&gt;, &lt;a href=&quot;https://www.brookemagnanti.com/&quot;&gt;Brooke Magnanti (formerly Bell de Jour)&lt;/a&gt;, &lt;a href=&quot;https://people.uwe.ac.uk/Person/AlanWinfield&quot;&gt;Alan Winfield&lt;/a&gt;. Shahidha Bari hosts.&lt;/p&gt;
+
+&lt;p&gt;Virtual Reality pornography is already with us, along with predictions that sex robots will be commonplace by 2025. Many believe this threatens to corrupt love and undermine relationships, yet some think it liberation’s next step. Should we endorse a future where sexual desires can be satisfied by machines? Or is this a dangerous dream that could radically alter the fabric of society?&lt;/p&gt;
+
+&lt;p&gt;Computer scientist and author of Love and Sex with Robots Kate Devlin and robot ethicist Alan Winfield explore love, sex, and robots.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Alan: Robots shouldn’t look or act like robots because it’s deceptive&lt;/li&gt;
+  &lt;li&gt;Alan: Robots should not have rights — look up &lt;a href=&quot;https://twitter.com/David_Gunkel&quot;&gt;David Gunkell&lt;/a&gt; for more discuss on on this&lt;/li&gt;
+  &lt;li&gt;Kate Devlin is awesome! She runs &lt;a href=&quot;http://goldsmiths.tech/sex&quot;&gt;sex hack days!&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Media portrayal of sex robots is always female and humanoid — no reason they should be humanoid, why not a sex sleeping bag?&lt;/li&gt;
+  &lt;li&gt;Brooke Magnanti (belle du jour) was refreshlingly straightforward!&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Notes on philosophy from a field in Hay on Wye</summary></entry><entry><title type="html">Interesting reads, 21 May 2018</title><link href="https://www.paulfurley.com/interesting-reads-2018-05-21/" rel="alternate" type="text/html" title="Interesting reads, 21 May 2018" /><published>2018-05-21T00:00:00+00:00</published><updated>2018-05-21T00:00:00+00:00</updated><id>https://www.paulfurley.com/interesting-reads-2018-05-21</id><content type="html" xml:base="https://www.paulfurley.com/interesting-reads-2018-05-21/">&lt;p&gt;&lt;em&gt;Interesting things I read on the Internet this week&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://tp69.wordpress.com/2018/04/17/completely-silent-computer/&quot;&gt;Completely Silent Computer&lt;/a&gt; — This gave me a pang of nostalgia, remembering my teen years building computers for friends and family. I’m seriously tempted to build a fully silent machine, the holy grail I never managed to achieve.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.vitavonni.de/blog/201503/2015031201-the-sad-state-of-sysadmin-in-the-age-of-containers.html&quot;&gt;The sad state of sysadmin in the age of containers&lt;/a&gt; — Interesting from a security point of view — the fashion of installing software through “convenient” pre-built binary blobs. I wonder how many software images already contain backdoors?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://flopstarter.com/&quot;&gt;Flopstarter&lt;/a&gt; — A platform for bad ideas. Amazing.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://twitter.com/nestsupport/status/996955985343270913&quot;&gt;“… customers who are unable to arm/disarm or lock/unlock via the Nest app”&lt;/a&gt; — The real problem is centralisation — thermostats and doors locks should work even when Nest’s infrastructure goes down, or the company goes bust or &lt;a href=&quot;https://www.theguardian.com/technology/2016/apr/05/revolv-devices-bricked-google-nest-smart-home&quot;&gt;abandons the product&lt;/a&gt;. My own front door lock is &lt;a href=&quot;https://www.github.com/paulfurley/doorbot&quot;&gt;open source&lt;/a&gt; and runs on a tiny computer &lt;em&gt;in my home&lt;/em&gt;. If I can do it, a megacorp like Nest can too.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://efail.de/&quot;&gt;EFAIL - vulnerability in email clients using PGP and S/MIME&lt;/a&gt; — Researchers found a crypto-fail in the way some email clients handle encrypted HTML emails. They put out a &lt;a href=&quot;https://twitter.com/seecurity/status/995906576170053633&quot;&gt;mysterious tweet&lt;/a&gt; but bizarrely withheld the actual vulnerability, making it impossible to know what to advise. The &lt;a href=&quot;https://www.eff.org/deeplinks/2018/05/attention-pgp-users-new-vulnerabilities-require-you-take-action-now&quot;&gt;EFF jumped in with unhelpful advice&lt;/a&gt;, and some sort of holy war broke out. It was a total mess.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.robertxiao.ca/hacking/locationsmart/&quot;&gt;LocationSmart API Vulnerability&lt;/a&gt; — If you had real-time access to the location of every cellphone in the US, you’d protect that information really carefully, right?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=C_W-VkQ4oSk&quot;&gt;‘Huggybug Your Family Today’: Don’t play around with children’s online safety&lt;/a&gt; — Brilliant spoof from Consumers International on the reality of internet-connected childrens’ toys.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Paul Fawkesley</name></author><category term="interestingreads" /><summary type="html">Interesting things I read on the Internet this week</summary></entry></feed>

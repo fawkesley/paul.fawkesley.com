@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Hack the Hive: Connecting a Beehive to the Internet</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link type="application/atom+xml" rel="alternate" href="https://www.paulfurley.com/feed.xml" title="Paul Fawkesley, Engineer" />
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/css/vendor/font-awesome/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Martel" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="www.paulfurley.com" />
+    <meta property="og:title" content="Hack the Hive: Connecting a Beehive to the Internet" />
+    
+
+    
+      <meta content="*One of my resolutions for 2016 was to make an effort to write up my “hack days”
+
+  the 20% time I’ve been trying out for the last six months. Although I don’t
+think I’ve wasted that time, I’ve hacked on a lot of different stuff but don’t
+have much to show for it. I think it’ll be great to be able to refer back to
+each day with a blog post.*
+
+
+Why We’re Hacking a Hive
+
+My friend Hannah works at Ykids, a charity in Bootle who run activities and
+things for kids. One of the groups are budding young beekeepers and they have
+a couple of active beehives. The kids are amazing: they’re totally into their
+beekeeping.
+
+A while back Hannah and I were chatting about whether we could monitor the
+hives remotely. There are a load of reasons to do this, but one in particular
+is checking if the inside of the hive has got too cold. In the winter the bees
+form a tight ball and buzz around to generate heat, but it’s possible that they
+can get too cold and die. If you can monitor the temperature of the hive, you
+can intervene and add extra insulation. We decided to do a Minimum Viable Hive
+by monitoring the temperature and logging it remotely somewhere. This is a
+techie write-up of the electronicsy bits.
+
+Hera 200 is an Arduino Leonardo + GSM
+
+The Hera 200 is a sweet little board with effectively an Arduino Leonardo,
+a GSM shield, a battery, some neat power electronics and a tough little case.
+My friend Adrian put me onto this as he’s used it in another project,
+powered by a low cost 12V leisure solar panel. The plan is to use this to
+take temperature measurements and upload them using mobile data to somewhere on
+the Internet.
+
+
+
+Temperature Sensing with a DHT22
+
+We used a temperature and humidity sensor called the DHT22 which is
+pre-calibrated, meaning it has a little chip onboard with a lookup table to
+ensure you get calibrated readings. Helpfully, Adafruit released a free
+software library to read these devices. Although the tutorial
+website was down when I looked at it, the library was so clear that I was able
+to get going easily: it just worked (for once).
+
+The DHT22 sensor is connected to three pins on the Hera 200’s output connector.
+Thankfully I had the schematic to work out which pin mapped to which Arduino
+pin. The diagram below shows the connections:
+
+
+
+Arduino in Low Power Mode
+
+The Arduino code simply wakes up every 10 minutes, activates the GSM modem,
+sends the temperature and humidity sensors to a remote server then goes back
+to sleep. It uses the Low Power library to put the Arduino into
+a very low power sleep mode between cycles.
+
+All the Arduino code is on GitHub.
+
+Data Forwarding Server
+
+I decided the Arduino should send data directly to a tiny server that I control
+rather than uploading it to a third-party. The reason for this is that I’m wary
+of third party servers coming and going, or changing the way their API works.
+Once the Arduino is deployed in a field it will be awkward to update. It’s much
+simpler to re-deploy a tiny Python app running on a server on the Internet.
+
+
+
+Note that NAN entries due to a missing sensor!
+
+The server code forwards on to Sparkfun which lets you
+download the data in various formats.
+
+With this setup, there’s nothing stopping us forward the data on to multiple
+places, for example I’d like to try out opensensors.io.
+
+The server code is on Github.
+
+Watch this Space!
+
+We’re building the hive on Monday, and it’ll be up to the kids to work out how
+to install the sensors, mount the solar panel and keep everything waterproof.
+
+I’ll make sure I post some photos, probably in another blog.
+
+Visit our Github organisation or
+look at the data.
+
+" property="og:description">
+    
+
+    
+      <meta content="article" property="og:type">
+    
+
+    <meta name="twitter:site" content="@fawkesley">
+
+
+    <script>
+      if(navigator.doNotTrack != "1") {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-37077969-1', 'auto');
+        ga('send', 'pageview');
+      } else {
+        console.debug("Respecting Do-Not-Track, not loading analytics. See https://www.paulfurley.com/google-analytics-dnt/");
+      }
+    </script>
+
+
+</head>
+
+
+<body>
+    <header class="page-header">
+      <div class="container">
+        <a href="/" class="site-title">Paul Fawkesley</a>
+      </div>
+    </header>
+
+
+<article class="blog-post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    <time pubdate itemprop="datePublished" datetime="2016-02-12T00:00:00+00:00" content="2016-02-12T00:00:00+00:00">February 2016</time>
+  </header>
+	<span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			Paul Fawkesley
+		</span>
+	</span>
+
+<h1 itemprop="headline">Hack the Hive: Connecting a Beehive to the Internet</h1>
+
+<p>*One of my resolutions for 2016 was to make an effort to write up my “hack days”</p>
+<ul>
+  <li>the 20% time I’ve been trying out for the last six months. Although I don’t
+think I’ve wasted that time, I’ve hacked on a lot of different stuff but don’t
+have much to show for it. I think it’ll be great to be able to refer back to
+each day with a blog post.*</li>
+</ul>
+
+<h2 id="why-were-hacking-a-hive">Why We’re Hacking a Hive</h2>
+
+<p>My friend Hannah works at <a href="http://www.ykids.co.uk/">Ykids</a>, a charity in Bootle who run activities and
+things for kids. One of the groups are budding young beekeepers and they have
+a couple of active beehives. The kids are amazing: they’re totally into their
+beekeeping.</p>
+
+<p>A while back Hannah and I were chatting about whether we could monitor the
+hives remotely. There are a load of reasons to do this, but one in particular
+is checking if the inside of the hive has got too cold. In the winter the bees
+form a tight ball and buzz around to generate heat, but it’s possible that they
+can get too cold and die. If you can monitor the temperature of the hive, you
+can intervene and add extra insulation. We decided to do a Minimum Viable Hive
+by monitoring the temperature and logging it remotely somewhere. This is a
+techie write-up of the electronicsy bits.</p>
+
+<h2 id="hera-200-is-an-arduino-leonardo--gsm">Hera 200 is an Arduino Leonardo + GSM</h2>
+
+<p>The <a href="https://www.eseye.com/hera200/">Hera 200</a> is a sweet little board with effectively an Arduino Leonardo,
+a GSM shield, a battery, some neat power electronics and a tough little case.
+My friend <a href="http://www.mcqn.net/mcfilter/">Adrian</a> put me onto this as he’s used it in another project,
+powered by a low cost 12V leisure solar panel. The plan is to use this to
+take temperature measurements and upload them using mobile data to somewhere on
+the Internet.</p>
+
+<p><img src="/img/hera-200-board.jpg" alt="Hera 200 board" /></p>
+
+<h2 id="temperature-sensing-with-a-dht22">Temperature Sensing with a DHT22</h2>
+
+<p>We used a temperature and humidity sensor called the <a href="https://www.adafruit.com/products/385">DHT22</a> which is
+pre-calibrated, meaning it has a little chip onboard with a lookup table to
+ensure you get calibrated readings. Helpfully, Adafruit released a <a href="https://github.com/adafruit/DHT-sensor-library">free
+software library</a> to read these devices. Although the tutorial
+website was down when I looked at it, the library was so clear that I was able
+to get going easily: it just worked (for once).</p>
+
+<p>The DHT22 sensor is connected to three pins on the Hera 200’s output connector.
+Thankfully I had the schematic to work out which pin mapped to which Arduino
+pin. The diagram below shows the connections:</p>
+
+<p><img src="/img/hera-200-connector.png" alt="Hera 200 Connector" /></p>
+
+<h2 id="arduino-in-low-power-mode">Arduino in Low Power Mode</h2>
+
+<p>The Arduino code simply wakes up every 10 minutes, activates the GSM modem,
+sends the temperature and humidity sensors to a remote server then goes back
+to sleep. It uses the <a href="https://github.com/rocketscream/Low-Power">Low Power library</a> to put the Arduino into
+a very low power sleep mode between cycles.</p>
+
+<p>All the Arduino code is on <a href="https://github.com/HackTheHive/arduino-gsm-upload-measurements">GitHub.</a></p>
+
+<h2 id="data-forwarding-server">Data Forwarding Server</h2>
+
+<p>I decided the Arduino should send data directly to a tiny server that I control
+rather than uploading it to a third-party. The reason for this is that I’m wary
+of third party servers coming and going, or changing the way their API works.
+Once the Arduino is deployed in a field it will be awkward to update. It’s much
+simpler to re-deploy a tiny Python app running on a server on the Internet.</p>
+
+<p><img src="/img/sparkfun-data-feed.png" alt="Sparkfun data hub" /></p>
+
+<p><em>Note that NAN entries due to a missing sensor!</em></p>
+
+<p>The server code forwards on to <a href="https://data.sparkfun.com/streams/QG8QpXOX9mInr1D5DoAj">Sparkfun</a> which lets you
+download the data in various formats.</p>
+
+<p>With this setup, there’s nothing stopping us forward the data on to multiple
+places, for example I’d like to try out <a href="https://www.opensensors.io/">opensensors.io</a>.</p>
+
+<p>The server code is on <a href="https://github.com/HackTheHive/python-data-receiver">Github.</a></p>
+
+<h3 id="watch-this-space">Watch this Space!</h3>
+
+<p>We’re building the hive on Monday, and it’ll be up to the kids to work out how
+to install the sensors, mount the solar panel and keep everything waterproof.</p>
+
+<p>I’ll make sure I post some photos, probably in another blog.</p>
+
+<p><a href="https://github.com/HackTheHive">Visit our Github organisation</a> or
+<a href="https://data.sparkfun.com/streams/QG8QpXOX9mInr1D5DoAj">look at the data</a>.</p>
+
+
+
+</article>
+
+
+
+  <aside class="container related-blog-posts">
+    <h3>Related</h3>
+    <ul class="tales-list">
+        
+        
+        <li><a href="/raspberry-pi-project-ideas/">
+          Raspberry Pi project ideas
+        </a></li>
+        
+        
+        
+        <li><a href="/chilli-plant-stop-motion-video-linux/">
+          Chilli Cam: Stop Motion Video using old Netbook
+        </a></li>
+        
+        
+        
+        <li><a href="/screen-scraping-utility-bills/">
+          Screen Scrape Your Utility Bills
+        </a></li>
+        
+        
+        
+        <li><a href="/improving-freecycle-with-sms-alerts/">
+          Improving Freecycle with SMS Alerts
+        </a></li>
+        
+        
+        
+        
+        
+        <li><a href="/playing-with-network-rail-train-movements-data-feed/">
+          Playing with Network Rail Train Movements Data Feed
+        </a></li>
+        
+        
+    </ul>
+  </aside>
+
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-half">
+
+          <h3> <i class="fa fa-star"></i> Highlights</h3>
+          <ul class="tales-list">
+            <li><a href="https://www.fluidkeys.com">PGP Software for Teams: Fluidkeys</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/randomize-your-wifi-mac-address-on-ubuntu-1604-xenial/">Randomize your WiFi MAC address on Ubuntu 16.04</a></li>
+            
+            
+            
+            
+            
+            <li><a href="/expirybot-emails-pgp-users-before-their-key-expires/">Expirybot emails PGP users before their key expires</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/building-software-users-love/">Building Software Users Love</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/resisting-the-urge-to-build/">Resisting the Urge to Build</a></li>
+            
+            
+            
+            
+            
+            
+            
+            <li><a href="/arduino-isnt-just-for-hackers/">Arduino Isn't Just For Hackers</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </ul>
+        </div>
+
+        <div class="col-half">
+          <a id="contact"></a>
+          <h3> <i class="fa fa-envelope"></i> Contact Me</h3>
+
+          <p>Feedback, freelancing, ideas or anything else, <a href="/contact/">drop me a line.</a></p>
+
+	  <p>PGP: <a href="/pgp">A999 B749 8D1A 8DC4 73E5  3C92 309F 635D AD1B 5517</a></p>
+          <p>Mastodon: <a rel="me" href="https://mastodon.me.uk/@paul">paul@mastodon.me.uk</a></p>
+
+          <a href="http://www.drupalhandboek.nl/moralecompensation.php?s=937"><div style="height: 0px; width: 0px;"></div></a>
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+
