@@ -16,7 +16,7 @@ Expirybot will continue and thrive!
 
 Monitor is shutting down. We currently monitor thousands of email addresses, but for lots of reasons it's been difficult and stressful to run and maintain.
 
-Ian and I are now working full time on Fluidkeys, [making PGP simple for engineering teams.](https://www.fluidkeys.com/fluidkeys-v1-preview/) If you'd like to keep up with our work on Fluidkeys please either sign up to release announcements at [https://www.fluidkeys.com](www.fluidkeys.com) or [give us occasional feedback on our Fluidkeys work.][fluidkeys-feedback-list]
+Ian and I are now working full time on Fluidkeys, [making PGP simple for engineering teams.](https://www.fluidkeys.com/fluidkeys-v1-preview/) If you'd like to keep up with our work on Fluidkeys please either sign up to release announcements at [www.fluidkeys.com](https://www.fluidkeys.com) or [give us occasional feedback on our Fluidkeys work.][fluidkeys-feedback-list]
 
 Thanks!
 
@@ -61,7 +61,7 @@ It's weighed on my mind that Monitor doesn't run reliably and it's distracted me
 
 If you're interested in monitoring your team's email addresses in the keyservers as part of a Fluidkeys subscription, we'd be delighted to help: email [hello@fluidkeys.com](mailto:hello@fluidkeys.com) and we'll work out how.
 
-If you're just interested in what we're doing with Fluidkeys, sign up to our release announcements at [www.fluidkeys.com](www.fluidkeys.com). If you'd like to be more involved, we'd love if you could [give us occasional feedback.][fluidkeys-feedback-list]
+If you're just interested in what we're doing with Fluidkeys, sign up to our release announcements at [www.fluidkeys.com](https://www.fluidkeys.com). If you'd like to be more involved, we'd love if you could [give us occasional feedback.][fluidkeys-feedback-list]
 
 
 ## Expirybot will live on
