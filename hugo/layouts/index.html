@@ -1,0 +1,94 @@
+{{ define "main" }}
+    <div class="container about">
+
+      <div id="about-photo-box">
+        <img src="/img/paul-fawkesley-engineer-200px.jpg" alt="Paul Fawkesley" class="about-portrait">
+      </div>
+
+      <div id="about-text-box">
+
+          <h1>Paul Fawkesley</h1>
+          <h2>Engineer</h2>
+
+          <p>I'm trying to build things to improve the world.</p>
+
+          <p>I care about human rights, internet freedom, equality.</p>
+
+          <p>I ❤ linux, python, crypto &amp; security :)</p>
+
+          <p><a href="/contact/">Contact</a></p>
+      </div>
+
+    </div>
+
+    <hr>
+
+
+    <section class="container">
+      <h2>I work best in small teams with a strong purpose</h2>
+
+      <p>Right now I'm building Treasure Hunts with my <a href="https://twitter.com/idrysdale">good friend Ian.</a></p>
+
+      <p>I've <a href="https://www.fluidkeys.com">built PGP software for teams</a> and for several years I ran <a href="https://www.expirybot.com">Expirybot, a reminder service to make life easier for PGP users.</a>
+      </p>
+
+      <p>I've built software for <a href="/arduino-isnt-just-for-hackers/">printing machines</a> and high-speed
+      network devices, scraped and analysed data for
+      <a href="https://scraperwiki.com/">ScraperWiki</a>, <a href="https://scraperwiki.com/2013/10/a-place-in-the-country/">Shelter</a> and <a href="https://www.globalwitness.org/">Global Witness</a>, built
+      backends for <a href="https://github.com/alphagov/stagecraft/commit/a2ece1ed435ca0511d559e72e1d6dd49307679eb">Government Digital Service</a>, created the whole stack for <a href="https://github.com/sealevelresearch/sea-level-api">Sea Level Research</a> and kicked off the
+      <a href="http://transformation.blog.nhs.uk/">NHS Digital Transformation.</a></p>
+
+      <p>I have a First in Engineering (Electronics) from Durham University. My <a href="https://uk.linkedin.com/in/fawkesley">CV is on LinkedIn.</a></p>
+
+    </section>
+
+    <section class="container">
+        <h2>Speaking &amp; events</h2>
+        <p>These are some talks or events I've organised:</p>
+
+        <ul>
+            <li><a href='https://www.youtube.com/watch?v=CtBvGyLxpts'>Surveillance Capitalism: How it works and how to break it</a> at <a href='https://www.igniteliverpool.com'>Ignite Liverpool</a></li>
+            <li><a href='https://www.meetup.com/IXLiverpool/events/233777832/'>How Countries Censor the Internet and Activists Fight Back</a> at <a href='https://www.ixliverpool.net/'>IXLiverpool</a></li>
+            <li><a href='https://digitalblog.coop.co.uk/tag/cryptoparty/'>Cryptoparty</a> at <a href='https://digitalblog.coop.co.uk'>Co-op Digital</a></li>
+            <li>Merseynet: Community WiFi at <a href='http://www.igniteliverpool.com'>Ignite Liverpool</a></li>
+            <li><a href='https://www.meetup.com/People-before-pixels/events/226879464/'>Developers and User Research</a> at <a href='https://www.meetup.com/People-before-pixels/'>People Before Pixels</a></li>
+            <li><a href='https://groups.google.com/forum/#!searchin/does-liverpool/paul$20furley|sort:relevance/does-liverpool/tEbvBewemuY/DI1Gfm1uOBgJ'>Intro to Tor and PGP</a> at Liverpool's Bitcoin and Cryptography Meetup</li>
+            <li><a href='http://www.livlug.org.uk/2017/01/first-meeting-of-2017/'>Securing email with PGP</a> at <a href='http://www.livlug.org.uk/'>Liverpool Linux User Group</a></li>
+        </ul>
+
+        <p>I enjoy making complex ideas simple to understand.</p>
+
+
+    </section>
+
+    <section class="container">
+
+      <h2>Interesting reads</h2>
+      <ul>
+          {{ $interestingReads := where .Site.Pages "Section" "interesting-reads" }}
+          {{ range first 5 $interestingReads.ByDate.Reverse }}
+          <li>
+              <a class="post-link" href="{{ .Permalink }}">{{ .Title }}</a>
+          </li>
+          {{ end }}
+      </ul>
+
+    </section>
+
+    <section class="container">
+      <a id="blog" name="blog" />
+      <h2>Blog posts</h2>
+      <ul>
+          {{ $blogPosts := where .Site.Pages "Section" "blog" }}
+          {{ range $blogPosts.ByDate.Reverse }}
+          <li><a class="post-link" href="{{ .Permalink }}">{{ .Title }}</a> - {{ .PublishDate.Format "January 2006" }}</li>
+          {{ end }}
+      </ul>
+    </section>
+
+    <div class="container">
+      <hr />
+      <p class="rss-subscribe">subscribe <a href="/index.xml">via RSS</a></p>
+    </div>
+
+{{ end }}

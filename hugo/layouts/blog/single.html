@@ -1,0 +1,26 @@
+{{ define "header" }}
+{{ partial "header_link.html" }}
+{{ end }}
+
+{{ define "main" }}
+
+<article class="blog-post container">
+    <header>
+        <time pubdate itemprop="datePublished" datetime="{{ .PublishDate.Format "2006-01-02T00:00+00:00" }}" content="{{ .PublishDate.Format "2006-01-02T00:00+00:00" }}">{{ .PublishDate.Format "January 2006" }}</time>
+    </header>
+    <span style="display: none" itemprop="author publisher" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Paul Fawkesley</span>
+    </span>
+
+    <h1 itemprop="headline">{{ .Title }}</h1>
+
+    {{ .Content }}
+
+    <hr />
+    <div>
+        Thoughts? <a href="/contact/">Get in touch</a><br />
+    </div>
+
+</article>
+
+{{ end }}

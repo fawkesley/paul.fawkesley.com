@@ -1,0 +1,132 @@
+server {
+    listen 443;
+    listen [::]:443;
+    server_name paul.fawkesley.com;
+
+    root /var/www/paul.fawkesley.com/html;
+
+    ssl_certificate           /etc/letsencrypt/live/paul.fawkesley.com/fullchain.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/paul.fawkesley.com/privkey.pem;
+
+    ssl on;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+    ssl_ecdh_curve secp384r1; # Requires nginx >= 1.1.0
+    ssl_session_cache shared:SSL:10m;
+
+    # ssl_session_tickets off; # Requires nginx >= 1.5.9
+
+    ssl_stapling on; # Requires nginx >= 1.3.7
+    ssl_stapling_verify on; # Requires nginx => 1.3.7
+    resolver 213.73.91.35 8.8.8.8 valid=300s;
+    resolver_timeout 5s;
+
+    # https://www.owasp.org/index.php/HTTP_Strict_Transport_Security
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+
+    # https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#Logjam_(DH_EXPORT)
+    ## To generate, run:                                                        
+    ## $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048              
+    ##  
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;  # LOGJAM and various others
+
+    access_log            /var/log/nginx/paul.fawkesley.com/access.log;
+    error_log             /var/log/nginx/paul.fawkesley.com/error.log;
+
+    location ~* ^.+\.(css|js|png|jpg)$ {
+        # Set css and js to expire in a very long time
+        access_log off;
+        expires 7d;
+    }
+
+    location = /apple-touch-icon.png                     { return 404; access_log off; log_not_found off; }
+    location = /apple-touch-icon-precomposed.png         { return 404; access_log off; log_not_found off; }
+    location = /apple-touch-icon-120x120.png             { return 404; access_log off; log_not_found off; }
+    location = /apple-touch-icon-120x120-precomposed.png { return 404; access_log off; log_not_found off; }
+    location = /apple-app-site-association               { return 404; access_log off; log_not_found off; }
+    location = /.well-known/apple-app-site-association   { return 404; access_log off; log_not_found off; }
+    location = /.well-known/assetlinks.json              { return 404; access_log off; log_not_found off; }
+    location = /.well-known/dnt-policy.txt               { return 404; access_log off; log_not_found off; }
+
+
+    location ~ ^(/wp-login.php|/admin/config.php|/recordings/index.php|/phpmyadmin) {
+
+       # Run this as root:
+       # dd if=/dev/zero bs=1M count=10240 | gzip > /var/www/zipbomb.gz
+
+       gzip_static always;
+       alias /var/www/zipbomb;
+    }
+
+    location /requests {
+      # Subject access requests, etc
+      autoindex on;
+    }
+
+    # Redirect rules
+
+    rewrite ^/feed/?$ /index.xml permanent;
+    rewrite ^/feed.xml /index.xml permanent;
+
+    rewrite ^/category/blog/?$ /#blog permanent;
+    rewrite ^/category/gpg-for-humans/?$ /gpg-for-humans-why-care-about-cryptography/ permanent;
+    rewrite ^/blog/?$ /#blog permanent;
+
+    rewrite ^/wp-content/uploads/2012/02/picocolour_tn.jpg$ /img/picocolour-thumbnail.jpg permanent;
+    rewrite ^/wp-content/uploads/2012/02/IMG_4428.jpg$ /img/arduinos-inside-ink-cabinet.jpg permanent;
+    rewrite ^/wp-content/uploads/2013/02/Cooperative-Mobile-Robots-Paul-M-Furley.pdf$ /files/Cooperative-Mobile-Robots-Paul-M-Furley.pdf permanent;
+    rewrite ^/wp-content/uploads/2013/02/cooperative-mobile-robots-paul-m-furley.pdf$ /files/Cooperative-Mobile-Robots-Paul-M-Furley.pdf permanent;
+    rewrite ^/wp-content/uploads/2013/02/robot-white-background2.jpg$ /img/robot-white-background2.jpg permanent;
+    rewrite ^/wp-content/uploads/2013/02/overview-of-communications.png$ /img/overview-of-communications.png permanent;
+    rewrite ^/wp-content/uploads/2013/02/screenshot-system-running.png$ /img/screenshot-system-running.png permanent;
+    rewrite ^/wp-content/uploads/2013/08/chilli_plant_stop_motion_video.jpg$ /img/chilli-plant-kit.jpg permanent;
+    rewrite ^/wp-content/uploads/2013/08/chilli-cam-fswebcam.jpg$ /img/chilli-cam-fswebcam.jpg permanent;
+    rewrite ^/wp-content/uploads/2013/08/samsung_n110_netbook.jpg$ /img/samsung-n110-netbook.jpg permanent;
+    rewrite ^/wp-content/uploads/2013/10/Screenshot-from-2013-10-17-230813.png$ img/minute-mate-home-page.png permanent;
+    rewrite ^/wp-content/uploads/2013/11/Screenshot-from-2013-10-17-225935.png$ /img/vodafone-online-login-screen.png permanent;
+    rewrite ^/wp-content/uploads/2013/11/Vodafone-online-network-tab-screenshot.png$ /img/vodafone-online-network-tab-screenshot.png permanent;
+    rewrite ^/wp-content/uploads/2014/08/Freecycle-too-many-emails.png$ /img/freecycle-too-many-emails.png permanent;
+    rewrite ^/wp-content/uploads/2014/08/CloudMailin-email-forwarding-management-panel.png$ /img/cloudmailin-email-management-panel.png permanent;
+
+    rewrite ^/wp-content/uploads/2014/08/Freecycle-filtering-sms-alert1.png$ /img/freecycle-sms-alert.png permanent;
+    rewrite ^/wp-content/uploads/2014/10/internet-of-things-toaster.jpg$ /img/internet-of-things-toaster.jpg permanent;
+    rewrite ^/wp-content/uploads/2014/10/inside-a-beautiful-straw-bale-house.jpg$ /img/inside-a-beautiful-straw-bale-house.jpg permanent;
+
+    rewrite ^/gpg-for-humans/$ /gpg-for-humans-why-care-about-cryptography/ permanent;
+    rewrite ^/gpg-for-humans-part-1-why-care-about-cryptography/$ /gpg-for-humans-why-care-about-cryptography/ permanent;
+
+    rewrite ^/expirybot/?$ /expirybot-emails-pgp-users-before-their-key-expires/ redirect;
+
+    rewrite ^/google-analytics-dnt/?$ /google-analytics-do-not-track/ redirect;
+
+    rewrite ^/2018-04-09-interesting-reads-2018-04-09/?$ /interesting-reads-2018-04-09/ permanent;
+    rewrite ^/2018-04-16-interesting-reads-2018-04-16/?$ /interesting-reads-2018-04-16/ permanent;
+
+    rewrite ^/keymanager-pgp-key-manager-for-dev-teams/?$ https://www.fluidkeys.com redirect;
+
+    rewrite ^/interesting-reads-2018-07-02/?$ /interesting-reads/2018-07-02/ permanent;
+    rewrite ^/interesting-reads-2018-07-02/?$ /interesting-reads/2018-07-02/ permanent;
+    rewrite ^/interesting-reads-2018-06-25/?$ /interesting-reads/2018-06-25/ permanent;
+    rewrite ^/interesting-reads-2018-06-18/?$ /interesting-reads/2018-06-18/ permanent;
+    rewrite ^/interesting-reads-2018-06-11/?$ /interesting-reads/2018-06-11/ permanent;
+    rewrite ^/interesting-reads-2018-06-04/?$ /interesting-reads/2018-06-04/ permanent;
+    rewrite ^/interesting-reads-2018-05-28/?$ /interesting-reads/2018-05-28/ permanent;
+    rewrite ^/interesting-reads-2018-05-21/?$ /interesting-reads/2018-05-21/ permanent;
+    rewrite ^/interesting-reads-2018-05-14/?$ /interesting-reads/2018-05-14/ permanent;
+    rewrite ^/interesting-reads-2018-05-07/?$ /interesting-reads/2018-05-07/ permanent;
+    rewrite ^/interesting-reads-2018-04-30/?$ /interesting-reads/2018-04-30/ permanent;
+    rewrite ^/interesting-reads-2018-04-23/?$ /interesting-reads/2018-04-23/ permanent;
+    rewrite ^/interesting-reads-2018-04-16/?$ /interesting-reads/2018-04-16/ permanent;
+    rewrite ^/interesting-reads-2018-04-09/?$ /interesting-reads/2018-04-09/ permanent;
+    rewrite ^/2018-personal-retrospective/?$ /personal-retrospective-2018/ permanent;
+    rewrite ^/2017-sabbatical-week-3/?$ /sabbatical-week-3/ permanent;
+    rewrite ^/2017-sabbatical-week-1/?$ /sabbatical-week-1/ permanent;
+    rewrite ^/dont-like-it-block-it-internet-filtering-in-libraries/?$ /dont-like-it-block-it/ permanent;
+    rewrite ^/taking-back-my-data-move-from-dropbox-to-nextcloud/?$ /my-move-from-dropbox-to-nextcloud/ permanent;
+    rewrite ^/hardening-my-development-machine/?$ /hardening-my-development-environment/ permanent;
+}
