@@ -1,0 +1,15 @@
+baseURL = "https://paul.fawkesley.com/"
+languageCode = "en-gb"
+title = "Paul Fawkesley, Engineer"
+
+
+# disable taxonomy pages
+# https://discourse.gohugo.io/t/turning-off-taxonomy-pages/2622
+# Good explainer: https://kodify.net/hugo/config/disablekinds-option/
+disableKinds = ["taxonomy", "taxonomyTerm", "section"]
+
+[permalinks]
+blog = "/:filename/"
+
+[markup.goldmark.renderer]
+unsafe= true
