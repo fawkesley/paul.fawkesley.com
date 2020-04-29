@@ -1,0 +1,42 @@
+name: Build and deploy static site
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install hugo
+        run: |-
+          wget --silent -O /tmp/hugo_extended.deb https://github.com/gohugoio/hugo/releases/download/v0.57.2/hugo_extended_0.57.2_Linux-64bit.deb
+          dpkg -i /tmp/hugo_extended.deb
+
+      - name: set up system dependencies for SSH
+        run: |-
+          apt-get update -y
+          apt-get install -y tree rsync openssh-client
+          ## Run ssh-agent inside the build environment
+          eval $(ssh-agent -s)
+
+      - name: import SSH key from Github secrets
+        run: |-
+          touch /tmp/private_key
+          chmod 600 /tmp/private_key
+          echo $SSH_PRIVATE_KEY > /tmp/private_key
+          ssh-add /tmp/private_key
+          shred -u /tmp/private_key
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+      - name: prepare SSH for outgoing connection without prompting
+        run: |-
+          ssh-keyscan paul.fawkesley.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: deploy the site with SSH
+        run: make deploy
