@@ -1,8 +1,30 @@
 server {
+    listen 80;
+    listen  [::]:80;
+    server_name  paulfurley.com;
+    server_name  www.paulfurley.com;
+
+    location /.well-known/acme-challenge/ {
+      # For the letsencrypt "webroot" plugin
+      # $ certbot certonly --webroot -w /etc/letsencrypt/fake-webroot -d paulfurley.com -d www.paulfurley.com --deploy-hook 'service nginx reload'
+      
+      root /etc/letsencrypt/fake-webroot;
+    }
+
+    location / {
+        return 301 https://paul.fawkesley.com$request_uri;
+    }
+}
+
+# to bootstrap the first Let's Encrypt certificate you'll need to comment out the
+# following server section until after certbot has run
+
+server {
     listen 443;
     listen [::]:443;
 
     server_name paulfurley.com;
+    server_name www.paulfurley.com;
 
     ssl_certificate /etc/letsencrypt/live/paulfurley.com/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/paulfurley.com/privkey.pem; # managed by Certbot
@@ -36,8 +58,7 @@ server {
     ssl_dhparam /etc/ssl/certs/dhparam.pem;  # LOGJAM and various others
 
     location / {
-        return 301 https://www.paulfurley.com$request_uri;
+        # return 301 https://www.paulfurley.com$request_uri;
+        return 301 https://paul.fawkesley.com$request_uri;
     }
-
 }
-
