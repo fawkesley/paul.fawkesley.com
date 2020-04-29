@@ -141,7 +141,7 @@ All of the sites I picked out above were now unblocked.
 I've picked out a few new blocks since 2014 that I thought were interesting:
 
 - [awe.co.uk](http://awe.co.uk) - this is the MOD [Atomic Weapons Establishment][awe-wikipedia]
-- [defenseindustrydaily.com](defenseindustrydaily.com)
+- [defenseindustrydaily.com](https://defenseindustrydaily.com)
 - facebook.com
 - google.com/images
 - www.youtube.com
