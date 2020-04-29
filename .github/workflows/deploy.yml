@@ -1,0 +1,37 @@
+name: Build and deploy static site
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install hugo 0.57.2
+        run: |-
+          wget --quiet -O /tmp/hugo_extended.deb https://github.com/gohugoio/hugo/releases/download/v0.57.2/hugo_extended_0.57.2_Linux-64bit.deb
+          sudo dpkg -i /tmp/hugo_extended.deb
+
+      - name: install rsync and SSH client
+        run: sudo apt-get install -y rsync openssh-client
+
+      - name: set up SSH keys and known_hosts
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |-
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan paul.fawkesley.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+
+      - name: deploy the site with SSH
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |-
+          make
+          rsync -e "ssh -i /tmp/private_key" -razv --delete --progress --checksum hugo/public/ paul-fawkesley-com@paul.fawkesley.com:~/html
