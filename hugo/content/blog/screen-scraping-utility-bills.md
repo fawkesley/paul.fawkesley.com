@@ -18,7 +18,7 @@ In my ideal world Vodafone - in fact all utility companies - would provide APIs 
 
 I decided to open source the web scraping component of the system so anyone can use and expand upon it. Please feel free to wrap it in an API! I've released it as a command-line tool called \*vodafone-scraper\* which includes basic alert functionality with thresholds.
 
-You can see the code and examples at <a title="Vodafone Scraper" href="https://github.com/paulfurley/vodafone-scraper" target="_blank">https://github.com/paulfurley/vodafone-scraper</a> or just install and run: $ pip install vodafone-scraper
+You can see the code and examples at <a title="Vodafone Scraper" href="https://github.com/fawkesley/vodafone-scraper" target="_blank">https://github.com/fawkesley/vodafone-scraper</a> or just install and run: $ pip install vodafone-scraper
 
 *Not a coder? Interested in scraping a utility website? Tell me about it!*
 

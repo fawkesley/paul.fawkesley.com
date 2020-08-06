@@ -176,5 +176,5 @@ Let's strive to notch up from "shit" to "satisfactory", and go from there.
 
 
 [vagrant]: https://www.vagrantup.com/downloads.html
-[github-vm-config]: https://github.com/paulfurley/pauls-development-virtual-machine
+[github-vm-config]: https://github.com/fawkesley/pauls-development-virtual-machine
 [firejail]: https://firejail.wordpress.com/

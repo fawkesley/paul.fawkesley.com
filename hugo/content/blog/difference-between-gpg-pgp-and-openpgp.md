@@ -49,7 +49,7 @@ The one I'm most excited about is my very own [EncryptIt][encryptit] for Python,
 [rfc-4880]: https://tools.ietf.org/html/rfc4880
 [fsf]: https://fsf.org
 [gnupg]: https://gnupg.org
-[gnupg-mirror]: https://github.com/paulfurley/gnupg-mirror/
+[gnupg-mirror]: https://github.com/fawkesley/gnupg-mirror/
 [werner-koch]: https://en.wikipedia.org/wiki/Werner_Koch
 [openpgpjs]: https://github.com/openpgpjs/openpgpjs
-[encryptit]: https://github.com/paulfurley/encryptit
+[encryptit]: https://github.com/fawkesley/encryptit

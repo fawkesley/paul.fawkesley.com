@@ -37,7 +37,7 @@ I'm now in a _much_ better place for building new features for Expirybot, which 
 
 This is a bit off-the wall, but I'm quite interested that there are [houses for sale in Liverpool for less than £50K](http://www.suttonkersh.co.uk/properties/listview/?FormSearchText=&FormSearchTextField=&geolat=&geolon=&georad=&section=sale&transType=1&searchSales=Search&priceMin=0&propType=&priceMax=75000&beds=&location=), and some of them are in areas that I believe have an excellent future.
 
-I've never been to an auction, and it wouldn't be right to go unprepared, so I built [a scraper to analyse the listings](https://github.com/paulfurley/sutton-kersh-property-auction-scraper/tree/master) before I went.
+I've never been to an auction, and it wouldn't be right to go unprepared, so I built [a scraper to analyse the listings](https://github.com/fawkesley/sutton-kersh-property-auction-scraper/tree/master) before I went.
 
 The auction was pretty exciting for two or three lots, then it got boring and I went home.
 

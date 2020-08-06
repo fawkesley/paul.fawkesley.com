@@ -196,5 +196,5 @@ but more on those in the future.
 [request-developer-account]: https://datafeeds.networkrail.co.uk/
 [state-machine]: http://nrodwiki.rockshore.net/index.php/TRUST_Message_Process
 [operating-companies-table]: http://nrodwiki.rockshore.net/index.php/TOC_Codes
-[operating-companies-json]: https://github.com/paulfurley/network-rail-data-feeds-python/blob/master/db/operating_companies.json
-[github-repo]: https://github.com/paulfurley/network-rail-data-feeds-python
+[operating-companies-json]: https://github.com/fawkesley/network-rail-data-feeds-python/blob/master/db/operating_companies.json
+[github-repo]: https://github.com/fawkesley/network-rail-data-feeds-python

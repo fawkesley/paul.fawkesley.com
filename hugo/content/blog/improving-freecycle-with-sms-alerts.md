@@ -35,7 +35,7 @@ This afternoon I hacked up an incredibly simple system using a couple of new se
 Here's how it works.
 
   1. Freecycle OFFER emails all go to a unique <a title="cloudmailin" href="http://cloudmailin.com" target="_blank">cloudmailin.com</a> address.
-  2. CloudMailin encodes the email as JSON and sends an HTTP POST to <a title="Freecycle SMS alerts" href="https://github.com/paulfurley/liverpool-freecycle-alerts" target="_blank">my Flask app</a> running on Heroku.
+  2. CloudMailin encodes the email as JSON and sends an HTTP POST to <a title="Freecycle SMS alerts" href="https://github.com/fawkesley/liverpool-freecycle-alerts" target="_blank">my Flask app</a> running on Heroku.
   3. My app checks the email subject and body for the given keywords.
   4. If the email matches a keyword, the app uses <a title="Twilio" href="https://www.twilio.com/" target="_blank">Twilio</a> to send an SMS to my mobile.
 
@@ -51,4 +51,4 @@ It's massively minimalist but it does work nicely and there are unit tests, obvi
 
 I've been been really impressed how easy it was to get up and running with two new services - CloudMailin and Twilio. It's great to have such powerful building blocks which can be easily rigged together to create very powerful solutions.
 
-Is this something you'd be interested in? Visit the [repo on GitHub](https://github.com/paulfurley/liverpool-freecycle-alerts) and do get in touch and let me know.
+Is this something you'd be interested in? Visit the [repo on GitHub](https://github.com/fawkesley/liverpool-freecycle-alerts) and do get in touch and let me know.

@@ -41,7 +41,7 @@ Previously, when a Tweet or Facebook share or whatever linked to my website, the
 
 ![Screenshot of a tweet with a URL](/img/tweet-without-open-graph-tags.png)
 
-So I [added HTML Open Graph tags](https://github.com/paulfurley/www.paulfurley.com/compare/82620fc90bbd15140e9a8ac95a801915e08594c2...58c7fde62c74fe00b1d1b09a9f30641138f6575e) which gives a hint to other services how to display the link nicely:
+So I [added HTML Open Graph tags](https://github.com/fawkesley/www.paulfurley.com/compare/82620fc90bbd15140e9a8ac95a801915e08594c2...58c7fde62c74fe00b1d1b09a9f30641138f6575e) which gives a hint to other services how to display the link nicely:
 
 ![Screenshot of a tweet with a URL, enhanced with an image and a bold headline](/img/tweet-with-open-graph-tags.png)
 
@@ -172,7 +172,7 @@ I'm going to try a rule that automatically unsubscribes from anything that didn'
 
 This might be yak-shaving, it might be worthwhile. I'm enjoying it, and it's my sabbatical, so there!
 
-Update: [Inboxbot is now on Github.](https://github.com/paulfurley/inboxbot)
+Update: [Inboxbot is now on Github.](https://github.com/fawkesley/inboxbot)
 
 
 
