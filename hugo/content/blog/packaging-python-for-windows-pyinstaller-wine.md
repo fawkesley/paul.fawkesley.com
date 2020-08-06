@@ -11,9 +11,9 @@ I've used Pyinstaller v1.5 in the past quite a bit with some success but doing s
 
 Today I knocked up some scripts to help create and manage a dedicated Wine "build" environment and run Pyinstaller inside Wine to create a "frozen" standalone Windows executable file from your Python source.
 
-Visit the <a title="GitHub" href="https://github.com/paulfurley/python-windows-packager" target="_blank">project on GitHub</a> or clone the repo and get involved. On the first run it'll give you instructions on setting up your dedicated wine environment, but you won't need to do this again.
+Visit the <a title="GitHub" href="https://github.com/fawkesley/python-windows-packager" target="_blank">project on GitHub</a> or clone the repo and get involved. On the first run it'll give you instructions on setting up your dedicated wine environment, but you won't need to do this again.
 
-<pre>$ git clone https://github.com/paulfurley/python-windows-packager
+<pre>$ git clone https://github.com/fawkesley/python-windows-packager
 $ ./package.sh /path/to/my/main.py MyProject</pre>
 
 ... and \*fingers crossed\* out pops /tmp/MyProject.exe

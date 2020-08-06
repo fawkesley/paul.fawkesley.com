@@ -35,6 +35,6 @@ Finally I manually cut out boring night-time frames and posted on Vimeo. Admitte
 
 
 
-All the code is available at [github.com/paulfurley/chillicam](http://github.com/paulfurley/chillicam)
+All the code is available at [github.com/fawkesley/chillicam](http://github.com/fawkesley/chillicam)
 
  [1]: http://shop.kew.org/kew-chilli-garden.html# "Kew Chilli Garden"

@@ -13,7 +13,7 @@ category: security,devops
 
 It's simple to respect your visitors' preference for privacy. Just put any analytics tracking code inside this `if` statement:
 
-<script src="https://gist.github.com/paulfurley/bb900465c21b8570d8763af9a07fcfc7.js"></script>
+<script src="https://gist.github.com/fawkesley/bb900465c21b8570d8763af9a07fcfc7.js"></script>
 
 This way, the analytics script won't even be downloaded from Google's servers. This improves your users' privacy and slightly speeds up the page load.
 

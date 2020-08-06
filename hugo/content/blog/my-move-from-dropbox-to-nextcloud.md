@@ -57,7 +57,7 @@ sudo reboot
 Next I downloaded a script I often use called "Ubuntu Trusty First Five Minutes". This is based on a [blog post][first-five-minutes] and it carries out some basic hardening.
 
 ```
-wget 'https://github.com/paulfurley/ubuntu-trusty-first-five-minutes/archive/master.zip'
+wget 'https://github.com/fawkesley/ubuntu-trusty-first-five-minutes/archive/master.zip'
 
 unzip master.zip && cd ubuntu-trusty-first-five-minutes-master/
 
@@ -151,7 +151,7 @@ sudo apt-get install -t jessie-backports -y certbot
 I enabled a [minimal Nginx configuration][nginx-letsencrypt] that works with the certbot webroot strategy:
 
 ```
-wget -O /etc/nginx/sites-available/letsencrypt-bootstrap https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/nginx/sites-available/letsencrypt-bootstrap
+wget -O /etc/nginx/sites-available/letsencrypt-bootstrap https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/nginx/sites-available/letsencrypt-bootstrap
 sudo ln -s /etc/nginx/sites-available/letsencrypt-bootstrap /etc/nginx/sites-enabled/letsencrypt-bootstrap
 sudo service nginx reload
 ```
@@ -297,7 +297,7 @@ I installed and enabled a [nextcloud Nginx configuration file][nginx-nextcloud]:
 If you're still waiting for the Diffie Hellman parameters file to be generated, you can temporarily comment out the line starting `ssl_dhparam` and it'll start without that.
 
 ```
-wget -O /etc/nginx/sites-available/nextcloud https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/nginx/sites-available/nextcloud
+wget -O /etc/nginx/sites-available/nextcloud https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/nginx/sites-available/nextcloud
 sudo ln -s /etc/nginx/sites-available/nextcloud /etc/nginx/sites-enabled/nextcloud
 sudo service nginx restart
 sudo service php7.0-fpm restart
@@ -361,8 +361,8 @@ sudo apt-get install ssmtp mailutils
 And add some config files:
 
 ```
-wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
-wget -O /etc/ssmtp/ssmtp.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
+wget -O /etc/ssmtp/ssmtp.conf https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/ssmtp/ssmtp.conf
 ```
 
 Then edit both files with your own domain and API key.
@@ -380,19 +380,19 @@ Dec  7 17:57:09 pi-loft-2 ownCloud[31042]: {core} Login failed: 'paul' (Remote I
 I wrote a [filter][fail2ban-filter] to scan syslog for login failure messages.
 
 ```
-wget -O /etc/fail2ban/filter.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
+wget -O /etc/fail2ban/filter.d/nextcloud.conf https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
 ```
 
 I adapted an [action][fail2ban-action] to parse the log file and whois information for the offending IP and send me that by email:
 
 ```
-wget -O /etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
+wget -O /etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
 ```
 
 I created a [jail][fail2ban-jail] to activate the filter:
 
 ```
-wget -O /etc/fail2ban/jail.d/nextcloud.conf https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf
+wget -O /etc/fail2ban/jail.d/nextcloud.conf https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf
 ```
 
 Don't forget to edit these with your own details.
@@ -511,20 +511,20 @@ improving:
 [raspbian-lite]: https://www.raspberrypi.org/downloads/raspbian/
 [first-five-minutes]: https://plusbryan.com/my-first-5-minutes-on-a-server-or-essential-security-for-linux-servers
 [cryptsetup]: https://linux.die.net/man/8/cryptsetup
-[mount-script]: https://github.com/paulfurley/nextcloud-config-files/blob/master/root/mount.sh
+[mount-script]: https://github.com/fawkesley/nextcloud-config-files/blob/master/root/mount.sh
 [zerotier-one]: https://zerotier.com
 [nginx-1.6.2]: http://nginx.org/en/CHANGES-1.6
 [php7-raspberry-pi]: https://getgrav.org/blog/raspberrypi-nginx-php7-dev
 [php-prerequisites]: https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html#prerequisites-label
-[nginx-letsencrypt]: https://github.com/paulfurley/nextcloud-config-files/blob/master/etc/nginx/sites-available/letsencrypt-bootstrap
-[nginx-nextcloud]: https://github.com/paulfurley/nextcloud-config-files/blob/master/etc/nginx/sites-available/nextcloud
+[nginx-letsencrypt]: https://github.com/fawkesley/nextcloud-config-files/blob/master/etc/nginx/sites-available/letsencrypt-bootstrap
+[nginx-nextcloud]: https://github.com/fawkesley/nextcloud-config-files/blob/master/etc/nginx/sites-available/nextcloud
 [nextcloud]: https://nextcloud.com
 [andrews-and-arnold]: http://aaisp.net
 [google-fingerprint]: https://www.google.co.uk/?gfe_rd=cr&ei=0TpHWPHcHqeg8wewparoBg&gws_rd=ssl#q=2880+6A87+8AE4+23A2+8372++792E+D758+99B9+A724+937A
-[page-updates]: https://github.com/paulfurley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown
+[page-updates]: https://github.com/fawkesley/www.paulfurley.com/commits/master/_posts/2016-12-01-my-move-from-dropbox-to-nextcloud.markdown
 [ssl-labs-results]: https://www.ssllabs.com/ssltest/analyze.html?d=cloud.paulfurley.com
 [paul-twitter]: https://twitter.com/fawkesley
 [fail2ban]: http://www.fail2ban.org/wiki/index.php/Main_Page
-[fail2ban-filter]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
-[fail2ban-action]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
-[fail2ban-jail]: https://github.com/paulfurley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf
+[fail2ban-filter]: https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/fail2ban/filter.d/nextcloud.conf
+[fail2ban-action]: https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/fail2ban/action.d/mail-whois-lines-paulfurley.conf
+[fail2ban-jail]: https://github.com/fawkesley/nextcloud-config-files/raw/master/etc/fail2ban/jail.d/nextcloud.conf

@@ -41,7 +41,7 @@ I wanted to randomize my MAC address, but with three particular caveats:
 
 My first attempt of using the `macchanger` tool was unsuccessful as NetworkManager would override the MAC address according to its own configuration.
 
-I learned that NetworkManager 1.4.1+ can do MAC address randomization right out the box. If you're using Ubuntu 17.04 upwards, you can get most of the way with [this config file](https://gist.github.com/paulfurley/978d4e2e0cceb41d67d017a668106c53/). You can't quite achieve all three of my requirements (you must choose _random_ or _stable_ but it seems you can't do _stable-for-one-day_).
+I learned that NetworkManager 1.4.1+ can do MAC address randomization right out the box. If you're using Ubuntu 17.04 upwards, you can get most of the way with [this config file](https://gist.github.com/fawkesley/978d4e2e0cceb41d67d017a668106c53/). You can't quite achieve all three of my requirements (you must choose _random_ or _stable_ but it seems you can't do _stable-for-one-day_).
 
 Since I'm sticking with Ubuntu 16.04 which ships with NetworkManager 1.2, I couldn't make use of the new functionality. Supposedly there is some randomization support but I failed to actually make it work, so I scripted up a solution instead.
 
@@ -104,13 +104,13 @@ wlp1s0    Link encap:Ethernet  HWaddr b4:b6:76:45:64:4d
           RX bytes:11627977017 (11.6 GB)  TX bytes:20700627733 (20.7 GB)
 ```
 
-The full script is [available on Github](https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f).
+The full script is [available on Github](https://gist.github.com/fawkesley/46e0547ce5c5ea7eabeaef50dbacef3f).
 
-<script src="https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f.js"></script>
+<script src="https://gist.github.com/fawkesley/46e0547ce5c5ea7eabeaef50dbacef3f.js"></script>
 
 Enjoy!
 
-*Update: [Use locally administered MAC addresses](https://gist.github.com/paulfurley/46e0547ce5c5ea7eabeaef50dbacef3f/revisions#diff-824d510864d58c07df01102a8f53faef) to avoid clashing with real Intel ones. Thanks [@_fink](https://twitter.com/fink_/status/937305600005943296)*
+*Update: [Use locally administered MAC addresses](https://gist.github.com/fawkesley/46e0547ce5c5ea7eabeaef50dbacef3f/revisions#diff-824d510864d58c07df01102a8f53faef) to avoid clashing with real Intel ones. Thanks [@_fink](https://twitter.com/fink_/status/937305600005943296)*
 
 
 

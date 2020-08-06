@@ -40,7 +40,7 @@ Equally, I wanted to limit the damage of putting a private key sitting on a serv
 
 I used the same trick I do on my own key, where I exported the signing _subkey_ - without a password - and let Expirybot use that. The _primary_ key I store safely elsewhere, and in a year I can use it to extend the subkey's expiration and upload it again.
 
-Knowing that I'd forget how I did it, I scripted the key generation and export. You might find it useful for your own keys - [it's on Github, of course](https://github.com/paulfurley/expirybot/blob/master/expirybot/gpg_wrapper/generate_keypair). (Please don't judge me by Expirybot's less-than-perfect code which I admit has a lot of technical debt!)
+Knowing that I'd forget how I did it, I scripted the key generation and export. You might find it useful for your own keys - [it's on Github, of course](https://github.com/fawkesley/expirybot/blob/master/expirybot/gpg_wrapper/generate_keypair). (Please don't judge me by Expirybot's less-than-perfect code which I admit has a lot of technical debt!)
 
 
 ## I built a new web service for blacklisting
